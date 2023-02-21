@@ -28,6 +28,6 @@ const routes: Routes = [
 		SharedModule.forRoot(),
 		RouterModule.forChild(routes)
 	],
-	declarations: [SettingsComponent]
+	declarations: [SettingsComponent, SystemUserComponent]
 })
 export class SettingsModule { }

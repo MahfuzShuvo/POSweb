@@ -1,0 +1,25 @@
+.system-user-table table tbody {
+    height: calc(100vh - 210px);
+}
+
+.table-row-count {
+    padding: 5px 0;
+    font-size: var(--font-12);
+    font-weight: var(--weight-500);
+}
+
+.system-user-table table thead tr td:nth-child(6),
+.system-user-table table thead tr td:nth-child(7),
+.system-user-table table thead tr td:nth-child(8),
+.system-user-table table tbody tr td:nth-child(6),
+.system-user-table table tbody tr td:nth-child(7),
+.system-user-table table tbody tr td:nth-child(8) {
+    width: 8%;
+}
+
+.system-user-table table thead tr td:nth-child(2),
+.system-user-table table tbody tr td:nth-child(2),
+.system-user-table table thead tr td:nth-child(3),
+.system-user-table table tbody tr td:nth-child(3) {
+    width: 12%;
+}

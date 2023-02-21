@@ -1,3 +1,35 @@
-<p>
-  system-user works!
-</p>
+<div class="system-user-body">
+	<a class="theme-link weight-500" (click)="createUser()">+ Create User</a>
+	<div class="system-user-table mt-2">
+		<table>
+			<thead>
+				<tr>
+					<td>Full Name</td>
+					<td>Username</td>
+					<td>Phone Number</td>
+					<td>Email</td>
+					<td>Address</td>
+					<td>City</td>
+					<td>State</td>
+					<td>Zip</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let systemUser of lstSystemUser">
+					<td>{{systemUser.FullName}}</td>
+					<td>{{systemUser.Username}}</td>
+					<td>{{systemUser.PhoneNumber}}</td>
+					<td>{{systemUser.Email}}</td>
+					<td>{{systemUser.Address}}</td>
+					<td>{{systemUser.City}}</td>
+					<td>{{systemUser.State}}</td>
+					<td>{{systemUser.Zip}}</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="table-row-count">
+			<span class="txt-light font-11">Total Row:</span>
+			{{totalCount}}
+		</div>
+	</div>
+</div>
