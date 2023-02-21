@@ -1,0 +1,48 @@
+.auth-wrapper {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    height: 100vh;
+}
+
+.auth-left {
+    background: var(--theme-color);
+    position: relative;
+}
+
+.auth-left-content {
+    text-align: right;
+    position: absolute;
+    top: 50%;
+    right: 20%;
+    transform: translate(10%, -50%);
+}
+
+.auth-left-content img {
+    width: 50%;
+}
+
+.auth-left-content p {
+    color: var(--white-color);
+}
+
+.auth-left-content button {
+    border-radius: 15px !important;
+}
+
+.auth-right {
+    position: relative;
+}
+
+.auth-form {
+    width: 300px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.address-block {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 10px;
+}

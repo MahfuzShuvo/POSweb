@@ -1,0 +1,52 @@
+:root {
+    --gap-2: 2px;
+    --gap-3: 3px;
+    --gap-5: 5px;
+    --gap-7: 7px;
+    --gap-10: 10px;
+    --gap-12: 12px;
+    --gap-15: 15px;
+    --gap-20: 20px;
+    --gap-25: 25px;
+    --gap-30: 30px;
+}
+
+.gap-2 {
+    gap: var(--gap-2);
+}
+
+.gap-3 {
+    gap: var(--gap-3);
+}
+
+.gap-5 {
+    gap: var(--gap-5);
+}
+
+.gap-7 {
+    gap: var(--gap-7);
+}
+
+.gap-10 {
+    gap: var(--gap-10);
+}
+
+.gap-12 {
+    gap: var(--gap-12);
+}
+
+.gap-15 {
+    gap: var(--gap-15);
+}
+
+.gap-20 {
+    gap: var(--gap-20);
+}
+
+.gap-25 {
+    gap: var(--gap-25);
+}
+
+.gap-30 {
+    gap: var(--gap-30);
+}

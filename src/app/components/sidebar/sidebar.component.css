@@ -1,0 +1,117 @@
+.sidebar-container {
+    position: fixed;
+    height: 100vh;
+    width: 250px;
+    left: 0;
+    top: 0;
+    background: var(--theme-color);
+}
+
+.logo-section img {
+    display: block;
+    width: 100%;
+    padding: 10px 20px;
+}
+
+.menu-section ul {
+    margin: 0;
+    padding: 0;
+}
+
+.menu-section ul li {
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.menu-section ul li.active {
+    background: var(--secondary-theme-color);
+}
+
+.menu-section ul li a,
+.menu-section ul li i {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.menu-section ul li:hover {
+    transform: scale(.98);
+}
+
+.menu-section ul li:hover a,
+.menu-section ul li:hover i {
+    color: var(--secondary-theme-color);
+}
+
+.menu-section ul li.active a,
+.menu-section ul li.active i {
+    color: var(--theme-color);
+}
+
+.menu-section ul li a {
+    font-size: var(--font-14);
+    font-weight: var(--weight-500);
+    color: var(--white-color);
+}
+
+.menu-section ul li i {
+    color: var(--white-color);
+    font-size: var(--font-20);
+    font-weight: var(--weight-300);
+}
+
+.menu-section-footer {
+    display: flex;
+    justify-content: space-between;
+    background: #0000002b;
+    height: 60px;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.auth-section {
+    padding: 10px 20px;
+}
+
+.auth-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #4caf50;
+    /* font-size: var(--font-18); */
+    font-weight: var(--weight-700);
+    color: var(--white-color);
+    /* padding: 6px; */
+    position: relative;
+    flex: none;
+}
+
+.auth-icon-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.auth-text p {
+    color: var(--white-color);
+    font-size: var(--font-13);
+    font-weight: var(--weight-500);
+    max-width: 110px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.logout-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.logout-button:hover {
+    background: #0000002b;
+}

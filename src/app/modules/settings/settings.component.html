@@ -1,0 +1,24 @@
+<div class="body-wrapper-card card">
+	<div class="body-wrapper">
+		<ul class="wrapper-menu">
+			<li [routerLink]="['/settings/system-user']" [routerLinkActive]="'active'">
+				<a>System User</a>
+			</li>
+			<li [routerLink]="['/settings/accounts']" [routerLinkActive]="'active'">
+				<a>Accounts</a>
+			</li>
+			<li [routerLink]="['/settings/permission']" [routerLinkActive]="'active'">
+				<a>Permission</a>
+			</li>
+			<li [routerLink]="['/settings/payment-status']" [routerLinkActive]="'active'">
+				<a>Payment Status</a>
+			</li>
+		</ul>
+		<div class="wrapper-content">
+			<div class="wrapper-content-header">{{subTitle}}</div>
+			<div class="wrapper-content-body">
+				<router-outlet></router-outlet>
+			</div>
+		</div>
+	</div>
+</div>

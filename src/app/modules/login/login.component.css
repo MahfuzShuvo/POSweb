@@ -1,0 +1,42 @@
+.auth-wrapper {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    height: 100vh;
+}
+
+.auth-right {
+    background: var(--theme-color);
+    position: relative;
+}
+
+.auth-right-content {
+    text-align: right;
+    position: absolute;
+    top: 50%;
+    right: 20%;
+    transform: translate(10%, -50%);
+}
+
+.auth-right-content img {
+    width: 50%;
+}
+
+.auth-right-content p {
+    color: var(--white-color);
+}
+
+.auth-right-content button {
+    border-radius: 15px !important;
+}
+
+.auth-left {
+    position: relative;
+}
+
+.auth-form {
+    width: 300px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

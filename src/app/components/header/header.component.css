@@ -1,0 +1,40 @@
+header {
+    height: 60px;
+    width: calc(100vw - 250px);
+    position: fixed;
+    left: 250px;
+    top: 0;
+    background: var(--white-color);
+    box-shadow: 0 0px 2px #00000015;
+}
+
+.header-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.left-section {
+    padding: 10px 20px;
+    font-size: var(--font-13);
+    color: var(--secondary-theme-color);
+    text-transform: capitalize;
+}
+
+.pos-button {
+    border: none;
+    width: 60px;
+    height: 60px;
+    background: var(--secondary-theme-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.pos-button i {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.pos-button:hover i {
+    transform: scale(1.1);
+}

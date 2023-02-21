@@ -1,0 +1,197 @@
+:host {
+    position: relative;
+    overflow: hidden;
+    margin: 0 0 6px;
+    color: #000;
+    pointer-events: all;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+::ng-deep .toast-container {
+    pointer-events: none;
+    position: fixed;
+    z-index: 999999;
+}
+
+::ng-deep .toast-top-right {
+    top: 5px;
+    right: 0;
+}
+
+.toast-close-button {
+    color: #999;
+    opacity: 1;
+    text-decoration: none;
+}
+
+.toast-close-button:hover {
+    color: #02ceff;
+}
+
+::ng-deep .toast-error,
+::ng-deep .toast-info,
+::ng-deep .toast-warning,
+::ng-deep .toast-success {
+    background-image: none;
+}
+
+::ng-deep .toast-icon.custom-toast-success .toast-title {
+    color: #67be4e !important;
+}
+
+::ng-deep .toast-icon.custom-toast-warning .toast-title {
+    color: #ffc825 !important;
+}
+
+::ng-deep .toast-icon.custom-toast-error .toast-title {
+    color: #ff6055 !important;
+}
+
+::ng-deep .toast-icon.custom-toast-info .toast-title {
+    color: #45a7e7 !important;
+}
+
+.toaster {
+    display: flex;
+    color: #fff !important;
+    background-color: var(--theme-color);
+    width: 335px;
+    min-height: 50px;
+    /* min-height: 80px; */
+    border-radius: 6px;
+    box-shadow: 0 1px 5px rgba(100, 100, 100, 0.5);
+    margin: 5px 15px 5px 0;
+}
+
+.toaster .toast-icon {
+    border-radius: 4px 0 0 4px;
+}
+
+.toaster .toast-icon::before {
+    position: absolute;
+    font-family: 'FontAwesome';
+    font-size: var(--font-20);
+    color: #fff;
+    /* top: 50%; */
+    top: 25px;
+    left: 25px;
+    /* left: 50%; */
+    transform: translate(-50%, -50%);
+}
+
+.toaster .toast-icon.custom-toast-success {
+    background-color: #67be4e;
+}
+
+.toaster .toast-icon.custom-toast-success::before {
+    content: "\f058";
+    color: #67be4e !important;
+}
+
+.toaster .toast-icon.custom-toast-success #warning-icon,
+.toaster .toast-icon.custom-toast-success #info-icon,
+.toaster .toast-icon.custom-toast-success #error-icon {
+    display: none;
+}
+
+.toaster .toast-icon.custom-toast-warning {
+    background-color: #ffc825;
+}
+
+.toaster .toast-icon.custom-toast-warning::before {
+    content: "\f0f3";
+    color: #ffc825 !important;
+    /* content: "\f071"; */
+}
+
+.toaster .toast-icon.custom-toast-warning #success-icon,
+.toaster .toast-icon.custom-toast-warning #info-icon,
+.toaster .toast-icon.custom-toast-warning #error-icon {
+    display: none;
+}
+
+.toaster .toast-icon.custom-toast-error {
+    background-color: #ff6055;
+}
+
+.toaster .toast-icon.custom-toast-error::before {
+    content: "\f06a";
+    color: #ff6055 !important;
+}
+
+.toaster .toast-icon.custom-toast-error #success-icon,
+.toaster .toast-icon.custom-toast-error #info-icon,
+.toaster .toast-icon.custom-toast-error #warning-icon {
+    display: none;
+}
+
+.toaster .toast-icon.custom-toast-info {
+    background-color: #45a7e7;
+}
+
+.toaster .toast-icon.custom-toast-info::before {
+    content: "\f05a";
+    color: #45a7e7 !important;
+}
+
+.toaster .toast-icon.custom-toast-info #success-icon,
+.toaster .toast-icon.custom-toast-info #error-icon,
+.toaster .toast-icon.custom-toast-info #warning-icon {
+    display: none;
+}
+
+.toast-icon {
+    width: 8px;
+    /* width: 50px; */
+    /* position: relative; */
+}
+
+.toast-icon i {
+    font-size: var(--font-20);
+    position: absolute;
+    top: 50%;
+    left: 43%;
+    transform: translate(-40%, -50%);
+}
+
+.toast-title {
+    font-size: var(--font-10);
+    font-weight: var(--weight-700);
+}
+
+.toast-message {
+    font-size: var(--font-12);
+    font-weight: var(--weight-600);
+    line-height: 15px;
+}
+
+.toast-details {
+    margin: 0 10px 0 35px;
+    /* margin: 0 10px 0 20px; */
+    display: flex;
+    align-items: center;
+    width: 270px;
+    /* width: 235px; */
+}
+
+.close-icon {
+    position: relative;
+}
+
+.close-icon .toast-close-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    /* top: 15%; */
+    color: #fff;
+    font-size: var(--font-20);
+    font-weight: var(--weight-300);
+    text-shadow: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.close-icon .toast-close-button:hover {
+    opacity: .7;
+}

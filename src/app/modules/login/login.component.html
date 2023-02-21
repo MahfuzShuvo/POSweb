@@ -1,0 +1,52 @@
+<div class="auth-wrapper">
+	<div class="auth-left">
+		<div class="auth-form">
+			<h4 class="txt-theme weight-700 mb-0">Login</h4>
+			<p class="font-13">Welcome to <span class="txt-secondary-theme weight-500">Generation POS</span></p>
+			<form class="mt-5" autocomplete="off" #loginForm="ngForm" (ngSubmit)="loginForm.form.valid && login()">
+
+				<div class="form-group">
+					<label for="username" class="form-label">Username</label>
+					<input type="text" id="username" name="user" class="form-control" placeholder="Enter username"
+					[(ngModel)]="objVmLogin.Username" required maxlength="20" #username="ngModel"
+					[ngClass]="{ 'is-invalid': loginForm.submitted && username.errors }">
+					<div *ngIf="loginForm.submitted && username.errors" class="invalid-feedback">
+						<div *ngIf="username.errors['required']">Username is required</div>
+						<div *ngIf="username.errors['maxlength']">
+							Username must be at most 20 characters
+						</div>
+					</div>
+				</div>
+				<div class="form-group ico">
+					<label for="password" class="form-label">Password</label>
+					<input [type]="isPasswordShow ? 'text' : 'password'" name="pass" id="password" class="form-control" 
+						placeholder="****" [(ngModel)]="objVmLogin.Password" required minlength="4" maxlength="40" 
+						#password="ngModel" [ngClass]="{ 'is-invalid': loginForm.submitted && password.errors }">
+					<i class="fa txt-light" [class.fa-eye]="isPasswordShow" [class.fa-eye-slash]="!isPasswordShow"
+						aria-hidden="true" (click)="isPasswordShow = !isPasswordShow"></i>
+					<div *ngIf="loginForm.submitted && password.errors" class="invalid-feedback">
+						<div *ngIf="password.errors['required']">Password is required</div>
+						<div *ngIf="password.errors['minlength']">
+							Password must be at least 4 characters
+						</div>
+						<div *ngIf="password.errors['maxlength']">
+							Password must not exceed 40 characters
+						</div>
+					</div>
+				</div>
+				<button type="submit" class="secondary-theme-button w-100 mt-4 py-2" [disabled]="(dataService.isFormSubmitting | async)">Login</button>
+			</form>
+		</div>
+	</div>
+	<div class="auth-right">
+		<div class="auth-right-content">
+			<img src="assets/img/logo.png" alt="">
+			<p class="mt-5">A POS system that captures customer data can help you personalize the shopping experience by
+				making product recommendations based on their purchase history, preferences, and other data. This can
+				help build stronger customer relationships and drive repeat business.</p>
+			<button type="button" class="secondary-theme-button mt-5" [routerLink]="['/register']">
+				Create an account
+			</button>
+		</div>
+	</div>
+</div>
