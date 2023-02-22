@@ -62,7 +62,9 @@ tr:not(:last-child) {
 tbody {
     display: block;
     height: 100%;
-    overflow-y: scroll;
+    /* width: calc(100% - 7px); */
+    overflow-y: overlay;
+    /* position: relative; */
 }
 
 tbody tr {
@@ -79,25 +81,14 @@ tbody tr {
 
 thead {
     position: relative;
-    width: calc(100% - 7px);
-    height: 30x;
+    /* width: calc(100% - 7px); */
+    height: 30px;
     text-transform: uppercase;
-    border-radius: 5px 0 0 5px;
+    border-radius: 4px;
     background: var(--thead-color);
     color: var(--light-text-color);
     font-size: var(--font-11);
     font-weight: var(--weight-700);
-}
-
-thead::after {
-    content: '';
-    position: absolute;
-    width: 7px;
-    height: 100%;
-    top: 0;
-    right: -7px;
-    border-radius: 0 5px 5px 0;
-    background: var(--thead-color);
 }
 
 table {
@@ -125,10 +116,13 @@ table {
 
 .wrapper-menu {
     border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
 }
 
-.wrapper-menu li {
+.wrapper-menu a {
     position: relative;
+    text-decoration: none;
     padding: 10px 20px;
     font-size: var(--font-12);
     font-weight: var(--weight-500);
@@ -137,17 +131,17 @@ table {
     transition: all 0.3s ease;
 }
 
-.wrapper-menu li:hover {
+.wrapper-menu a:hover {
     color: var(--secondary-theme-color);
     transform: scale(.98);
 }
 
-.wrapper-menu li.active {
+.wrapper-menu a.active {
     color: var(--secondary-theme-color);
     background: #39c5f815;
 }
 
-.wrapper-menu li.active::after {
+.wrapper-menu a.active::after {
     position: absolute;
     content: '';
     width: 3px;

@@ -13,48 +13,45 @@
     padding: 10px 20px;
 }
 
-.menu-section ul {
-    margin: 0;
-    padding: 0;
-}
-
-.menu-section ul li {
+.menu-section a {
     padding: 10px 20px;
+    text-decoration: none;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
-.menu-section ul li.active {
+.menu-section a.active {
     background: var(--secondary-theme-color);
 }
 
-.menu-section ul li a,
-.menu-section ul li i {
+.menu-section a span,
+.menu-section a i {
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
-.menu-section ul li:hover {
+.menu-section a:hover {
     transform: scale(.98);
 }
 
-.menu-section ul li:hover a,
-.menu-section ul li:hover i {
+.menu-section a:hover span,
+.menu-section a:hover i {
     color: var(--secondary-theme-color);
 }
 
-.menu-section ul li.active a,
-.menu-section ul li.active i {
+.menu-section a.active span,
+.menu-section a.active i {
     color: var(--theme-color);
 }
 
-.menu-section ul li a {
+.menu-section a span {
     font-size: var(--font-14);
     font-weight: var(--weight-500);
     color: var(--white-color);
+    width: 100%;
 }
 
-.menu-section ul li i {
+.menu-section a i {
     color: var(--white-color);
     font-size: var(--font-20);
     font-weight: var(--weight-300);

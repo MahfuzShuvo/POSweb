@@ -156,3 +156,23 @@ input.form-control:-moz-placeholder {
 .ng-bar-placeholder {
     height: 4px !important;
 }
+
+.w-15 {
+    width: 15%;
+}
+
+.w-12 {
+    width: 12%;
+}
+
+.w-10 {
+    width: 10%;
+}
+
+.w-8 {
+    width: 8%;
+}
+
+.w-5 {
+    width: 5%;
+}
