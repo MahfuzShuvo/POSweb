@@ -69,7 +69,7 @@ tbody {
 
 tbody tr {
     height: 35px;
-    font-weight: var(--weight-500);
+    font-weight: var(--weight-400);
 }
 
 thead,
@@ -163,4 +163,72 @@ table {
     border-bottom: 1px solid #e0e0e035;
     padding-bottom: 5px;
     margin-bottom: 5px;
+}
+
+/* __________offcanvas style start___________ */
+
+.offcanvas.show {
+    visibility: visible;
+    width: 30%;
+}
+
+.offcanvas-start {
+    box-shadow: 0 5px 10px #00000025;
+    right: 0;
+    top: 60px !important;
+    left: auto !important;
+    width: 0;
+    border: none !important;
+    transform: translateX(100%);
+}
+
+.offcanvas-title {
+    width: 75%;
+}
+
+.offcanvas-header {
+    border-bottom: 1px solid var(--light-border-color);
+    padding: 10px 20px !important;
+}
+
+.offcanvas-body {
+    flex-grow: 0 !important;
+    height: calc(100vh - 110px);
+    padding: 0;
+    overflow: unset;
+    padding: 10px 20px !important;
+}
+
+.offcanvas-footer {
+    padding: 10px 20px;
+    border-top: 1px solid var(--border-color);
+    text-align: right;
+    /* temporary  */
+    position: absolute;
+    width: 100%;
+    background: #fff;
+    bottom: 0;
+    right: 0;
+}
+
+.offcanvas-footer button:not(:last-child) {
+    margin-right: 15px;
+}
+
+/* _________offcanvas style end___________ */
+.badge {
+    font-weight: 500 !important;
+    font-size: var(--font-10) !important;
+}
+
+.active-badge,
+.success-badge {
+    color: var(--success-color) !important;
+    background: var(--light-success-color);
+}
+
+.inactive-badge,
+.danger-badge {
+    color: var(--danger-color) !important;
+    background: var(--light-danger-color);
 }

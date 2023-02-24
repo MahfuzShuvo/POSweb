@@ -63,3 +63,24 @@ button:disabled {
 .action-button:hover i {
     color: var(--theme-color);
 }
+
+.offcanvas-close-btn {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    position: relative;
+    background: var(--light-border-color);
+    padding: 0 !important;
+}
+
+.offcanvas-close-btn svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.offcanvas-close-btn:hover {
+    background: var(--border-color);
+    box-shadow: 0 2px 2px #00000025;
+}

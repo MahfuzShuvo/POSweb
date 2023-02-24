@@ -1,3 +1,4 @@
+import { SystemUserFormComponent } from './../../components/systemUser-form/systemUser-form.component';
 import { AccountsComponent } from './accounts/accounts.component';
 import { SystemUserComponent } from './system-user/system-user.component';
 import { NgModule } from '@angular/core';
@@ -28,6 +29,10 @@ const routes: Routes = [
 		SharedModule.forRoot(),
 		RouterModule.forChild(routes)
 	],
-	declarations: [SettingsComponent, SystemUserComponent]
+	declarations: [
+		SettingsComponent,
+		SystemUserComponent,
+		SystemUserFormComponent
+	]
 })
 export class SettingsModule { }

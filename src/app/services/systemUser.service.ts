@@ -16,4 +16,9 @@ export class SystemUserService {
     return this.httpHelper.postHelper(url);
   }
 
+  saveSystemUser(obj: any): Observable<any> {
+    const url = 'api/SystemUser/SaveSystemUser';
+    return this.httpHelper.postHelper(url, obj);
+  }
+
 }

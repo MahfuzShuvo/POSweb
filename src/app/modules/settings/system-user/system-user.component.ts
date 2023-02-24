@@ -3,10 +3,11 @@ import { ResponseMessage } from 'src/app/models/DTO/responseMessage';
 import { MessageHelper } from 'src/app/common/helper/messageHelper';
 import { SystemUser } from './../../../models/systemUser';
 import { SystemUserService } from './../../../services/systemUser.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HeaderService } from 'src/app/common/service/header.service';
 import { Subject, takeUntil } from 'rxjs';
+import { SystemUserFormComponent } from 'src/app/components/systemUser-form/systemUser-form.component';
 
 @Component({
 	selector: 'app-system-user',
@@ -16,6 +17,7 @@ import { Subject, takeUntil } from 'rxjs';
 export class SystemUserComponent implements OnInit {
 
 	private destroy: Subject<void> = new Subject<void>();
+	@ViewChild('systemUserForm', { read: ViewContainerRef }) systemUserForm: ViewContainerRef;
 	lstSystemUser: SystemUser[] = [];
 	totalCount: number = 0;
 
@@ -31,7 +33,32 @@ export class SystemUserComponent implements OnInit {
 	}
 
 	createUser() {
+		// Clear the container
+		this.systemUserForm.clear();
+		// Create component.
+		const systemUserRef = this.systemUserForm.createComponent(SystemUserFormComponent);
+		systemUserRef.instance.headerText = 'Add System User';
+		systemUserRef.instance.buttonText = 'Save';
+		// destroy component
+		let isShowInstance = systemUserRef.instance.isShow;
+		if (isShowInstance) {
+			isShowInstance.emit(true);
+			isShowInstance.subscribe((isShow: boolean) => {
+				if (!isShow) {
+					systemUserRef.destroy();
+					this.systemUserForm.clear();
+				}
+			});
+		}
 
+		systemUserRef.instance.newSystemUser.subscribe((data: SystemUser) => {
+			var index = this.lstSystemUser.findIndex(x => x.SystemUserID == data.SystemUserID);
+			if (index > -1) {
+				this.lstSystemUser.splice(index, 1, data);
+			} else {
+				this.lstSystemUser.push(data)
+			}
+		})
 	}
 
 	getAllSystemUser() {
@@ -45,6 +72,10 @@ export class SystemUserComponent implements OnInit {
 					this.messageHelper.showMessage(response.ResponseCode, response.Message);
 				}
 			})
+	}
+
+	getAddress(city: string, state: string, zip: string) {
+		return [city, state, zip].join(", ");
 	}
 
 	ngOnDestroy(): void {
