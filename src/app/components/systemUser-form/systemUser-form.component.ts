@@ -19,7 +19,6 @@ export class SystemUserFormComponent implements OnInit {
 	@Output() buttonText: string = '';
 	@Output() headerText: string = '';
 	newSystemUser: Subject<SystemUser> = new Subject<SystemUser>();
-	isActive: boolean = false;
 	isPasswordShow: boolean = false;
 	objSystemUser: SystemUser = new SystemUser();
 
@@ -38,13 +37,7 @@ export class SystemUserFormComponent implements OnInit {
 	}
 
 	toggleStatus(event: any) {
-		if (event.target.checked) {
-			this.isActive = true;
-			this.objSystemUser.Status = 1;
-		} else {
-			this.isActive = false;
-			this.objSystemUser.Status = 2;
-		}
+		this.objSystemUser.Status = (event.target.checked) ? 1 : 2;
 	}
 
 	//Phone number formatting 

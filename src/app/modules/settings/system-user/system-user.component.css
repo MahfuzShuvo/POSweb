@@ -23,12 +23,3 @@
     font-size: var(--font-15);
     color: var(--border-color);
 }
-
-.system-user-table table tbody tr {
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.system-user-table table tbody tr:hover {
-    background: #39c5f817;
-}

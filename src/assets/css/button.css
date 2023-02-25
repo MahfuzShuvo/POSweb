@@ -1,12 +1,13 @@
 button {
     border: none;
-    outline: none;
+    outline: none !important;
     padding: 5px 15px !important;
-    font-weight: var(--weight-700) !important;
+    font-weight: var(--weight-500) !important;
     line-height: normal !important;
-    cursor: pointer;
+    cursor: pointer !important;
     transition: all 0.3s ease;
     text-transform: uppercase !important;
+    border-radius: 4px !important;
 }
 
 button:disabled {
@@ -17,7 +18,6 @@ button:disabled {
 .theme-button {
     background: var(--theme-color);
     color: var(--white-color);
-    border-radius: 4px;
 }
 
 .theme-button:hover {
@@ -25,14 +25,42 @@ button:disabled {
     box-shadow: 0 1px 3px #00000025 !important;
 }
 
+.cancel-button {
+    background: var(--border-color);
+    color: var(--text-color);
+}
+
+.cancel-button:hover {
+    opacity: .9;
+    box-shadow: 0 1px 3px #00000025 !important;
+}
+
 .secondary-theme-button {
     background: var(--secondary-theme-color);
     color: var(--theme-color);
-    border-radius: 4px;
-    font-weight: var(--weight-500);
 }
 
 .secondary-theme-button:hover {
+    opacity: .9;
+    box-shadow: 0 1px 3px #00000025 !important;
+}
+
+.success-button {
+    background: var(--success-color);
+    color: var(--white-color);
+}
+
+.success-button:hover {
+    opacity: .9;
+    box-shadow: 0 1px 3px #00000025 !important;
+}
+
+.danger-button {
+    background: var(--danger-color);
+    color: var(--white-color);
+}
+
+.danger-button:hover {
     opacity: .9;
     box-shadow: 0 1px 3px #00000025 !important;
 }

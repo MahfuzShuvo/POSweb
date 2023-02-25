@@ -115,7 +115,7 @@
 						<label for="password" class="form-label">Password <span class="txt-danger">*</span></label>
 						<input [type]="isPasswordShow ? 'text' : 'password'" name="password" id="password" class="form-control"
 							placeholder="****" [(ngModel)]="objSystemUser.Password" required
-							minlength="4" maxlength="40" #password="ngModel"
+							minlength="4" maxlength="40" #password="ngModel" [disabled]="objSystemUser.SystemUserID > 0"
 							[ngClass]="{ 'is-invalid': userForm.submitted && password.errors }">
 						<i class="fa txt-light" [class.fa-eye]="isPasswordShow" [class.fa-eye-slash]="!isPasswordShow"
 							aria-hidden="true" (click)="isPasswordShow = !isPasswordShow"></i>
@@ -149,9 +149,9 @@
 				<div class="col-md-6">
 					<div class="form-group">
 						<label class="toggle">
-							<input class="toggle__checkbox" type="checkbox" (change)="toggleStatus($event)">
+							<input class="toggle__checkbox" type="checkbox" (change)="toggleStatus($event)" [checked]="objSystemUser.Status == 1">
 							<span class="toggle__switch"></span>
-							<span class="toggle__label">{{isActive ? 'Active' : 'InActive'}}</span>
+							<span class="toggle__label">{{(objSystemUser.Status == 1) ? 'Active' : 'Inactive'}}</span>
 						</label>
 					</div>
 				</div>
@@ -159,7 +159,7 @@
 			
 		</div>
 		<div class="offcanvas-footer">
-			<button type="button" class="modal-cancel-button" (click)="closeSidebar()">Cancel</button>
+			<button type="button" class="cancel-button" (click)="closeSidebar()">Cancel</button>
 			<button type="submit" class="theme-button" [disabled]="dataService.isFormSubmitting | async">{{buttonText}}</button>
 		</div>
 	</form>

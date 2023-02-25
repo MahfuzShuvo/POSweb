@@ -61,7 +61,7 @@ export class RegisterComponent implements OnInit {
 
 					this.objVmRegister = new VMRegister();
 					this.objVmLogin = new VMLogin();
-					this.router.navigateByUrl('dashboard');
+					this.router.navigate(['dashboard']);
 				} else {
 					this.messageHelper.showMessage(response.ResponseCode, response.Message);
 				}

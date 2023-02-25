@@ -2,10 +2,10 @@
 	<div class="table-headings d-flex align-items-center justify-content-between">
 		<div class="table-search d-flex align-items-center gap-1">
 			<i class='bx bx-search-alt mt-1'></i>
-			<input type="text" class="form-control" name="searchSystemUser"
-				placeholder="Search by name, username, phone, email etc ...">
+			<input type="text" class="form-control" name="searchSystemUser" #searchText
+				placeholder="Search by name, username, phone, email etc ..." (keyup)="searchSystemUser(searchText.value)">
 		</div>
-		<button type="button" class="theme-button font-10 weight-500" (click)="createUser()">+ Add New</button>
+		<button type="button" class="theme-button font-10 weight-500" (click)="createUser({})">+ Add New</button>
 	</div>
 	<div class="system-user-table">
 		<table>
@@ -52,11 +52,13 @@
 					<td class="w-10">
 						<div class="d-flex align-items-center gap-3 justify-content-end">
 							<button type="button" class="action-button edit" tooltip="Edit"
-								containerClass="tooltipClass" placement="top" [adaptivePosition]="false">
+								containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+								(click)="createUser(systemUser)">
 								<i class='bx bxs-edit font-15'></i>
 							</button>
 							<button type="button" class="action-button delete" tooltip="Delete"
-								containerClass="tooltipClass" placement="top" [adaptivePosition]="false">
+								containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+								(click)="deleteUser(systemUser)">
 								<i class='bx bx-trash font-15'></i>
 							</button>
 						</div>
@@ -75,5 +77,22 @@
 	</div>
 </div>
 
-<!-- show system user details -->
+<!-- add & edit system user details -->
 <ng-template #systemUserForm></ng-template>
+
+<!-- delete system user -->
+<ng-template #deleteModal>
+	<div class="modal-header">
+		<div class="modal-title text-center font-15 weight-500">Delete System User</div>
+		<!-- <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+		<span aria-hidden="true" class="visually-hidden">&times;</span>
+	  </button> -->
+	</div>
+	<div class="modal-body">
+		<div class="text-center">Are you sure to delete this user?</div>
+	</div>
+	<div class="modal-footer">
+		<button class="cancel-button" (click)="modalRef?.hide()">No</button>
+		<button class="danger-button" (click)="confirmDelete()">Yes</button>
+	</div>
+</ng-template>

@@ -232,3 +232,16 @@ table {
     color: var(--danger-color) !important;
     background: var(--light-danger-color);
 }
+
+.modal-header {
+    justify-content: center !important;
+    border: none !important;
+}
+
+.modal-footer {
+    border: none !important;
+}
+
+.modal-body {
+    font-size: var(--font-12);
+}
