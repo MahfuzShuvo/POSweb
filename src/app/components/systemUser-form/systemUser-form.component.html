@@ -66,8 +66,8 @@
 						<input type="text" id="address" name="address" class="form-control" placeholder="Enter address"
 							[(ngModel)]="objSystemUser.Address" required #address="ngModel"
 							[ngClass]="{ 'is-invalid': userForm.submitted && address.errors }">
-							<div *ngIf="address.errors && (address.dirty || userForm.submitted) && address.invalid"
-							class="invalid-feedback">
+						<div *ngIf="address.errors && (address.dirty || userForm.submitted) && address.invalid"
+									class="invalid-feedback">
 							<div *ngIf="address.errors['required']">Address is required</div>
 						</div>
 					</div>
@@ -134,7 +134,7 @@
 			<div class="row">
 				<div class="col-md-6">
 					<div class="form-group">
-						<label for="selectRole" class="form-label">Role</label>
+						<label for="selectRole" class="form-label">Role <span class="txt-danger">*</span></label>
 						<select name="selectRole" id="selectRole" class="form-select" #roleId="ngModel" [(ngModel)]="objSystemUser.RoleID" required
 						[ngClass]="{ 'is-invalid': userForm.submitted && roleId.errors }">
 							<option value="1">Admin</option>

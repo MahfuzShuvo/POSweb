@@ -1,0 +1,85 @@
+<div class="button-wrapper">
+	<button type="button" class="theme-button font-11" (click)="openRoleModal()">Add Role</button>
+	<button type="button" class="secondary-theme-button font-11" (click)="openPermissionModal()">Add Permission</button>
+</div>
+<div class="role-permission-table mt-2">
+	<table>
+		<thead>
+			<tr>
+				<td>Permission</td>
+				<td *ngFor="let role of lstRole">{{role.RoleName}}</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let permission of lstPermission">
+				<td>{{permission.DisplayName}}</td>
+				<td *ngFor="let role of lstRole">
+					<div class="form-check p-0">
+						<input type="checkbox" name="checkRole" id="{{permission.PermissionName}}_{{role.RoleID}}" 
+							[checked]="haveAccess(permission.PermissionID, role.RoleID)" [disabled]="role.RoleID == 1"
+							(change)="changeAccess($event, permission.PermissionID, role.RoleID)">
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<!-- add and edit role modal -->
+<ng-template #roleFormModal>
+	<div class="modal-header">
+		<div class="modal-title text-center font-15 weight-500">Add Role</div>
+	</div>
+	<form autocomplete="off" #roleForm="ngForm" (ngSubmit)="roleForm.form.valid && saveRole()" novalidate>
+		<div class="modal-body">
+			<div class="form-group">
+				<label for="roleName" class="form-label">Role name <span class="txt-danger">*</span></label>
+				<input type="text" name="roleName" id="roleName" class="form-control" [(ngModel)]="objRole.RoleName"
+					required #roleName="ngModel" [ngClass]="{ 'is-invalid': roleForm.submitted && roleName.errors }">
+				<div *ngIf="roleName.errors && (roleName.dirty || roleForm.submitted) && roleName.invalid"
+					class="invalid-feedback">
+					<div *ngIf="roleName.errors['required']">Role name is required</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="cancel-button" (click)="closeModal()">Cancel</button>
+			<button type="submit" class="theme-button">Save</button>
+		</div>
+	</form>
+</ng-template>
+
+
+<!-- add and edit permission modal -->
+<ng-template #permissionFormModal>
+	<div class="modal-header">
+		<div class="modal-title text-center font-15 weight-500">Add Permission</div>
+	</div>
+	<form autocomplete="off" #permissionForm="ngForm" (ngSubmit)="permissionForm.form.valid && savePermission()" novalidate>
+		<div class="modal-body">
+			<div class="form-group">
+				<label for="displayName" class="form-label">Display name <span class="txt-danger">*</span></label>
+				<input type="text" name="displayName" id="displayName" class="form-control" [(ngModel)]="objPermission.DisplayName"
+				(input)="toSlugify(objPermission.DisplayName)"
+					required #displayName="ngModel" [ngClass]="{ 'is-invalid': permissionForm.submitted && displayName.errors }">
+				<div *ngIf="displayName.errors && (displayName.dirty || permissionForm.submitted) && displayName.invalid"
+					class="invalid-feedback">
+					<div *ngIf="displayName.errors['required']">Display name is required</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="permissionName" class="form-label">Permission name <span class="txt-danger">*</span></label>
+				<input type="text" name="permissionName" id="permissionName" class="form-control" [(ngModel)]="objPermission.PermissionName"
+					required #permissionName="ngModel" [ngClass]="{ 'is-invalid': permissionForm.submitted && permissionName.errors }">
+				<div *ngIf="permissionName.errors && (permissionName.dirty || permissionForm.submitted) && permissionName.invalid"
+					class="invalid-feedback">
+					<div *ngIf="permissionName.errors['required']">Permission name is required</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="cancel-button" (click)="closeModal()">Cancel</button>
+			<button type="submit" class="theme-button">Save</button>
+		</div>
+	</form>
+</ng-template>

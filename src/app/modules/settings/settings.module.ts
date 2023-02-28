@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { SettingsComponent } from './settings.component';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from 'src/app/shared.module';
-import { PermissionComponent } from './permission/permission.component';
+import { RolePermissionComponent } from './role-permission/role-permission.component';
 import { PaymentStatusComponent } from './payment-status/payment-status.component';
 
 const routes: Routes = [
@@ -17,7 +17,7 @@ const routes: Routes = [
 		children: [
 			{ path: 'system-user', component: SystemUserComponent },
 			{ path: 'accounts', component: AccountsComponent },
-			{ path: 'permission', component: PermissionComponent },
+			{ path: 'role-permission', component: RolePermissionComponent },
 			{ path: 'payment-status', component: PaymentStatusComponent }
 		]
 	},
@@ -32,7 +32,8 @@ const routes: Routes = [
 	declarations: [
 		SettingsComponent,
 		SystemUserComponent,
-		SystemUserFormComponent
+		SystemUserFormComponent,
+		RolePermissionComponent
 	]
 })
 export class SettingsModule { }
