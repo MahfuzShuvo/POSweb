@@ -137,9 +137,8 @@
 						<label for="selectRole" class="form-label">Role <span class="txt-danger">*</span></label>
 						<select name="selectRole" id="selectRole" class="form-select" #roleId="ngModel" [(ngModel)]="objSystemUser.RoleID" required
 						[ngClass]="{ 'is-invalid': userForm.submitted && roleId.errors }">
-							<option value="1">Admin</option>
-							<option value="2">Manager</option>
-							<option value="3">Staff</option>
+							<option [value]="0">Select role</option>
+							<option [value]="role.RoleID" *ngFor="let role of lstRole">{{role.RoleName}}</option>
 						</select>
 						<div *ngIf="userForm.submitted && roleId.errors" class="invalid-feedback">
 							<div *ngIf="roleId.errors['required']">Role is required</div>

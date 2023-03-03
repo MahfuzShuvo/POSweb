@@ -1,3 +1,5 @@
+import { RoleService } from './../../../services/role.service';
+import { Role } from './../../../models/role';
 import { ResponseStatus } from 'src/app/common/enums/appEnums';
 import { ResponseMessage } from 'src/app/models/DTO/responseMessage';
 import { MessageHelper } from 'src/app/common/helper/messageHelper';
@@ -25,16 +27,19 @@ export class SystemUserComponent implements OnInit {
 	objSystemUser: SystemUser = new SystemUser();
 	totalCount: number = 0;
 	modalRef?: BsModalRef;
+	lstRole: Role[] = [];
 
 	constructor(
 		private headerService: HeaderService,
 		private systemUserService: SystemUserService,
 		private messageHelper: MessageHelper,
-		private modalService: BsModalService
+		private modalService: BsModalService,
+		private roleService: RoleService
 	) { }
 
 	ngOnInit() {
 		Promise.resolve().then(() => this.headerService.setSubTitle('System User'));
+		this.getAllRole();
 		this.getAllSystemUser();
 	}
 
@@ -43,6 +48,7 @@ export class SystemUserComponent implements OnInit {
 		this.systemUserForm.clear();
 		// Create component.
 		const systemUserRef = this.systemUserForm.createComponent(SystemUserFormComponent);
+		systemUserRef.instance.lstRole = JSON.parse(JSON.stringify(this.lstRole));
 		if (data!.SystemUserID > 0) {
 			systemUserRef.instance.headerText = 'Edit System User';
 			systemUserRef.instance.buttonText = 'Update';
@@ -133,6 +139,26 @@ export class SystemUserComponent implements OnInit {
 			);
 		}
 		this.totalCount = this.lstSystemUser.length;
+	}
+
+	getAllRole() {
+		this.roleService.getAllRole()
+			.pipe(takeUntil(this.destroy))
+			.subscribe((response: ResponseMessage) => {
+				if (response.ResponseCode == ResponseStatus.success) {
+					this.lstRole = JSON.parse(JSON.stringify(response.ResponseObj))
+				} else {
+					this.messageHelper.showMessage(response.ResponseCode, response.Message);
+				}
+			})
+	}
+
+	getRoleName(roleID: number) {
+		var exist = this.lstRole.filter(x => x.RoleID == roleID)[0];
+		if (exist) {
+			return exist.RoleName;
+		}
+		return '-';
 	}
 
 	ngOnDestroy(): void {

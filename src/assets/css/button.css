@@ -3,6 +3,7 @@ button {
     outline: none !important;
     padding: 5px 15px !important;
     font-weight: var(--weight-500) !important;
+    font-size: var(--font-12) !important;
     line-height: normal !important;
     cursor: pointer !important;
     transition: all 0.3s ease;

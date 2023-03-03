@@ -166,11 +166,15 @@ input.form-control:-moz-placeholder {
 /* toggle slider switch start */
 .toggle {
     cursor: pointer;
-    display: inline-block;
+    /* display: inline-block; */
+    display: flex;
+    gap: var(--gap-10);
+    align-items: center;
 }
 
 .toggle__switch {
-    display: inline-block;
+    /* display: inline-block; */
+    display: block;
     background: var(--border-color);
     border-radius: 16px;
     width: 26px;
@@ -216,9 +220,9 @@ input.form-control:-moz-placeholder {
 }
 
 .toggle__label {
-    margin-left: 5px;
+    /* margin-left: 5px; */
     position: relative;
-    top: 1px;
+    top: 0;
     font-size: var(--font-12);
     font-weight: var(--weight-500);
 }

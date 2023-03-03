@@ -1,12 +1,3 @@
-button {
-    padding: 3px 20px !important;
-    font-size: 12px !important;
-    font-weight: 500 !important;
-    outline: none !important;
-    box-shadow: none !important;
-
-}
-
 h1,
 h2,
 h3,
@@ -42,44 +33,45 @@ a.theme-link:hover {
     text-decoration: underline;
 }
 
-table,
-tr td {
+table.gen-pos,
+table.gen-pos tr td {
     padding: 5px 10px;
 }
 
-thead tr td:not(:last-child) {
+table.gen-pos thead tr td:not(:last-child) {
     border-right: 1px solid var(--border-color);
 }
 
-tr td:not(:last-child) {
+table.gen-pos tr td:not(:last-child) {
     border-right: 1px solid var(--thead-color);
 }
 
-tr:not(:last-child) {
+table.gen-pos tr:not(:last-child) {
     border-bottom: 1px solid var(--thead-color);
 }
 
-tbody {
+table.gen-pos tbody {
     display: block;
     height: 100%;
     /* width: calc(100% - 7px); */
     overflow-y: overlay;
     /* position: relative; */
+    font-size: var(--font-12);
 }
 
-tbody tr {
+table.gen-pos tbody tr {
     height: 35px;
     font-weight: var(--weight-400);
 }
 
-thead,
-tbody tr {
+table.gen-pos thead,
+table.gen-pos tbody tr {
     display: table;
     width: 100%;
     table-layout: fixed;
 }
 
-thead {
+table.gen-pos thead {
     position: relative;
     /* width: calc(100% - 7px); */
     height: 30px;
@@ -91,7 +83,7 @@ thead {
     font-weight: var(--weight-700);
 }
 
-table {
+table.gen-pos {
     width: 100%;
 }
 

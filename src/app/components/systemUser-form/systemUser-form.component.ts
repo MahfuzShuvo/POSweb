@@ -1,3 +1,4 @@
+import { Role } from './../../models/role';
 import { MessageHelper } from './../../common/helper/messageHelper';
 import { ResponseStatus } from './../../common/enums/appEnums';
 import { ResponseMessage } from './../../models/DTO/responseMessage';
@@ -20,7 +21,8 @@ export class SystemUserFormComponent implements OnInit {
 	@Output() headerText: string = '';
 	newSystemUser: Subject<SystemUser> = new Subject<SystemUser>();
 	isPasswordShow: boolean = false;
-	objSystemUser: SystemUser = new SystemUser();
+	@Output() objSystemUser: SystemUser = new SystemUser();
+	@Output() lstRole: Role[] = [];
 
 	constructor(
 		private systemUserService: SystemUserService,
@@ -29,6 +31,14 @@ export class SystemUserFormComponent implements OnInit {
 	) { }
 
 	ngOnInit() {
+	}
+
+	getRoleName(roleID: number) {
+		var exist = this.lstRole.filter(x => x.RoleID == roleID)[0];
+		if (exist) {
+			return exist.RoleName;
+		}
+		return '-';
 	}
 
 	closeSidebar() {
@@ -50,18 +60,16 @@ export class SystemUserFormComponent implements OnInit {
 
 	saveSystemUser() {
 		this.dataService.isFormSubmitting.next(true);
-		if (this.objSystemUser) {
-			this.systemUserService.saveSystemUser(this.objSystemUser)
-				.pipe(takeUntil(this.destroy))
-				.subscribe((response: ResponseMessage) => {
-					if (response.ResponseCode == ResponseStatus.success) {
-						this.newSystemUser.next(response.ResponseObj);
+		this.systemUserService.saveSystemUser(this.objSystemUser)
+			.pipe(takeUntil(this.destroy))
+			.subscribe((response: ResponseMessage) => {
+				if (response.ResponseCode == ResponseStatus.success) {
+					this.newSystemUser.next(response.ResponseObj);
 
-						this.closeSidebar()
-					}
-					this.messageHelper.showMessage(response.ResponseCode, response.Message);
-				})
-		}
+					this.closeSidebar()
+				}
+				this.messageHelper.showMessage(response.ResponseCode, response.Message);
+			})
 	}
 
 	ngOnDestroy(): void {

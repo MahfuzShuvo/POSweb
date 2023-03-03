@@ -10,5 +10,5 @@ export class SystemUser extends BaseModel {
     State: string;
     Zip: string;
     Address: string;
-    RoleID!: number;
+    RoleID: number = 0;
 }
