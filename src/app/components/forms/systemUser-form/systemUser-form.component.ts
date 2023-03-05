@@ -1,10 +1,10 @@
-import { Role } from './../../models/role';
-import { MessageHelper } from './../../common/helper/messageHelper';
-import { ResponseStatus } from './../../common/enums/appEnums';
-import { ResponseMessage } from './../../models/DTO/responseMessage';
-import { DataService } from './../../common/service/data.service';
-import { SystemUserService } from './../../services/systemUser.service';
-import { SystemUser } from './../../models/systemUser';
+import { Role } from '../../../models/role';
+import { MessageHelper } from '../../../common/helper/messageHelper';
+import { ResponseStatus } from '../../../common/enums/appEnums';
+import { ResponseMessage } from '../../../models/DTO/responseMessage';
+import { DataService } from '../../../common/service/data.service';
+import { SystemUserService } from '../../../services/systemUser.service';
+import { SystemUser } from '../../../models/systemUser';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 

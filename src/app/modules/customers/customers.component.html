@@ -1,3 +1,103 @@
-<p>
-  customers works!
-</p>
+<div class="body-wrapper-card card">
+	<div class="supplier-body">
+		<div class="table-headings d-flex align-items-center justify-content-between">
+			<div class="table-search d-flex align-items-center gap-1">
+				<i class='bx bx-search-alt mt-1'></i>
+				<input type="text" class="form-control" name="searchCustomer" #searchText
+					placeholder="Search by name, phone, email etc ..."
+					(keyup)="searchCustomer(searchText.value)">
+			</div>
+			<!-- <div class="d-flex align-items-center gap-2">
+				<div class="filter-search role-filter">
+					<select name="roleFilter" id="roleFilter">
+						<option [value]="0">All</option>
+						<option [value]="role.RoleID" *ngFor="let role of lstRole">{{role.RoleName}}</option>
+					</select>
+				</div>
+				<div class="filter-search status-filter">
+					<select name="statusFilter" id="statusFilter">
+						<option [value]="0">All</option>
+						<option [value]="1">Active</option>
+						<option [value]="2">Inactive</option>
+					</select>
+				</div>
+			</div> -->
+			<button type="button" class="theme-button" (click)="createCustomer({})">+ Add New</button>
+		</div>
+		<div class="supplier-table mt-1">
+			<table class="gen-pos">
+				<thead>
+					<tr>
+						<td>Full Name</td>
+						<td>Phone & Email</td>
+						<td>Address</td>
+						<td class="w-8">City</td>
+						<td class="w-8">State</td>
+						<td class="w-8">Zip</td>
+						<td class="w-10">Status</td>
+						<td class="w-10"></td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let customer of lstCustomer">
+						<td>{{customer.CustomerName}}</td>
+						<td>
+							<div class="d-flex flex-column">
+								<span>{{customer.PhoneNumber}}</span>
+								<span class="txt-light">{{customer.Email}}</span>
+							</div>
+						</td>
+						<td>{{customer.Address}}</td>
+						<td class="w-8">{{customer.City}}</td>
+						<td class="w-8">{{customer.State}}</td>
+						<td class="w-8">{{customer.Zip}}</td>
+						<td class="w-10">
+							<div class="badge" [class.inactive-badge]="customer.Status == 2"
+								[class.active-badge]="customer.Status == 1">
+								{{customer.Status == 1 ? 'Active' : 'Inactive'}}
+							</div>
+						</td>
+						<td class="w-10">
+							<div class="d-flex align-items-center gap-3 justify-content-end">
+								<button type="button" class="action-button edit" tooltip="Edit"
+									containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+									(click)="createCustomer(customer)">
+									<i class='bx bxs-edit font-15'></i>
+								</button>
+								<button type="button" class="action-button delete" tooltip="Delete"
+									containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+									(click)="deleteCustomer(customer)">
+									<i class='bx bx-trash font-15'></i>
+								</button>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="table-row-count">
+				<span class="txt-light font-11">Total Row:</span>
+				{{totalCount}}
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- add & edit customer details -->
+<ng-template #customerForm></ng-template>
+
+<!-- delete customer -->
+<ng-template #deleteModal>
+	<div class="modal-header">
+		<div class="modal-title text-center font-15 weight-500">Delete Customer</div>
+		<!-- <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+		<span aria-hidden="true" class="visually-hidden">&times;</span>
+	  </button> -->
+	</div>
+	<div class="modal-body">
+		<div class="text-center txt-danger">Are you sure to delete this customer?</div>
+	</div>
+	<div class="modal-footer">
+		<button class="cancel-button" (click)="modalRef?.hide()">No</button>
+		<button class="danger-button" (click)="confirmDelete()">Yes</button>
+	</div>
+</ng-template>

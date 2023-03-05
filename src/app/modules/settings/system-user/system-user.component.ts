@@ -9,7 +9,7 @@ import { Component, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@an
 import { ActivatedRoute } from '@angular/router';
 import { HeaderService } from 'src/app/common/service/header.service';
 import { Subject, takeUntil } from 'rxjs';
-import { SystemUserFormComponent } from 'src/app/components/systemUser-form/systemUser-form.component';
+import { SystemUserFormComponent } from 'src/app/components/forms/systemUser-form/systemUser-form.component';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({

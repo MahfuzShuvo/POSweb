@@ -1,4 +1,4 @@
-import { SystemUserFormComponent } from './../../components/systemUser-form/systemUser-form.component';
+import { SystemUserFormComponent } from '../../components/forms/systemUser-form/systemUser-form.component';
 import { AccountsComponent } from './accounts/accounts.component';
 import { SystemUserComponent } from './system-user/system-user.component';
 import { NgModule } from '@angular/core';

@@ -1,30 +1,30 @@
-import { MessageHelper } from 'src/app/common/helper/messageHelper';
-import { SupplierService } from './../../services/supplier.service';
-import { DataService } from './../../common/service/data.service';
-import { Supplier } from './../../models/supplier';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { ResponseStatus } from 'src/app/common/enums/appEnums';
+import { MessageHelper } from 'src/app/common/helper/messageHelper';
+import { DataService } from 'src/app/common/service/data.service';
+import { Customer } from 'src/app/models/customer';
 import { ResponseMessage } from 'src/app/models/DTO/responseMessage';
+import { CustomerService } from 'src/app/services/customer.service';
 
 @Component({
-	selector: 'app-supplier-form',
-	templateUrl: './supplier-form.component.html',
-	styleUrls: ['./supplier-form.component.css']
+	selector: 'app-customer-form',
+	templateUrl: './customer-form.component.html',
+	styleUrls: ['./customer-form.component.css']
 })
-export class SupplierFormComponent implements OnInit {
+export class CustomerFormComponent implements OnInit {
 
 	private destroy: Subject<void> = new Subject<void>();
 	@Output() isShow: EventEmitter<boolean> = new EventEmitter<boolean>();
 	@Output() buttonText: string = '';
 	@Output() headerText: string = '';
-	newSupplier: Subject<Supplier> = new Subject<Supplier>();
+	newCustomer: Subject<Customer> = new Subject<Customer>();
 	isPasswordShow: boolean = false;
-	@Output() objSupplier: Supplier = new Supplier();
+	@Output() objCustomer: Customer = new Customer();
 
 	constructor(
 		public dataService: DataService,
-		private supplierService: SupplierService,
+		private customerService: CustomerService,
 		private messageHelper: MessageHelper
 	) { }
 
@@ -32,7 +32,7 @@ export class SupplierFormComponent implements OnInit {
 	}
 
 	toggleStatus(event: any) {
-		this.objSupplier.Status = (event.target.checked) ? 1 : 2;
+		this.objCustomer.Status = (event.target.checked) ? 1 : 2;
 	}
 
 	//Phone number formatting 
@@ -44,17 +44,17 @@ export class SupplierFormComponent implements OnInit {
 	}
 
 	closeSidebar() {
-		this.objSupplier = new Supplier();
+		this.objCustomer = new Customer();
 		this.isShow.emit(false);
 	}
 
-	saveSupplier() {
+	saveCustomer() {
 		this.dataService.isFormSubmitting.next(true);
-		this.supplierService.saveSupplier(this.objSupplier)
+		this.customerService.saveCustomer(this.objCustomer)
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {
 				if (response.ResponseCode == ResponseStatus.success) {
-					this.newSupplier.next(response.ResponseObj);
+					this.newCustomer.next(response.ResponseObj);
 
 					this.closeSidebar()
 				}
@@ -66,4 +66,5 @@ export class SupplierFormComponent implements OnInit {
 		this.destroy.next();
 		this.destroy.unsubscribe();
 	}
+
 }

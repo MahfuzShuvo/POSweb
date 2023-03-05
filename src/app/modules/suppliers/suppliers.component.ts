@@ -1,5 +1,5 @@
 import { SupplierService } from './../../services/supplier.service';
-import { SupplierFormComponent } from 'src/app/components/supplier-form/supplier-form.component';
+import { SupplierFormComponent } from 'src/app/components/forms/supplier-form/supplier-form.component';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Supplier } from './../../models/supplier';
 import { Component, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
@@ -100,7 +100,18 @@ export class SuppliersComponent implements OnInit {
 	}
 
 	searchSupplier(searchText: string) {
+		var str = searchText!.replace(/\s/g, '').toLowerCase();		// remove spaces
 
+		if (str == '') {
+			this.lstSupplier = JSON.parse(JSON.stringify(this.lstAllSupplier));
+		} else {
+			this.lstSupplier = this.lstAllSupplier.filter(x =>
+				x.SupplierName.replace(/\s/g, '').toLowerCase().includes(str)
+				|| x.PhoneNumber.replace(/\s/g, '').toLowerCase().includes(str)
+				|| x.Email.replace(/\s/g, '').toLowerCase().includes(str)
+			);
+		}
+		this.totalCount = this.lstSupplier.length;
 	}
 
 	confirmDelete() {

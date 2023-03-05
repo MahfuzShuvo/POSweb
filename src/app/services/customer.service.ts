@@ -5,24 +5,24 @@ import { HttpHelper } from '../common/helper/httpHelper';
 @Injectable({
 	providedIn: 'root'
 })
-export class SupplierService {
+export class CustomerService {
 
 	constructor(
 		private httpHelper: HttpHelper
 	) { }
 
-	getAllSupplier(): Observable<any> {
-		const url = 'api/Supplier/GetAllSupplier';
+	getAllCustomer(): Observable<any> {
+		const url = 'api/Customer/GetAllCustomer';
 		return this.httpHelper.postHelper(url);
 	}
 
-	saveSupplier(obj: any): Observable<any> {
-		const url = 'api/Supplier/SaveSupplier';
+	saveCustomer(obj: any): Observable<any> {
+		const url = 'api/Customer/SaveCustomer';
 		return this.httpHelper.postHelper(url, obj);
 	}
 
-	deleteSupplier(obj: any): Observable<any> {
-		const url = 'api/Supplier/DeleteSupplier';
+	deleteCustomer(obj: any): Observable<any> {
+		const url = 'api/Customer/DeleteCustomer';
 		return this.httpHelper.postHelper(url, obj);
 	}
 }
