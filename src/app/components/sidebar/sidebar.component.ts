@@ -30,7 +30,7 @@ export class SidebarComponent implements OnInit {
 		if (this.localStoreService.getData('Token') != null) {
 			if (this.localStoreService.getData('User')) {
 				this.objSystemUser = this.localStoreService.getData('User');
-				var matches = this.objSystemUser.FullName.match(/\b(\w)/g);
+				var matches = this.objSystemUser ? this.objSystemUser!.FullName!.match(/\b(\w)/g) : '';
 
 				this.profileImhText = matches![0] + matches![1];
 			}

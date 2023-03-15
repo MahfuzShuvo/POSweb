@@ -1,3 +1,142 @@
-<p>
-  brand works!
-</p>
+<div class="body-wrapper-card card">
+	<div class="supplier-body">
+		<div class="table-headings d-flex align-items-center justify-content-between">
+			<div class="table-search d-flex align-items-center gap-1">
+				<i class='bx bx-search-alt mt-1'></i>
+				<input type="text" class="form-control" name="searchBrand" #searchText placeholder="Search by name ..."
+					(keyup)="searchBrand(searchText.value)">
+			</div>
+			<!-- <div class="d-flex align-items-center gap-2">
+				<div class="filter-search role-filter">
+					<select name="roleFilter" id="roleFilter">
+						<option [value]="0">All</option>
+						<option [value]="role.RoleID" *ngFor="let role of lstRole">{{role.RoleName}}</option>
+					</select>
+				</div>
+				<div class="filter-search status-filter">
+					<select name="statusFilter" id="statusFilter">
+						<option [value]="0">All</option>
+						<option [value]="1">Active</option>
+						<option [value]="2">Inactive</option>
+					</select>
+				</div>
+			</div> -->
+			<button type="button" class="theme-button" (click)="createBrand()">+ Add New</button>
+		</div>
+		<div class="supplier-table mt-1">
+			<table class="gen-pos">
+				<thead>
+					<tr>
+						<td class="w-5">SL.</td>
+						<td>Name</td>
+						<td>Desciption</td>
+						<td>Logo</td>
+						<td class="w-10">Status</td>
+						<td class="w-10"></td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let brand of lstBrand; let i = index">
+						<td class="w-5">{{i+1}}</td>
+						<td>{{brand.BrandName}}</td>
+						<td>{{brand.Description}}</td>
+						<td>
+							<img class="brandLogo" *ngIf="brand.Logo != ''" [src]="brand.Logo | SafeResourceUrl" alt="">
+							<span *ngIf="brand.Logo == ''">-</span>
+						</td>
+						<td class="w-10">
+							<div class="badge" [class.inactive-badge]="brand.Status == 2"
+								[class.active-badge]="brand.Status == 1">
+								{{brand.Status == 1 ? 'Active' : 'Inactive'}}
+							</div>
+						</td>
+						<td class="w-10">
+							<div class="d-flex align-items-center gap-3 justify-content-end">
+								<button type="button" class="action-button edit" tooltip="Edit"
+									containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+									(click)="editBrand(brand)">
+									<i class='bx bxs-edit font-15'></i>
+								</button>
+								<button type="button" class="action-button delete" tooltip="Delete"
+									containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+									(click)="deleteBrand(brand)">
+									<i class='bx bx-trash font-15'></i>
+								</button>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="table-row-count">
+				<span class="txt-light font-11">Total Row:</span>
+				{{totalCount}}
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- add & edit brand -->
+<ng-template #brandFormModal>
+	<div class="modal-header">
+		<div class="modal-title text-center font-15 weight-500">{{modalTitle}} Brand</div>
+		<!-- <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+		<span aria-hidden="true" class="visually-hidden">&times;</span>
+	  </button> -->
+	</div>
+	<form autocomplete="off" #brandForm="ngForm" (ngSubmit)="brandForm.form.valid && saveBrand()" novalidate>
+		<div class="modal-body">
+			<div class="form-group">
+				<label for="brandName" class="form-label">Name <span class="txt-danger">*</span></label>
+				<input type="text" name="brandName" id="brandName" class="form-control" [(ngModel)]="objBrand.BrandName"
+					placeholder="Enter brand name" required #brandName="ngModel"
+					[ngClass]="{ 'is-invalid': brandForm.submitted && brandName.errors }">
+				<div *ngIf="brandName.errors && (brandName.dirty || brandForm.submitted) && brandName.invalid"
+					class="invalid-feedback">
+					<div *ngIf="brandName.errors['required']">Name is required</div>
+				</div>
+			</div>
+			<div class="form-group mt-2">
+				<label for="brandDesc" class="form-label">Description</label>
+				<textarea type="text" name="brandDesc" id="brandDesc" class="form-control"
+					[(ngModel)]="objBrand.Description" #brandDesc="ngModel"
+					placeholder="Enter brand description"></textarea>
+			</div>
+			<label for="brandLogo" class="form-file-label mt-3">
+				<input type="file" hidden name="brandLogo" id="brandLogo" accept="image/jpg, image/jpeg, image/png"
+					(change)="uploadFile($event)">
+				<div *ngIf="!objBrand.LogoAttachment.Content" class="form-file-ico">
+					<i class='bx bx-cloud-upload font-35 weight-300'></i>
+					<span>choose file to upload</span>
+				</div>
+				<div *ngIf="objBrand.LogoAttachment.Content" class="uploaded-img-show">
+					<img [src]="objBrand.LogoAttachment.Content | SafeResourceUrl" alt="">
+					<span class="font-11 weight-500">{{objBrand.LogoAttachment.Name}}</span>
+				</div>
+				<button *ngIf="objBrand.LogoAttachment.Content" class="action-button upload-clear" type="button" (click)="clearUpload()">
+					<i class='bx bx-x font-15'></i>
+				</button>
+			</label>
+		</div>
+		<div class="modal-footer">
+			<button class="cancel-button" (click)="modalRef?.hide()">Cancel</button>
+			<button type="submit" class="theme-button">{{buttonText}}</button>
+		</div>
+	</form>
+</ng-template>
+
+<!-- delete brand -->
+<ng-template #deleteModal>
+	<div class="modal-header">
+		<div class="modal-title text-center font-15 weight-500">Delete Brand</div>
+		<!-- <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+		<span aria-hidden="true" class="visually-hidden">&times;</span>
+	  </button> -->
+	</div>
+	<div class="modal-body">
+		<div class="text-center txt-danger">Are you sure to delete this brand?</div>
+	</div>
+	<div class="modal-footer">
+		<button class="cancel-button" (click)="modalRef?.hide()">No</button>
+		<button class="danger-button" (click)="confirmDelete()">Yes</button>
+	</div>
+</ng-template>
