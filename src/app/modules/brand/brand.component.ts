@@ -1,3 +1,4 @@
+import { AppConstant } from './../../common/constants/appConstant';
 import { DataService } from './../../common/service/data.service';
 import { MessageHelper } from './../../common/helper/messageHelper';
 import { BrandService } from './../../services/brand.service';
@@ -77,6 +78,9 @@ export class BrandComponent implements OnInit {
 		this.modalTitle = 'Add';
 		this.buttonText = 'Save';
 
+		this.uploadedImageUrl = '';
+		this.objBrand = new Brand();
+
 		this.modalRef = this.modalService.show(this.brandFormModal);
 	}
 
@@ -84,14 +88,20 @@ export class BrandComponent implements OnInit {
 		this.modalTitle = 'Edit';
 		this.buttonText = 'Update';
 
+		this.uploadedImageUrl = '';
 		this.objBrand = new Brand();
 		this.objBrand = JSON.parse(JSON.stringify(brand));
+		this.uploadedImageUrl = this.objBrand.Logo;
 
 		this.modalRef = this.modalService.show(this.brandFormModal);
 	}
 
 	saveBrand() {
 		this.dataService.isFormSubmitting.next(true);
+		if (this.objBrand.Logo?.includes(AppConstant.FILE_PATH)) {
+			this.objBrand.Logo = this.objBrand.Logo.replace(AppConstant.FILE_PATH, '');
+		}
+
 		this.brandService.saveBrand(this.objBrand)
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {
@@ -150,11 +160,18 @@ export class BrandComponent implements OnInit {
 			fileName = file.name.split(".")[0];
 			fileExtension = file.name.split(".")[1];
 		}
+
+		if (fileExtension != 'png' && fileExtension != 'jpeg' && fileExtension != 'jpg') {
+			this.messageHelper.showMessage(ResponseStatus.warning, "This type of file can't upload. Try png, jpeg or jpg file")
+			return;
+		}
+
 		reader.readAsDataURL(file);
 		this.objBrand.LogoAttachment.Name = fileName;
 		this.objBrand.LogoAttachment.Extension = fileExtension;
 		reader.onload = () => {
 			this.objBrand.LogoAttachment.Content = reader.result as string;
+			this.uploadedImageUrl = this.objBrand.LogoAttachment.Content ?? '';
 		};
 	}
 

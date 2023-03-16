@@ -104,21 +104,21 @@
 			<label for="brandLogo" class="form-file-label mt-3">
 				<input type="file" hidden name="brandLogo" id="brandLogo" accept="image/jpg, image/jpeg, image/png"
 					(change)="uploadFile($event)">
-				<div *ngIf="!objBrand.LogoAttachment.Content" class="form-file-ico">
+				<div *ngIf="uploadedImageUrl == ''" class="form-file-ico">
 					<i class='bx bx-cloud-upload font-35 weight-300'></i>
 					<span>choose file to upload</span>
 				</div>
-				<div *ngIf="objBrand.LogoAttachment.Content" class="uploaded-img-show">
-					<img [src]="objBrand.LogoAttachment.Content | SafeResourceUrl" alt="">
-					<span class="font-11 weight-500">{{objBrand.LogoAttachment.Name}}</span>
+				<div *ngIf="uploadedImageUrl != ''" class="uploaded-img-show">
+					<img [src]="uploadedImageUrl | SafeResourceUrl" alt="">
+					<!-- <span class="font-11 weight-500">{{objBrand.LogoAttachment.Name}}</span> -->
 				</div>
-				<button *ngIf="objBrand.LogoAttachment.Content" class="action-button upload-clear" type="button" (click)="clearUpload()">
+				<button *ngIf="uploadedImageUrl != ''" class="action-button upload-clear" type="button" (click)="clearUpload()">
 					<i class='bx bx-x font-15'></i>
 				</button>
 			</label>
 		</div>
 		<div class="modal-footer">
-			<button class="cancel-button" (click)="modalRef?.hide()">Cancel</button>
+			<button type="button" class="cancel-button" (click)="modalRef?.hide()">Cancel</button>
 			<button type="submit" class="theme-button">{{buttonText}}</button>
 		</div>
 	</form>
