@@ -116,6 +116,21 @@
 					<i class='bx bx-x font-15'></i>
 				</button>
 			</label>
+			<div class="row mt-3">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label class="toggle">
+							<input class="toggle__checkbox" type="checkbox" (change)="toggleStatus($event)"
+								[checked]="objBrand.Status == 1">
+							<span class="toggle__switch"></span>
+							<span class="toggle__label">{{(objBrand.Status == 1) ? 'Active' : 'Inactive'}}</span>
+						</label>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group"></div>
+				</div>
+			</div>
 		</div>
 		<div class="modal-footer">
 			<button type="button" class="cancel-button" (click)="modalRef?.hide()">Cancel</button>
@@ -136,7 +151,7 @@
 		<div class="text-center txt-danger">Are you sure to delete this brand?</div>
 	</div>
 	<div class="modal-footer">
-		<button class="cancel-button" (click)="modalRef?.hide()">No</button>
-		<button class="danger-button" (click)="confirmDelete()">Yes</button>
+		<button type="button" class="cancel-button" (click)="modalRef?.hide()">No</button>
+		<button type="button" class="danger-button" (click)="confirmDelete()">Yes</button>
 	</div>
 </ng-template>

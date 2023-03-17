@@ -48,6 +48,10 @@ export class BrandComponent implements OnInit {
 		this.getAllBrand();
 	}
 
+	toggleStatus(event: any) {
+		this.objBrand.Status = (event.target.checked) ? 1 : 2;
+	}
+
 	getAllBrand() {
 		this.brandService.getAllBrand()
 			.pipe(takeUntil(this.destroy))
