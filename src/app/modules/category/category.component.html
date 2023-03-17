@@ -1,3 +1,129 @@
-<p>
-  category works!
-</p>
+<div class="body-wrapper-card card">
+	<div class="category-body">
+		<div class="table-headings d-flex align-items-center justify-content-between">
+			<div class="table-search d-flex align-items-center gap-1">
+				<i class='bx bx-search-alt mt-1'></i>
+				<input type="text" class="form-control" name="searchCategory" #searchText placeholder="Search by name ..."
+					(keyup)="searchCategory(searchText.value)">
+			</div>
+			<!-- <div class="d-flex align-items-center gap-2">
+				<div class="filter-search role-filter">
+					<select name="roleFilter" id="roleFilter">
+						<option [value]="0">All</option>
+						<option [value]="role.RoleID" *ngFor="let role of lstRole">{{role.RoleName}}</option>
+					</select>
+				</div>
+				<div class="filter-search status-filter">
+					<select name="statusFilter" id="statusFilter">
+						<option [value]="0">All</option>
+						<option [value]="1">Active</option>
+						<option [value]="2">Inactive</option>
+					</select>
+				</div>
+			</div> -->
+			<button type="button" class="theme-button" (click)="createCategory()">+ Add New</button>
+		</div>
+		<div class="category-table mt-1">
+			<table class="gen-pos">
+				<thead>
+					<tr>
+						<td class="w-5">SL.</td>
+						<td>Name</td>
+						<td class="w-10">Status</td>
+						<td class="w-10"></td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let category of lstCategory; let i = index">
+						<td class="w-5">{{i+1}}</td>
+						<td>{{category.CategoryName}}</td>
+						<td class="w-10">
+							<div class="badge" [class.inactive-badge]="category.Status == 2"
+								[class.active-badge]="category.Status == 1">
+								{{category.Status == 1 ? 'Active' : 'Inactive'}}
+							</div>
+						</td>
+						<td class="w-10">
+							<div class="d-flex align-items-center gap-3 justify-content-end">
+								<button type="button" class="action-button edit" tooltip="Edit"
+									containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+									(click)="editCategory(category)">
+									<i class='bx bxs-edit font-15'></i>
+								</button>
+								<button type="button" class="action-button delete" tooltip="Delete"
+									containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+									(click)="deleteCategory(category)">
+									<i class='bx bx-trash font-15'></i>
+								</button>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="table-row-count">
+				<span class="txt-light font-11">Total Row:</span>
+				{{totalCount}}
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- add & edit category -->
+<ng-template #categoryFormModal>
+	<div class="modal-header">
+		<div class="modal-title text-center font-15 weight-500">{{modalTitle}} Category</div>
+		<!-- <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+		<span aria-hidden="true" class="visually-hidden">&times;</span>
+	  </button> -->
+	</div>
+	<form autocomplete="off" #categoryForm="ngForm" (ngSubmit)="categoryForm.form.valid && saveCategory()" novalidate>
+		<div class="modal-body">
+			<div class="form-group">
+				<label for="categoryName" class="form-label">Name <span class="txt-danger">*</span></label>
+				<input type="text" name="categoryName" id="categoryName" class="form-control" [(ngModel)]="objCategory.CategoryName"
+					placeholder="Enter category name" required #categoryName="ngModel"
+					[ngClass]="{ 'is-invalid': categoryForm.submitted && categoryName.errors }">
+				<div *ngIf="categoryName.errors && (categoryName.dirty || categoryForm.submitted) && categoryName.invalid"
+					class="invalid-feedback">
+					<div *ngIf="categoryName.errors['required']">Name is required</div>
+				</div>
+			</div>
+			<div class="row mt-3">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label class="toggle">
+							<input class="toggle__checkbox" type="checkbox" (change)="toggleStatus($event)"
+								[checked]="objCategory.Status == 1">
+							<span class="toggle__switch"></span>
+							<span class="toggle__label">{{(objCategory.Status == 1) ? 'Active' : 'Inactive'}}</span>
+						</label>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group"></div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="cancel-button" (click)="modalRef?.hide()">Cancel</button>
+			<button type="submit" class="theme-button">{{buttonText}}</button>
+		</div>
+	</form>
+</ng-template>
+
+<!-- delete category -->
+<ng-template #deleteModal>
+	<div class="modal-header">
+		<div class="modal-title text-center font-15 weight-500">Delete Category</div>
+		<!-- <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+		<span aria-hidden="true" class="visually-hidden">&times;</span>
+	  </button> -->
+	</div>
+	<div class="modal-body">
+		<div class="text-center txt-danger">Are you sure to delete this category?</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="cancel-button" (click)="modalRef?.hide()">No</button>
+		<button type="button" class="danger-button" (click)="confirmDelete()">Yes</button>
+	</div>
+</ng-template>

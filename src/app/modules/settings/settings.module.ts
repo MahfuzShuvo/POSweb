@@ -33,7 +33,8 @@ const routes: Routes = [
 		SettingsComponent,
 		SystemUserComponent,
 		SystemUserFormComponent,
-		RolePermissionComponent
+		RolePermissionComponent,
+		AccountsComponent
 	]
 })
 export class SettingsModule { }

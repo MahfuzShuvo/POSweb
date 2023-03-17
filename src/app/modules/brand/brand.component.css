@@ -1,9 +1,9 @@
-.supplier-body {
+.brand-body {
     padding: 10px 20px;
     padding-bottom: 0;
 }
 
-.supplier-table table tbody {
+.brand-table table tbody {
     height: calc(100vh - 180px);
 }
 
