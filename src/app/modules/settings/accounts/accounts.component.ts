@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Subject, takeUntil } from 'rxjs';
 import { ResponseStatus } from 'src/app/common/enums/appEnums';
@@ -7,6 +7,7 @@ import { DataService } from 'src/app/common/service/data.service';
 import { HeaderService } from 'src/app/common/service/header.service';
 import { Account } from 'src/app/models/account';
 import { ResponseMessage } from 'src/app/models/DTO/responseMessage';
+import { VMGetAccountBalanceExpense } from 'src/app/models/VM/vmGetAccountBalanceExpense';
 import { AccountService } from 'src/app/services/account.service';
 
 @Component({
@@ -19,8 +20,9 @@ export class AccountsComponent implements OnInit {
 	private destroy: Subject<void> = new Subject<void>();
 	@ViewChild('accountFormModal', { read: TemplateRef }) accountFormModal: TemplateRef<any>;
 	@ViewChild('deleteModal', { read: TemplateRef }) deleteModal: TemplateRef<any>;
-	lstAccount: Account[] = [];
-	lstAllAccount: Account[] = [];
+	@ViewChild('balanceModal', { read: TemplateRef }) balanceModal: TemplateRef<any>;
+	lstAccount: VMGetAccountBalanceExpense[] = [];
+	lstAllAccount: VMGetAccountBalanceExpense[] = [];
 	objAccount: Account = new Account();
 	totalCount: number = 0;
 	modalRef?: BsModalRef;
@@ -79,12 +81,12 @@ export class AccountsComponent implements OnInit {
 		this.modalRef = this.modalService.show(this.accountFormModal);
 	}
 
-	editAccount(brand: Account) {
+	editAccount(account: Account) {
 		this.modalTitle = 'Edit';
 		this.buttonText = 'Update';
 
 		this.objAccount = new Account();
-		this.objAccount = JSON.parse(JSON.stringify(brand));
+		this.objAccount = JSON.parse(JSON.stringify(account));
 		this.modalRef = this.modalService.show(this.accountFormModal);
 	}
 
@@ -123,9 +125,9 @@ export class AccountsComponent implements OnInit {
 			})
 	}
 
-	deleteAccount(brand: Account) {
+	deleteAccount(account: Account) {
 		this.objAccount = new Account();
-		this.objAccount = JSON.parse(JSON.stringify(brand));
+		this.objAccount = JSON.parse(JSON.stringify(account));
 
 		this.modalRef = this.modalService.show(this.deleteModal);
 	}
@@ -143,6 +145,37 @@ export class AccountsComponent implements OnInit {
 							this.objAccount = new Account();
 							this.modalRef?.hide()
 						}
+					}
+					this.messageHelper.showMessage(response.ResponseCode, response.Message);
+				})
+		}
+	}
+
+	balanceModalOpen(account: Account) {
+		this.objAccount = new Account();
+		this.objAccount = JSON.parse(JSON.stringify(account));
+
+		this.modalRef = this.modalService.show(this.balanceModal,);
+
+	}
+
+	balanceEntry(balance: any) {
+		if (balance > 0) {
+			this.objAccount.Balance = balance;
+		}
+	}
+
+	addBalance() {
+		if (this.objAccount.Balance > 0) {
+			this.dataService.isFormSubmitting.next(true);
+			this.accountService.addBalance(this.objAccount)
+				.pipe(takeUntil(this.destroy))
+				.subscribe((response: ResponseMessage) => {
+					if (response.ResponseCode == ResponseStatus.success) {
+
+						this.objAccount = new Account();
+						this.modalRef?.hide();
+						this.getAllAccount();
 					}
 					this.messageHelper.showMessage(response.ResponseCode, response.Message);
 				})

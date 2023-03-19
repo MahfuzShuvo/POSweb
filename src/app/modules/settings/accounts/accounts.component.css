@@ -1,10 +1,5 @@
-.account-body {
-    padding: 10px 20px;
-    padding-bottom: 0;
-}
-
 .account-table table tbody {
-    height: calc(100vh - 180px);
+    height: calc(100vh - 210px);
 }
 
 .table-row-count {

@@ -1,10 +1,9 @@
-<div class="body-wrapper-card card">
-	<div class="account-body">
+<div class="account-body">
 		<div class="table-headings d-flex align-items-center justify-content-between">
 			<div class="table-search d-flex align-items-center gap-1">
 				<i class='bx bx-search-alt mt-1'></i>
-				<input type="text" class="form-control" name="searchAccount" #searchText placeholder="Search by name ..."
-					(keyup)="searchAccount(searchText.value)">
+				<input type="text" class="form-control" name="searchAccount" #searchText
+					placeholder="Search by name ..." (keyup)="searchAccount(searchText.value)">
 			</div>
 			<!-- <div class="d-flex align-items-center gap-2">
 				<div class="filter-search role-filter">
@@ -28,29 +27,43 @@
 				<thead>
 					<tr>
 						<td class="w-5">SL.</td>
-						<td>Account Title</td>
+						<td class="w-15">Account Title</td>
 						<td>Account Number</td>
-						<td>Balance</td>
+						<td class="w-10">Balance</td>
+						<td class="w-10">Expense</td>
+						<td class="w-10">Remaining</td>
 						<td>Description</td>
-						<td class="w-10">Status</td>
-						<td class="w-10"></td>
+						<td class="w-8">Status</td>
+						<td class="w-20"></td>
 					</tr>
 				</thead>
 				<tbody>
 					<tr *ngFor="let account of lstAccount; let i = index">
 						<td class="w-5">{{i+1}}</td>
-						<td>{{account.AccountTitle}}</td>
-						<td>{{(account.AccountNumber && account.AccountNumber != '') ? account.AccountNumber : '-'}}</td>
-						<td>{{account.Balance}}</td>
-						<td>{{(account.Description && account.Description != '') ? account.Description : '-'}}</td>
+						<td class="w-15">{{account.AccountTitle}}</td>
+						<td>{{(account.AccountNumber && account.AccountNumber != '') ? account.AccountNumber : '-'}}
+						</td>
+						<td class="w-10">{{account.Balance | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</td>
 						<td class="w-10">
+							<span [class.txt-danger]="account.Expense > 0">{{(account.Expense > 0) ? (account.Expense | currency:'BDT':'symbol':'1.2-2':'bn-BD') : '-'}}</span>
+						</td>
+						<td class="w-10">
+							<span class="txt-success">{{account.CurrentBalance | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</span>
+						</td>
+						<td>{{(account.Description && account.Description != '') ? account.Description : '-'}}</td>
+						<td class="w-8">
 							<div class="badge" [class.inactive-badge]="account.Status == 2"
 								[class.active-badge]="account.Status == 1">
 								{{account.Status == 1 ? 'Active' : 'Inactive'}}
 							</div>
 						</td>
-						<td class="w-10">
-							<div class="d-flex align-items-center gap-3 justify-content-end">
+						<td class="w-20">
+							<div class="d-flex align-items-center gap-2 justify-content-end">
+								<button *ngIf="account.Status == 1" type="button" class="action-button addBalance" tooltip="Add Balance"
+									containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+									(click)="balanceModalOpen(account)">
+									<i class='bx bx-wallet font-15'></i>
+								</button>
 								<button type="button" class="action-button edit" tooltip="Edit"
 									containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
 									(click)="editAccount(account)">
@@ -71,7 +84,6 @@
 				{{totalCount}}
 			</div>
 		</div>
-	</div>
 </div>
 
 <!-- add & edit account -->
@@ -86,9 +98,9 @@
 		<div class="modal-body">
 			<div class="form-group">
 				<label for="accountTitle" class="form-label">Account Title <span class="txt-danger">*</span></label>
-				<input type="text" name="accountTitle" id="accountTitle" class="form-control" [(ngModel)]="objAccount.AccountTitle"
-					placeholder="Enter account title" required #accountTitle="ngModel"
-					[ngClass]="{ 'is-invalid': accountForm.submitted && accountTitle.errors }">
+				<input type="text" name="accountTitle" id="accountTitle" class="form-control"
+					[(ngModel)]="objAccount.AccountTitle" placeholder="Enter account title" required
+					#accountTitle="ngModel" [ngClass]="{ 'is-invalid': accountForm.submitted && accountTitle.errors }">
 				<div *ngIf="accountTitle.errors && (accountTitle.dirty || accountForm.submitted) && accountTitle.invalid"
 					class="invalid-feedback">
 					<div *ngIf="accountTitle.errors['required']">Account title is required</div>
@@ -96,14 +108,15 @@
 			</div>
 			<div class="form-group mt-2">
 				<label for="accountNumber" class="form-label">Account Number</label>
-				<input type="text" name="accountNumber" id="accountNumber" class="form-control" [(ngModel)]="objAccount.AccountNumber"
-					placeholder="Enter account number" [minlength]="11" [maxlength]="20" (input)="numbersOnlyValidator($event)">
+				<input type="text" name="accountNumber" id="accountNumber" class="form-control"
+					[(ngModel)]="objAccount.AccountNumber" placeholder="Enter account number" [minlength]="11"
+					[maxlength]="20" (input)="numbersOnlyValidator($event)">
 			</div>
-			<div class="form-group mt-2">
+			<!-- <div class="form-group mt-2">
 				<label for="accounBalance" class="form-label">Balance</label>
 				<input type="text" name="accounBalance" id="accounBalance" class="form-control" [(ngModel)]="objAccount.Balance"
 					placeholder="Enter account balance" (input)="numbersOnlyValidator($event); emptyCheck($event)">
-			</div>
+			</div> -->
 			<div class="form-group mt-2">
 				<label for="accountDesc" class="form-label">Description</label>
 				<textarea type="text" name="accountDesc" id="accountDesc" class="form-control"
@@ -127,7 +140,8 @@
 		</div>
 		<div class="modal-footer">
 			<button type="button" class="cancel-button" (click)="modalRef?.hide()">Cancel</button>
-			<button type="submit" class="theme-button">{{buttonText}}</button>
+			<button type="submit" [disabled]="dataService.isFormSubmitting | async"
+				class="theme-button">{{buttonText}}</button>
 		</div>
 	</form>
 </ng-template>
@@ -147,4 +161,28 @@
 		<button type="button" class="cancel-button" (click)="modalRef?.hide()">No</button>
 		<button type="button" class="danger-button" (click)="confirmDelete()">Yes</button>
 	</div>
+</ng-template>
+
+<!-- add balance -->
+<ng-template #balanceModal>
+	<div class="modal-header">
+		<div class="modal-title text-center font-15 weight-500">Add Balance</div>
+		<!-- <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+		<span aria-hidden="true" class="visually-hidden">&times;</span>
+	  </button> -->
+	</div>
+	<form autocomplete="off" #addBalanceForm="ngForm" (ngSubmit)="addBalanceForm.form.valid && addBalance()">
+
+		<div class="modal-body">
+			<div class="form-group mt-2">
+				<label for="accounBalance" class="form-label">Balance</label>
+				<input type="number" name="accounBalance" id="accounBalance" class="form-control" placeholder="00.00"
+					[value]="0" (input)="balanceEntry(accountBalance.value)" required #accountBalance>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="cancel-button" (click)="modalRef?.hide()">Cancel</button>
+			<button type="submit" [disabled]="(dataService.isFormSubmitting | async) || (accountBalance.valueAsNumber == 0 || accountBalance.value == '')" class="success-button">Add</button>
+		</div>
+	</form>
 </ng-template>
