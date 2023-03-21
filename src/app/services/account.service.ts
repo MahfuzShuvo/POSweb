@@ -25,8 +25,14 @@ export class AccountService {
 		const url = 'api/Account/DeleteAccount';
 		return this.httpHelper.postHelper(url, obj);
 	}
+
 	addBalance(obj: any): Observable<any> {
 		const url = 'api/Account/AddBalance';
+		return this.httpHelper.postHelper(url, obj);
+	}
+
+	showAccountStatement(obj: any): Observable<any> {
+		const url = 'api/Account/ShowAccountStatement';
 		return this.httpHelper.postHelper(url, obj);
 	}
 }

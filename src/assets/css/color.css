@@ -49,6 +49,10 @@
     color: var(--success-color) !important;
 }
 
+.txt-primary {
+    color: var(--primary-color) !important;
+}
+
 .success-bg {
     background: var(--light-success-color) !important;
 }

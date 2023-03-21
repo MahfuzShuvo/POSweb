@@ -1,0 +1,54 @@
+<!-- statement offcanvas -->
+<div class="offcanvas offcanvas-start show" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
+	id="statement-sidebar" aria-labelledby="statement-sidebar-Label">
+	<div class="offcanvas-header align-items-center">
+		<div class="offcanvas-title d-flex flex-column gap-1" id="statement-sidebar-Label">
+			<span class="offcanvas-title-text font-13 weight-600">
+				Account Statement
+			</span>
+		</div>
+		<button type="button" class="offcanvas-close-btn" (click)="closeSidebar()">
+			<svg xmlns="http://www.w3.org/2000/svg" width="4.414" height="7.414" viewBox="0 0 4.414 7.414">
+				<path id="Path_320" data-name="Path 320" d="M3896.954-1163.261l3,3,3-3"
+					transform="translate(1163.968 3903.66) rotate(-90)" fill="none" stroke="#222" stroke-linecap="round"
+					stroke-width="1" />
+			</svg>
+		</button>
+	</div>
+	<div class="offcanvas-body">
+		<p class="font-12 txt-light">
+			{{accountTitle}}
+			<span class="txt-secondary-theme">{{(accountNumber && accountNumber != '') ? (' - ' + accountNumber) : ''}}</span>
+		</p>
+		<p class="font-12 txt-light">
+			Current Balance:
+			<span class="txt-theme">1250000</span>
+		</p>
+		<div class="account-table mt-1">
+			<table class="gen-pos">
+				<thead>
+					<tr>
+						<td class="w-10">SL.</td>
+						<td class="w-25">In</td>
+						<td class="w-25">Out</td>
+						<td>Date</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let statement of lstAccountStatement; let i = index">
+						<td class="w-10">{{i+1}}</td>
+						<td class="w-25">
+							<span *ngIf="statement.InBalance > 0" class="txt-primary">{{statement.InBalance | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</span>
+							<span *ngIf="statement.InBalance == 0" class="txt-light">-</span>
+						</td>
+						<td class="w-25">
+							<span *ngIf="statement.OutBalance > 0" class="txt-danger">{{statement.OutBalance | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</span>
+							<span *ngIf="statement.OutBalance == 0" class="txt-light">-</span>
+						</td>
+						<td>{{statement.CreatedDate | date: 'dd/MM/yyyy hh:mm a'}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

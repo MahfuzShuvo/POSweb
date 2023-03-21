@@ -27,20 +27,20 @@
 				<thead>
 					<tr>
 						<td class="w-5">SL.</td>
-						<td class="w-15">Account Title</td>
+						<td class="w-12">Account Title</td>
 						<td>Account Number</td>
 						<td class="w-10">Balance</td>
 						<td class="w-10">Expense</td>
 						<td class="w-10">Remaining</td>
 						<td>Description</td>
 						<td class="w-8">Status</td>
-						<td class="w-20"></td>
+						<td class="w-16"></td>
 					</tr>
 				</thead>
 				<tbody>
 					<tr *ngFor="let account of lstAccount; let i = index">
 						<td class="w-5">{{i+1}}</td>
-						<td class="w-15">{{account.AccountTitle}}</td>
+						<td class="w-12">{{account.AccountTitle}}</td>
 						<td>{{(account.AccountNumber && account.AccountNumber != '') ? account.AccountNumber : '-'}}
 						</td>
 						<td class="w-10">{{account.Balance | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</td>
@@ -57,8 +57,13 @@
 								{{account.Status == 1 ? 'Active' : 'Inactive'}}
 							</div>
 						</td>
-						<td class="w-20">
-							<div class="d-flex align-items-center gap-2 justify-content-end">
+						<td class="w-16">
+							<div class="d-flex align-items-center gap-1 justify-content-end">
+								<button *ngIf="account.Status == 1" type="button" class="action-button addBalance" tooltip="Show Statement"
+									containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+									(click)="showAccountStatement(account)">
+									<i class='bx bx-info-circle font-15'></i>
+								</button>
 								<button *ngIf="account.Status == 1" type="button" class="action-button addBalance" tooltip="Add Balance"
 									containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
 									(click)="balanceModalOpen(account)">
@@ -85,6 +90,9 @@
 			</div>
 		</div>
 </div>
+
+<!-- show account details statement sidebar -->
+<ng-template #statementSidebar></ng-template>
 
 <!-- add & edit account -->
 <ng-template #accountFormModal>

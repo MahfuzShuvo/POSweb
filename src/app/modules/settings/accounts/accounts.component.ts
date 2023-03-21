@@ -1,4 +1,6 @@
-import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { AccountStatement } from './../../../models/accountStatement';
+import { AccountStatementSidebarComponent } from './../../../components/account-statement-sidebar/account-statement-sidebar.component';
+import { Component, ElementRef, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Subject, takeUntil } from 'rxjs';
 import { ResponseStatus } from 'src/app/common/enums/appEnums';
@@ -18,6 +20,7 @@ import { AccountService } from 'src/app/services/account.service';
 export class AccountsComponent implements OnInit {
 
 	private destroy: Subject<void> = new Subject<void>();
+	@ViewChild('statementSidebar', { read: ViewContainerRef }) statementSidebar: ViewContainerRef;
 	@ViewChild('accountFormModal', { read: TemplateRef }) accountFormModal: TemplateRef<any>;
 	@ViewChild('deleteModal', { read: TemplateRef }) deleteModal: TemplateRef<any>;
 	@ViewChild('balanceModal', { read: TemplateRef }) balanceModal: TemplateRef<any>;
@@ -67,8 +70,8 @@ export class AccountsComponent implements OnInit {
 		if (str == '') {
 			this.lstAccount = JSON.parse(JSON.stringify(this.lstAllAccount));
 		} else {
-			this.lstAccount = this.lstAllAccount.filter(x => x.AccountTitle.replace(/\s/g, '').toLowerCase().includes(str)
-				|| x.AccountNumber.replace(/\s/g, '').toLowerCase().includes(str));
+			this.lstAccount = this.lstAllAccount.filter(x => x.AccountTitle!.replace(/\s/g, '').toLowerCase().includes(str)
+				|| x.AccountNumber?.toLowerCase().includes(str));
 		}
 		this.totalCount = this.lstAccount.length;
 	}
@@ -179,6 +182,43 @@ export class AccountsComponent implements OnInit {
 					}
 					this.messageHelper.showMessage(response.ResponseCode, response.Message);
 				})
+		}
+	}
+
+	showAccountStatement(account: Account) {
+		this.accountService.showAccountStatement(account)
+			.pipe(takeUntil(this.destroy))
+			.subscribe((response: ResponseMessage) => {
+				if (response.ResponseCode == ResponseStatus.success) {
+					if (response.ResponseObj.length > 0) {
+						this.openAccounStatementSisebar(response.ResponseObj, account.AccountTitle, account.AccountNumber);
+					}
+				} else {
+					this.messageHelper.showMessage(response.ResponseCode, response.Message);
+				}
+			})
+	}
+
+	openAccounStatementSisebar(statement: AccountStatement[], accounTitle: string, accountNumber: string) {
+		// Clear the container
+		this.statementSidebar.clear();
+		// Create component.
+		const statementRef = this.statementSidebar.createComponent(AccountStatementSidebarComponent);
+		if (statement.length > 0) {
+			statementRef.instance.accountTitle = accounTitle;
+			statementRef.instance.accountNumber = accountNumber;
+			statementRef.instance.lstAccountStatement = JSON.parse(JSON.stringify(statement));
+		}
+		// destroy component
+		let isShowInstance = statementRef.instance.isShow;
+		if (isShowInstance) {
+			isShowInstance.emit(true);
+			isShowInstance.subscribe((isShow: boolean) => {
+				if (!isShow) {
+					statementRef.destroy();
+					this.statementSidebar.clear();
+				}
+			});
 		}
 	}
 

@@ -1,3 +1,4 @@
+import { AccountStatementSidebarComponent } from './../../components/account-statement-sidebar/account-statement-sidebar.component';
 import { SystemUserFormComponent } from '../../components/forms/systemUser-form/systemUser-form.component';
 import { AccountsComponent } from './accounts/accounts.component';
 import { SystemUserComponent } from './system-user/system-user.component';
@@ -34,7 +35,8 @@ const routes: Routes = [
 		SystemUserComponent,
 		SystemUserFormComponent,
 		RolePermissionComponent,
-		AccountsComponent
+		AccountsComponent,
+		AccountStatementSidebarComponent
 	]
 })
 export class SettingsModule { }
