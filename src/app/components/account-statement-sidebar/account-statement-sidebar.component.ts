@@ -1,6 +1,6 @@
-import { AccountStatement } from './../../models/accountStatement';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Subject } from 'rxjs';
+import { VMAccountStatement } from 'src/app/models/VM/vmAccountStatement';
 
 @Component({
 	selector: 'app-account-statement-sidebar',
@@ -13,7 +13,9 @@ export class AccountStatementSidebarComponent implements OnInit {
 	@Output() isShow: EventEmitter<boolean> = new EventEmitter<boolean>();
 	@Output() accountTitle: string = '';
 	@Output() accountNumber: string = '';
-	@Output() lstAccountStatement: AccountStatement[] = [];
+	@Output() lstAccountStatement: VMAccountStatement[] = [];
+	@Output() totalInBalance: number = 0;
+	@Output() totalOutBalance: number = 0;
 
 	constructor() { }
 

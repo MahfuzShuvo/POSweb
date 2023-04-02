@@ -1,3 +1,94 @@
-<p>
-  products works!
-</p>
+<div class="body-wrapper-card card">
+	<div class="product-body">
+		<div class="table-headings d-flex align-items-center justify-content-between">
+			<div class="table-search d-flex align-items-center gap-1">
+				<i class='bx bx-search-alt mt-1'></i>
+				<input type="text" class="form-control" name="searchProduct" #searchText placeholder="Search by name ..."
+					(keyup)="searchProduct(searchText.value)">
+			</div>
+			<!-- <div class="d-flex align-items-center gap-2">
+				<div class="filter-search role-filter">
+					<select name="roleFilter" id="roleFilter">
+						<option [value]="0">All</option>
+						<option [value]="role.RoleID" *ngFor="let role of lstRole">{{role.RoleName}}</option>
+					</select>
+				</div>
+				<div class="filter-search status-filter">
+					<select name="statusFilter" id="statusFilter">
+						<option [value]="0">All</option>
+						<option [value]="1">Active</option>
+						<option [value]="2">Inactive</option>
+					</select>
+				</div>
+			</div> -->
+			<button type="button" class="theme-button" (click)="addProduct()">+ Add New</button>
+		</div>
+		<div class="product-table mt-1">
+			<table class="gen-pos">
+				<thead>
+					<tr>
+						<td class="w-5">SL.</td>
+						<td>Name</td>
+						<td>Desciption</td>
+						<td>Image</td>
+						<td class="w-10">Status</td>
+						<td class="w-10"></td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let product of lstProduct; let i = index">
+						<td class="w-5">{{i+1}}</td>
+						<td>{{product.ProductName}}</td>
+						<td>{{product.Description}}</td>
+						<td>
+							<img class="productImage" *ngIf="product.Image != ''" [src]="product.Image | SafeResourceUrl" alt="">
+							<span *ngIf="product.Image == ''">-</span>
+						</td>
+						<td class="w-10">
+							<div class="badge" [class.inactive-badge]="product.Status == 2"
+								[class.active-badge]="product.Status == 1">
+								{{product.Status == 1 ? 'Active' : 'Inactive'}}
+							</div>
+						</td>
+						<td class="w-10">
+							<div class="d-flex align-items-center gap-3 justify-content-end">
+								<button type="button" class="action-button edit" tooltip="Edit"
+									containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+									(click)="editProduct(product)">
+									<i class='bx bxs-edit font-15'></i>
+								</button>
+								<button type="button" class="action-button delete" tooltip="Delete"
+									containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+									(click)="deleteProduct(product)">
+									<i class='bx bx-trash font-15'></i>
+								</button>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="table-row-count">
+				<span class="txt-light font-11">Total Row:</span>
+				{{totalCount}}
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- delete product -->
+<ng-template #deleteModal>
+	<div class="modal-header">
+		<div class="modal-title text-center font-15 weight-500">Delete Product</div>
+		<!-- <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+		<span aria-hidden="true" class="visually-hidden">&times;</span>
+	  </button> -->
+	</div>
+	<div class="modal-body">
+		<div class="text-center txt-danger">Are you sure to delete this product?</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="cancel-button" (click)="modalRef?.hide()">No</button>
+		<button type="button" class="danger-button" (click)="confirmDelete()">Yes</button>
+	</div>
+</ng-template>

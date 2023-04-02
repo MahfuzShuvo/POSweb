@@ -9,6 +9,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from 'src/app/shared.module';
 import { RolePermissionComponent } from './role-permission/role-permission.component';
 import { PaymentStatusComponent } from './payment-status/payment-status.component';
+import { UnitComponent } from './unit/unit.component';
 
 const routes: Routes = [
 	{ path: '', redirectTo: 'system-user', pathMatch: 'full' },
@@ -19,7 +20,8 @@ const routes: Routes = [
 			{ path: 'system-user', component: SystemUserComponent },
 			{ path: 'accounts', component: AccountsComponent },
 			{ path: 'role-permission', component: RolePermissionComponent },
-			{ path: 'payment-status', component: PaymentStatusComponent }
+			{ path: 'unit', component: UnitComponent },
+			{ path: 'payment-status', component: PaymentStatusComponent },
 		]
 	},
 ]
@@ -36,7 +38,8 @@ const routes: Routes = [
 		SystemUserFormComponent,
 		RolePermissionComponent,
 		AccountsComponent,
-		AccountStatementSidebarComponent
+		AccountStatementSidebarComponent,
+		UnitComponent
 	]
 })
 export class SettingsModule { }

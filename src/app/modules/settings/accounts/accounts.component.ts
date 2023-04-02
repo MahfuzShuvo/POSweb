@@ -1,3 +1,4 @@
+import { VMAccountStatement } from './../../../models/VM/vmAccountStatement';
 import { AccountStatement } from './../../../models/accountStatement';
 import { AccountStatementSidebarComponent } from './../../../components/account-statement-sidebar/account-statement-sidebar.component';
 import { Component, ElementRef, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
@@ -190,8 +191,8 @@ export class AccountsComponent implements OnInit {
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {
 				if (response.ResponseCode == ResponseStatus.success) {
-					if (response.ResponseObj.length > 0) {
-						this.openAccounStatementSisebar(response.ResponseObj, account.AccountTitle, account.AccountNumber);
+					if (response.ResponseObj.lstVMAccountStatement.length > 0) {
+						this.openAccounStatementSisebar(response.ResponseObj.lstVMAccountStatement, response.ResponseObj.totalInBalance, response.ResponseObj.totalOutBalance, account.AccountTitle, account.AccountNumber);
 					}
 				} else {
 					this.messageHelper.showMessage(response.ResponseCode, response.Message);
@@ -199,7 +200,7 @@ export class AccountsComponent implements OnInit {
 			})
 	}
 
-	openAccounStatementSisebar(statement: AccountStatement[], accounTitle: string, accountNumber: string) {
+	openAccounStatementSisebar(statement: VMAccountStatement[], totalInBalance: number, totalOutBalance: number, accounTitle: string, accountNumber: string) {
 		// Clear the container
 		this.statementSidebar.clear();
 		// Create component.
@@ -208,6 +209,8 @@ export class AccountsComponent implements OnInit {
 			statementRef.instance.accountTitle = accounTitle;
 			statementRef.instance.accountNumber = accountNumber;
 			statementRef.instance.lstAccountStatement = JSON.parse(JSON.stringify(statement));
+			statementRef.instance.totalInBalance = totalInBalance;
+			statementRef.instance.totalOutBalance = totalOutBalance;
 		}
 		// destroy component
 		let isShowInstance = statementRef.instance.isShow;

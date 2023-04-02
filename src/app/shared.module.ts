@@ -22,6 +22,7 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { MatchPasswordDirective } from './common/directives/match-password.directive';
 import { SafeResourceUrlPipe } from './common/pipes/SafeResourceUrl.pipe';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 @NgModule({
     declarations: [
@@ -50,7 +51,8 @@ import { SafeResourceUrlPipe } from './common/pipes/SafeResourceUrl.pipe';
         NgProgressHttpModule,
         TabsModule.forRoot(),
         ModalModule.forRoot(),
-        TooltipModule.forRoot()
+        TooltipModule.forRoot(),
+        BsDropdownModule.forRoot()
     ],
     exports: [
         HomeLayoutComponent,
@@ -73,7 +75,8 @@ import { SafeResourceUrlPipe } from './common/pipes/SafeResourceUrl.pipe';
         SafeResourceUrlPipe,
         TabsModule,
         ModalModule,
-        TooltipModule
+        TooltipModule,
+        BsDropdownModule
     ],
     bootstrap: [AppComponent],
     providers: [MessageHelper]

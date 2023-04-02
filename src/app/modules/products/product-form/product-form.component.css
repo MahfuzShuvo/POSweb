@@ -1,0 +1,37 @@
+.product-body {
+    padding: 10px 20px;
+    padding-bottom: 0;
+}
+
+.product-form-division.sub {
+    display: grid;
+    grid-template-columns: 65% 35%;
+    gap: 20px;
+}
+
+.product-form-division:not(:first-child) {
+    border-top: 1px solid var(--light-border-color);
+    margin-top: 25px;
+    padding-top: 25px;
+}
+
+.uploaded-img-show,
+.form-file-label {
+    height: 100%;
+}
+
+.product-form-sub-division:last-child {
+    padding-right: 20px;
+}
+
+/* .product-form-division {
+    background: #39c5f815;
+    padding: 20px;
+    margin: 0 -20px;
+}
+
+.product-form-division:nth-child(2) {
+    background: #39c5f835;
+    border-top: 1px solid #39c5f855;
+    border-bottom: 1px solid #39c5f855;
+} */

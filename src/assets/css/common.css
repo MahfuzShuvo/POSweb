@@ -237,3 +237,79 @@ table.gen-pos {
 .modal-body {
     font-size: var(--font-12);
 }
+
+.custome-select {
+    border: 1px solid #e0e0e0;
+    height: 35px;
+    border-radius: 4px;
+    font-size: var(--font-12);
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-weight: 400;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.custome-select-txt {
+    max-width: 130px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.dropdown-menu,
+.btn-group {
+    width: 100%;
+}
+
+.dropdown-menu {
+    border-radius: 4px !important;
+    border: none !important;
+    box-shadow: 0 2px 10px #00000025;
+}
+
+.dropdown-menu li.dropdown-item {
+    font-size: var(--font-12);
+    color: var(--text-color) !important;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dropdown-menu li.dropdown-item:hover {
+    background: var(--light-secondary-theme-color);
+}
+
+.dropdown-ul {
+    max-height: 220px;
+    overflow: auto;
+}
+
+.dropdown-search {
+    width: -webkit-fill-available;
+    background: #f5f5f5;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    border-radius: 4px;
+    margin: 0 10px;
+    padding: 0 10px;
+    height: 30px;
+    font-size: var(--font-12);
+}
+
+.dropdown-search::-webkit-input-placeholder {
+    /* Edge */
+    color: #bbb;
+}
+
+.dropdown-search:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: #bbb;
+}
+
+.dropdown-search::placeholder {
+    color: #bbb;
+}

@@ -24,11 +24,9 @@ export enum TaxType {
 	Inclusive = 2
 }
 
-export enum Unit {
-	Piece = 1,
-	Kilogram = 2,
-	Meter = 3,
-	Liter = 4
+export enum DiscountType {
+	Percentage = 1,
+	Fixed = 2
 }
 
 export enum DataType {

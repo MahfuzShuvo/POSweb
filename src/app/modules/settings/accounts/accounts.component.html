@@ -1,11 +1,11 @@
 <div class="account-body">
-		<div class="table-headings d-flex align-items-center justify-content-between">
-			<div class="table-search d-flex align-items-center gap-1">
-				<i class='bx bx-search-alt mt-1'></i>
-				<input type="text" class="form-control" name="searchAccount" #searchText
-					placeholder="Search by name ..." (keyup)="searchAccount(searchText.value)">
-			</div>
-			<!-- <div class="d-flex align-items-center gap-2">
+	<div class="table-headings d-flex align-items-center justify-content-between">
+		<div class="table-search d-flex align-items-center gap-1">
+			<i class='bx bx-search-alt mt-1'></i>
+			<input type="text" class="form-control" name="searchAccount" #searchText placeholder="Search by name ..."
+				(keyup)="searchAccount(searchText.value)">
+		</div>
+		<!-- <div class="d-flex align-items-center gap-2">
 				<div class="filter-search role-filter">
 					<select name="roleFilter" id="roleFilter">
 						<option [value]="0">All</option>
@@ -20,75 +20,77 @@
 					</select>
 				</div>
 			</div> -->
-			<button type="button" class="theme-button" (click)="createAccount()">+ Add New</button>
+		<button type="button" class="theme-button" (click)="createAccount()">+ Add New</button>
+	</div>
+	<div class="account-table mt-1">
+		<table class="gen-pos">
+			<thead>
+				<tr>
+					<td class="w-5">SL.</td>
+					<td class="w-12">Account Title</td>
+					<td>Account Number</td>
+					<td class="w-10">Balance</td>
+					<td class="w-10">Expense</td>
+					<td class="w-10">Remaining</td>
+					<td>Description</td>
+					<td class="w-8">Status</td>
+					<td class="w-16"></td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let account of lstAccount; let i = index">
+					<td class="w-5">{{i+1}}</td>
+					<td class="w-12">{{account.AccountTitle}}</td>
+					<td>{{(account.AccountNumber && account.AccountNumber != '') ? account.AccountNumber : '-'}}
+					</td>
+					<td class="w-10">{{account.Balance | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</td>
+					<td class="w-10">
+						<span [class.txt-danger]="account.Expense > 0">{{(account.Expense > 0) ? (account.Expense |
+							currency:'BDT':'symbol':'1.2-2':'bn-BD') : '-'}}</span>
+					</td>
+					<td class="w-10">
+						<span class="txt-success">{{account.CurrentBalance |
+							currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</span>
+					</td>
+					<td>{{(account.Description && account.Description != '') ? account.Description : '-'}}</td>
+					<td class="w-8">
+						<div class="badge" [class.inactive-badge]="account.Status == 2"
+							[class.active-badge]="account.Status == 1">
+							{{account.Status == 1 ? 'Active' : 'Inactive'}}
+						</div>
+					</td>
+					<td class="w-16">
+						<div class="d-flex align-items-center gap-1 justify-content-end">
+							<button *ngIf="account.Status == 1" type="button" class="action-button accountStatement"
+								tooltip="Account Statement" containerClass="tooltipClass" placement="top"
+								[adaptivePosition]="false" (click)="showAccountStatement(account)">
+								<i class='bx bx-info-circle font-15'></i>
+							</button>
+							<button *ngIf="account.Status == 1" type="button" class="action-button addBalance"
+								tooltip="Add Balance" containerClass="tooltipClass" placement="top"
+								[adaptivePosition]="false" (click)="balanceModalOpen(account)">
+								<i class='bx bx-wallet font-15'></i>
+							</button>
+							<button type="button" class="action-button edit" tooltip="Edit"
+								containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+								(click)="editAccount(account)">
+								<i class='bx bxs-edit font-15'></i>
+							</button>
+							<button type="button" class="action-button delete" tooltip="Delete"
+								containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+								(click)="deleteAccount(account)">
+								<i class='bx bx-trash font-15'></i>
+							</button>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="table-row-count">
+			<span class="txt-light font-11">Total Row:</span>
+			{{totalCount}}
 		</div>
-		<div class="account-table mt-1">
-			<table class="gen-pos">
-				<thead>
-					<tr>
-						<td class="w-5">SL.</td>
-						<td class="w-12">Account Title</td>
-						<td>Account Number</td>
-						<td class="w-10">Balance</td>
-						<td class="w-10">Expense</td>
-						<td class="w-10">Remaining</td>
-						<td>Description</td>
-						<td class="w-8">Status</td>
-						<td class="w-16"></td>
-					</tr>
-				</thead>
-				<tbody>
-					<tr *ngFor="let account of lstAccount; let i = index">
-						<td class="w-5">{{i+1}}</td>
-						<td class="w-12">{{account.AccountTitle}}</td>
-						<td>{{(account.AccountNumber && account.AccountNumber != '') ? account.AccountNumber : '-'}}
-						</td>
-						<td class="w-10">{{account.Balance | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</td>
-						<td class="w-10">
-							<span [class.txt-danger]="account.Expense > 0">{{(account.Expense > 0) ? (account.Expense | currency:'BDT':'symbol':'1.2-2':'bn-BD') : '-'}}</span>
-						</td>
-						<td class="w-10">
-							<span class="txt-success">{{account.CurrentBalance | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</span>
-						</td>
-						<td>{{(account.Description && account.Description != '') ? account.Description : '-'}}</td>
-						<td class="w-8">
-							<div class="badge" [class.inactive-badge]="account.Status == 2"
-								[class.active-badge]="account.Status == 1">
-								{{account.Status == 1 ? 'Active' : 'Inactive'}}
-							</div>
-						</td>
-						<td class="w-16">
-							<div class="d-flex align-items-center gap-1 justify-content-end">
-								<button *ngIf="account.Status == 1" type="button" class="action-button addBalance" tooltip="Show Statement"
-									containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
-									(click)="showAccountStatement(account)">
-									<i class='bx bx-info-circle font-15'></i>
-								</button>
-								<button *ngIf="account.Status == 1" type="button" class="action-button addBalance" tooltip="Add Balance"
-									containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
-									(click)="balanceModalOpen(account)">
-									<i class='bx bx-wallet font-15'></i>
-								</button>
-								<button type="button" class="action-button edit" tooltip="Edit"
-									containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
-									(click)="editAccount(account)">
-									<i class='bx bxs-edit font-15'></i>
-								</button>
-								<button type="button" class="action-button delete" tooltip="Delete"
-									containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
-									(click)="deleteAccount(account)">
-									<i class='bx bx-trash font-15'></i>
-								</button>
-							</div>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			<div class="table-row-count">
-				<span class="txt-light font-11">Total Row:</span>
-				{{totalCount}}
-			</div>
-		</div>
+	</div>
 </div>
 
 <!-- show account details statement sidebar -->
@@ -190,7 +192,9 @@
 		</div>
 		<div class="modal-footer">
 			<button type="button" class="cancel-button" (click)="modalRef?.hide()">Cancel</button>
-			<button type="submit" [disabled]="(dataService.isFormSubmitting | async) || (accountBalance.valueAsNumber == 0 || accountBalance.value == '')" class="success-button">Add</button>
+			<button type="submit"
+				[disabled]="(dataService.isFormSubmitting | async) || (accountBalance.valueAsNumber == 0 || accountBalance.value == '')"
+				class="success-button">Add</button>
 		</div>
 	</form>
 </ng-template>
