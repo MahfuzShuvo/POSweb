@@ -77,6 +77,14 @@ export class ProductFormComponent implements OnInit {
 	}
 
 	saveProduct() {
+		if (!this.objProduct.CategoryID || this.objProduct.CategoryID == 0) {
+			this.messageHelper.showMessage(ResponseStatus.warning, "Category is required");
+			return;
+		}
+		if (!this.objProduct.Unit || this.objProduct.Unit == 0) {
+			this.messageHelper.showMessage(ResponseStatus.warning, "Unit is required");
+			return;
+		}
 		this.dataService.isFormSubmitting.next(true);
 		if (this.objProduct.Image?.includes(AppConstant.FILE_PATH)) {
 			this.objProduct.Image = this.objProduct.Image.replace(AppConstant.FILE_PATH, '');
@@ -205,6 +213,54 @@ export class ProductFormComponent implements OnInit {
 			this.objProduct.Attachment.Content = reader.result as string;
 			this.uploadedImageUrl = this.objProduct.Attachment.Content ?? '';
 		};
+	}
+
+	calculatePurchasePrice() {
+		if (this.objProduct.Price && this.objProduct.Price > 0) {
+			// debugger
+			var tax = ((this.objProduct.Tax && this.objProduct.Tax > 0) ? parseFloat(this.objProduct.Tax.toString()) : 0) / 100;
+			var afterTax = parseFloat(this.objProduct.Price.toString()) * tax
+
+			this.objProduct.PurchasePrice = parseFloat(this.objProduct.Price.toString()) + afterTax;
+		} else {
+			this.objProduct.PurchasePrice = 0;
+		}
+	}
+
+	// calculate final price & selling price if input -> PROFIT MARGIN
+	onChangeProfitMargin_calculateFinalPrice() {
+		if (this.objProduct.ProfitMargin && this.objProduct.ProfitMargin > 0) {
+			// sales = {(profit / 100) * purchase } + purchase 
+			this.objProduct.SellingPrice = (parseInt(this.objProduct.ProfitMargin.toString()) / 100) * parseInt(this.objProduct.PurchasePrice.toString()) + parseInt(this.objProduct.PurchasePrice.toString());
+			if (this.objProduct.TaxType == 1) {
+				// Tax type = EXCLUSIVE
+				var tax = ((this.objProduct.Tax && this.objProduct.Tax > 0) ? parseInt(this.objProduct.Tax.toString()) : 0) / 100;
+				var afterTax = parseInt(this.objProduct.SellingPrice.toString()) * tax;
+
+				this.objProduct.FinalPrice = parseFloat(this.objProduct.SellingPrice.toString()) + afterTax;
+			} else if (this.objProduct.TaxType == 2) {
+				// Tax type = INCLUSIVE
+				this.objProduct.FinalPrice = this.objProduct.SellingPrice;
+			}
+		}
+	}
+
+	// calculate final price & profit margin if input -> SELLING PRICE
+	onChangeSellingPrice_calculateFinalPrice() {
+		if (this.objProduct.SellingPrice && this.objProduct.SellingPrice > 0) {
+			// profit = {(sales / purchase) - 1} * 100
+			this.objProduct.ProfitMargin = parseFloat((((parseInt(this.objProduct.SellingPrice.toString()) / parseInt(this.objProduct.PurchasePrice.toString())) - 1) * 100).toFixed(2));
+			if (this.objProduct.TaxType == 1) {
+				// Tax type = EXCLUSIVE
+				var tax = ((this.objProduct.Tax && this.objProduct.Tax > 0) ? parseInt(this.objProduct.Tax.toString()) : 0) / 100;
+				var afterTax = parseInt(this.objProduct.SellingPrice.toString()) * tax;
+
+				this.objProduct.FinalPrice = parseFloat(this.objProduct.SellingPrice.toString()) + afterTax;
+			} else if (this.objProduct.TaxType == 2) {
+				// Tax type = INCLUSIVE
+				this.objProduct.FinalPrice = this.objProduct.SellingPrice;
+			}
+		}
 	}
 
 	clearUpload() {

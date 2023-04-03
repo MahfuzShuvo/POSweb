@@ -38,11 +38,10 @@
 								</div> -->
 								<div class="btn-group" dropdown #dropdownCategory="bs-dropdown" [insideClick]="true"
 									(onShown)="openCategoryDrop()">
-
 									<div dropdownToggle class="custome-select" id="category"
 										aria-controls="dropdown-basic">
-										<span class="custome-select-txt">{{(this.objProduct.CategoryID &&
-											this.objProduct.CategoryID>0) ? selectedCategory.CategoryName :
+										<span class="custome-select-txt">{{(objProduct.CategoryID &&
+											objProduct.CategoryID>0) ? selectedCategory.CategoryName :
 											'Select'}}</span>
 										<i class='bx bx-chevron-down font-17'></i>
 									</div>
@@ -75,8 +74,8 @@
 
 									<div dropdownToggle class="custome-select" id="brand"
 										aria-controls="dropdown-basic">
-										<span class="custome-select-txt">{{(this.objProduct.BrandID &&
-											this.objProduct.BrandID>0) ? selectedBrand.BrandName : 'Select'}}</span>
+										<span class="custome-select-txt">{{(objProduct.BrandID &&
+											objProduct.BrandID>0) ? selectedBrand.BrandName : 'Select'}}</span>
 										<i class='bx bx-chevron-down font-17'></i>
 									</div>
 									<div id="dropdown-basic" *dropdownMenu class="dropdown-menu"
@@ -123,10 +122,10 @@
 								</div> -->
 								<div class="btn-group" dropdown #dropdownUnit="bs-dropdown" [insideClick]="true"
 									(onShown)="openUnitDrop()">
-
+									
 									<div dropdownToggle class="custome-select" id="unit" aria-controls="dropdown-basic">
-										<span class="custome-select-txt">{{(this.objProduct.Unit &&
-											this.objProduct.Unit>0) ? selectedUnit.UnitName : 'Select'}}</span>
+										<span class="custome-select-txt">{{(objProduct.Unit &&
+											objProduct.Unit>0) ? selectedUnit.UnitName : 'Select'}}</span>
 										<i class='bx bx-chevron-down font-17'></i>
 									</div>
 									<div id="dropdown-basic" *dropdownMenu class="dropdown-menu" aria-labelledby="unit">
@@ -202,7 +201,7 @@
 							<input type="text" id="price" name="price" class="form-control"
 								[(ngModel)]="objProduct.Price" placeholder="Enter phone number" #price="ngModel"
 								[ngClass]="{ 'is-invalid': productForm.submitted && price.errors }"
-								(input)="numbersOnlyValidator($event)" required>
+								(input)="numbersOnlyValidator($event); calculatePurchasePrice()" required>
 							<div *ngIf="price.errors && (price.dirty || productForm.submitted) && price.invalid"
 								class="invalid-feedback">
 								<div *ngIf="price.errors['required']">Price is required</div>
@@ -215,7 +214,7 @@
 							<input type="text" id="tax" name="tax" class="form-control" [(ngModel)]="objProduct.Tax"
 								placeholder="Enter phone number" #tax="ngModel"
 								[ngClass]="{ 'is-invalid': productForm.submitted && tax.errors }"
-								(input)="numbersOnlyValidator($event)">
+								(input)="numbersOnlyValidator($event); calculatePurchasePrice()">
 						</div>
 					</div>
 					<div class="col-md-3">
@@ -232,7 +231,7 @@
 					<div class="col-md-3">
 						<div class="form-group">
 							<label for="taxType" class="form-label">Tax Type</label>
-							<select name="taxType" id="taxType" class="form-select" [(ngModel)]="objProduct.TaxType">
+							<select name="taxType" id="taxType" class="form-select" [(ngModel)]="objProduct.TaxType" (change)="onChangeProfitMargin_calculateFinalPrice()">
 								<option [value]="1">Exclusive</option>
 								<option [value]="2">Inclusive</option>
 							</select>
@@ -247,7 +246,7 @@
 								[(ngModel)]="objProduct.ProfitMargin" placeholder="Enter phone number"
 								#profitMargin="ngModel"
 								[ngClass]="{ 'is-invalid': productForm.submitted && profitMargin.errors }"
-								(input)="numbersOnlyValidator($event)" required>
+								(input)="numbersOnlyValidator($event); onChangeProfitMargin_calculateFinalPrice()" required>
 							<div *ngIf="profitMargin.errors && (profitMargin.dirty || productForm.submitted) && profitMargin.invalid"
 								class="invalid-feedback">
 								<div *ngIf="profitMargin.errors['required']">Profit margin is required</div>
@@ -263,7 +262,7 @@
 								[(ngModel)]="objProduct.SellingPrice" placeholder="Enter phone number"
 								#salesPrice="ngModel"
 								[ngClass]="{ 'is-invalid': productForm.submitted && salesPrice.errors }"
-								(input)="numbersOnlyValidator($event)" required>
+								(input)="numbersOnlyValidator($event); onChangeSellingPrice_calculateFinalPrice()" required>
 							<div *ngIf="salesPrice.errors && (salesPrice.dirty || productForm.submitted) && salesPrice.invalid"
 								class="invalid-feedback">
 								<div *ngIf="salesPrice.errors['required']">Selling price is required</div>
@@ -299,12 +298,7 @@
 							<label for="discount" class="form-label">Discount</label>
 							<input type="text" id="discount" name="discount" class="form-control"
 								[(ngModel)]="objProduct.Discount" placeholder="Enter phone number" #discount="ngModel"
-								[ngClass]="{ 'is-invalid': productForm.submitted && discount.errors }"
-								(input)="numbersOnlyValidator($event)" required>
-							<div *ngIf="discount.errors && (discount.dirty || productForm.submitted) && discount.invalid"
-								class="invalid-feedback">
-								<div *ngIf="discount.errors['required']">Discount is required</div>
-							</div>
+								(input)="numbersOnlyValidator($event)">
 						</div>
 					</div>
 				</div>

@@ -253,6 +253,10 @@ table.gen-pos {
     cursor: pointer;
 }
 
+.error-custome-select {
+    border: 1px solid var(--danger-color);
+}
+
 .custome-select-txt {
     max-width: 130px;
     text-overflow: ellipsis;
