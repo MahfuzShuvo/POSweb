@@ -39,7 +39,12 @@
 					<tr *ngFor="let brand of lstBrand; let i = index">
 						<td class="w-5">{{i+1}}</td>
 						<td>{{brand.BrandName}}</td>
-						<td>{{brand.Description}}</td>
+						<td>
+							<div class="description-cell" [tooltip]="brand.Description" container="body" 
+								[adaptivePosition]="false" placement="top" containerClass="tooltipClass">
+								{{brand.Description}}
+							</div>
+						</td>
 						<td>
 							<img class="brandLogo" *ngIf="brand.Logo != ''" [src]="brand.Logo | SafeResourceUrl" alt="">
 							<span *ngIf="brand.Logo == ''">-</span>

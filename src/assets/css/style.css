@@ -321,3 +321,9 @@ input.form-control:-moz-placeholder {
 .w-5 {
     width: 5%;
 }
+
+.description-cell {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}

@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { AppConstant } from 'src/app/common/constants/appConstant';
 import { ResponseStatus } from 'src/app/common/enums/appEnums';
@@ -41,6 +41,7 @@ export class ProductFormComponent implements OnInit {
 	selectedCategory: Category = new Category();
 	selectedBrand: Brand = new Brand();
 	selectedUnit: Unit = new Unit();
+	productSlug: string = '';
 
 	constructor(
 		private headerService: HeaderService,
@@ -50,13 +51,45 @@ export class ProductFormComponent implements OnInit {
 		public dataService: DataService
 	) {
 		const headerTitle = this.activatedRoute.parent?.snapshot.url[0].path;
-		var childRoute = this.activatedRoute.snapshot.routeConfig?.path;
+		var childRoute = "";
+		this.activatedRoute.url.subscribe((params: Params) => {
+			childRoute = params[0].path;
+		})
 
+		this.activatedRoute.params.subscribe((params: Params) => {
+			this.productSlug = (!params['slug']) ? '' : params['slug'];
+			if (this.productSlug != '') {
+				setTimeout(() => {
+
+					this.getProductBySlug(this.productSlug);
+				}, 500);
+			}
+		});
 		Promise.resolve().then(() => this.headerService.setTitle(childRoute!.toString() + ' ' + headerTitle!.toString()));
 	}
 
 	ngOnInit() {
 		this.getInitialDataForSaveProduct();
+	}
+
+	getProductBySlug(slug: string) {
+		this.productService.getProductBySlug({ slug })
+			.pipe(takeUntil(this.destroy))
+			.subscribe((response: ResponseMessage) => {
+				if (response.ResponseCode == ResponseStatus.success) {
+					this.uploadedImageUrl = '';
+					this.objProduct = new Product();
+
+					this.objProduct = JSON.parse(JSON.stringify(response.ResponseObj));
+					this.uploadedImageUrl = this.objProduct.Image;
+
+					this.selectedCategory = this.lstCategory.filter(x => x.CategoryID == this.objProduct.CategoryID)[0]
+					this.selectedBrand = this.lstBrand.filter(x => x.BrandID == this.objProduct.BrandID)[0]
+					this.selectedUnit = this.lstUnit.filter(x => x.UnitID == this.objProduct.Unit)[0]
+				} else {
+					this.messageHelper.showMessage(response.ResponseCode, response.Message);
+				}
+			})
 	}
 
 	getInitialDataForSaveProduct() {

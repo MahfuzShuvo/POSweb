@@ -21,6 +21,11 @@ export class ProductService {
 		return this.httpHelper.postHelper(url);
 	}
 
+	getProductBySlug(obj: any): Observable<any> {
+		const url = 'api/Product/GetProductBySlug';
+		return this.httpHelper.postHelper(url, obj);
+	}
+
 	saveProduct(obj: any): Observable<any> {
 		const url = 'api/Product/SaveProduct';
 		return this.httpHelper.postHelper(url, obj);

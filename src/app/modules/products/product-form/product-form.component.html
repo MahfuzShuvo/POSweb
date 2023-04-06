@@ -1,7 +1,13 @@
 <div class="body-wrapper-card card">
 	<div class="product-body">
-		<span class="txt-light font-11">Please fill all fields marked with (<span class="txt-danger">*</span>) before
+		<div class="d-flex align-items-center justify-content-between">
+			<span class="txt-light font-11">Please fill all fields marked with (<span class="txt-danger">*</span>) before
 			submit.</span>
+			<div *ngIf="objProduct!.SKU && objProduct!.SKU != ''" class="sku-div d-flex align-items-center gap-1 font-12">
+				<span class="txt-light">Product SKU:</span>
+				<span>{{objProduct!.SKU}}</span>
+			</div>
+		</div>
 		<form autocomplete="off" #productForm="ngForm" (ngSubmit)="productForm.form.valid && saveProduct()" novalidate>
 			<div class="product-form-division sub mt-2">
 				<div class="product-form-sub-division">

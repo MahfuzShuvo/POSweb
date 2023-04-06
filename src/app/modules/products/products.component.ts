@@ -8,6 +8,7 @@ import { Product } from 'src/app/models/product';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ResponseMessage } from 'src/app/models/DTO/responseMessage';
 import { ResponseStatus } from 'src/app/common/enums/appEnums';
+import { AppConstant } from 'src/app/common/constants/appConstant';
 
 @Component({
 	selector: 'app-products',
@@ -44,8 +45,33 @@ export class ProductsComponent implements OnInit {
 		this.getAllProduct();
 	}
 
-	toggleStatus(event: any) {
-		this.objProduct.Status = (event.target.checked) ? 1 : 2;
+	changeProductStatus(event: any, product: Product) {
+		this.objProduct = new Product();
+		this.objProduct = JSON.parse(JSON.stringify(product));
+		this.objProduct.Status = event.target.checked ? 1 : 2;
+		if (this.objProduct.Image?.includes(AppConstant.FILE_PATH)) {
+			this.objProduct.Image = this.objProduct.Image.replace(AppConstant.FILE_PATH, '');
+		}
+
+		this.productService.saveProduct(this.objProduct)
+			.pipe(takeUntil(this.destroy))
+			.subscribe((response: ResponseMessage) => {
+				if (response.ResponseCode == ResponseStatus.success) {
+					var index = this.lstProduct.findIndex(x => x.ProductID == response.ResponseObj.ProductID);
+					if (index > -1) {
+						this.lstProduct.splice(index, 1, response.ResponseObj);
+						this.lstAllProduct.splice(index, 1, response.ResponseObj);
+					} else {
+						this.lstProduct.push(response.ResponseObj);
+						this.lstAllProduct.push(response.ResponseObj);
+					}
+					this.messageHelper.showMessage(response.ResponseCode, "Status changed successfully");
+				} else {
+					this.messageHelper.showMessage(response.ResponseCode, response.Message);
+				}
+
+				this.objProduct = new Product();
+			})
 	}
 
 	getAllProduct() {
@@ -104,8 +130,8 @@ export class ProductsComponent implements OnInit {
 		this.router.navigate(['product/add']);
 	}
 
-	editProduct(product: Product) {
-
+	editProduct(slug: string) {
+		this.router.navigate(['product/edit', slug])
 	}
 
 	ngOnDestroy(): void {

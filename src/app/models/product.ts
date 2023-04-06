@@ -8,6 +8,7 @@ export class Product extends BaseModel {
     Slug!: string;
     Image: string;
     Unit: number;
+    UnitName: string;
     CategoryID: number;
     BrandID: number;
     ExpireDate!: Date;

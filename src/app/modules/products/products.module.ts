@@ -8,7 +8,7 @@ import { SharedModule } from 'src/app/shared.module';
 const routes: Routes = [
 	{ path: '', component: ProductsComponent },
 	{ path: 'add', component: ProductFormComponent },
-	{ path: 'edit', component: ProductFormComponent }
+	{ path: 'edit/:slug', component: ProductFormComponent }
 ]
 
 @NgModule({

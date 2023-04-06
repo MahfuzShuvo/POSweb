@@ -16,7 +16,7 @@ export class TimeoutInterceptor implements HttpInterceptor {
 		let defaultvalue = req.headers.get('timeout');
 		let defaultTimeoutvalue = 0;
 		if (defaultvalue == null) {
-			defaultTimeoutvalue = Number(60000);
+			defaultTimeoutvalue = Number(120000);
 		}
 		const timeoutValue = req.headers.get('timeout') || this.defaultTimeout;
 		const timeoutValueNumeric = Number(timeoutValue);
