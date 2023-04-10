@@ -9,6 +9,9 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ResponseMessage } from 'src/app/models/DTO/responseMessage';
 import { ResponseStatus } from 'src/app/common/enums/appEnums';
 import { AppConstant } from 'src/app/common/constants/appConstant';
+import { VMPrduct } from 'src/app/models/VM/vmProduct';
+import { CategoryService } from 'src/app/services/category.service';
+import { Category } from 'src/app/models/category';
 
 @Component({
 	selector: 'app-products',
@@ -19,15 +22,17 @@ export class ProductsComponent implements OnInit {
 
 	private destroy: Subject<void> = new Subject<void>();
 	@ViewChild('deleteModal', { read: TemplateRef }) deleteModal: TemplateRef<any>;
-	lstProduct: Product[] = [];
+	lstProduct: VMPrduct[] = [];
 	objProduct: Product = new Product();
 	totalCount: number = 0;
 	modalRef?: BsModalRef;
-	lstAllProduct: Product[] = [];
+	lstAllProduct: VMPrduct[] = [];
 	buttonText: string;
 	modalTitle: string;
 	file: any = {};
 	uploadedImageUrl: string = '';
+	lstCategory: Category[] = [];
+	selectedCategoryID: number = 0;
 
 	constructor(
 		private headerService: HeaderService,
@@ -35,17 +40,32 @@ export class ProductsComponent implements OnInit {
 		private router: Router,
 		private productService: ProductService,
 		private messageHelper: MessageHelper,
-		private modalService: BsModalService
+		private modalService: BsModalService,
+		private categoryService: CategoryService
 	) {
 		const headerTitle = this.activatedRoute.parent?.snapshot.url[0].path;
 		Promise.resolve().then(() => this.headerService.setTitle(headerTitle!.toString()));
 	}
 
 	ngOnInit() {
+		this.getAllCategory();
 		this.getAllProduct();
 	}
 
-	changeProductStatus(event: any, product: Product) {
+	getAllCategory() {
+		this.categoryService.getAllCategory()
+			.pipe(takeUntil(this.destroy))
+			.subscribe((response: ResponseMessage) => {
+				if (response.ResponseCode == ResponseStatus.success) {
+					this.lstCategory = response.ResponseObj;
+				} else {
+					this.messageHelper.showMessage(response.ResponseCode, response.Message);
+				}
+			})
+
+	}
+
+	changeProductStatus(event: any, product: VMPrduct) {
 		this.objProduct = new Product();
 		this.objProduct = JSON.parse(JSON.stringify(product));
 		this.objProduct.Status = event.target.checked ? 1 : 2;
@@ -57,13 +77,9 @@ export class ProductsComponent implements OnInit {
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {
 				if (response.ResponseCode == ResponseStatus.success) {
-					var index = this.lstProduct.findIndex(x => x.ProductID == response.ResponseObj.ProductID);
-					if (index > -1) {
-						this.lstProduct.splice(index, 1, response.ResponseObj);
-						this.lstAllProduct.splice(index, 1, response.ResponseObj);
-					} else {
-						this.lstProduct.push(response.ResponseObj);
-						this.lstAllProduct.push(response.ResponseObj);
+					var exist = this.lstProduct.filter(x => x.SKU == response.ResponseObj.SKU)[0];
+					if (exist) {
+						exist.Status = response.ResponseObj.Status;
 					}
 					this.messageHelper.showMessage(response.ResponseCode, "Status changed successfully");
 				} else {
@@ -89,6 +105,22 @@ export class ProductsComponent implements OnInit {
 
 	}
 
+	getAllProductByCategoryID(id: number) {
+		this.selectedCategoryID = id;
+		this.productService.getAllProductByCategoryID(id)
+			.pipe(takeUntil(this.destroy))
+			.subscribe((response: ResponseMessage) => {
+				if (response.ResponseCode == ResponseStatus.success) {
+					this.lstProduct = response.ResponseObj;
+					this.lstAllProduct = JSON.parse(JSON.stringify(this.lstProduct));
+					this.totalCount = response.TotalCount
+				} else {
+					this.messageHelper.showMessage(response.ResponseCode, response.Message);
+				}
+			})
+
+	}
+
 	searchProduct(searchText: string) {
 		var str = searchText!.replace(/\s/g, '').toLowerCase();		// remove spaces
 
@@ -100,7 +132,7 @@ export class ProductsComponent implements OnInit {
 		this.totalCount = this.lstProduct.length;
 	}
 
-	deleteProduct(product: Product) {
+	deleteProduct(product: VMPrduct) {
 		this.objProduct = new Product();
 		this.objProduct = JSON.parse(JSON.stringify(product));
 
@@ -113,7 +145,7 @@ export class ProductsComponent implements OnInit {
 				.pipe(takeUntil(this.destroy))
 				.subscribe((response: ResponseMessage) => {
 					if (response.ResponseCode == ResponseStatus.success) {
-						var index = this.lstProduct.findIndex(x => x.ProductID == this.objProduct.ProductID);
+						var index = this.lstProduct.findIndex(x => x.SKU == this.objProduct.SKU);
 						if (index > -1) {
 							this.lstProduct.splice(index, 1);
 							this.lstAllProduct.splice(index, 1);

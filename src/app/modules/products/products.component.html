@@ -24,18 +24,27 @@
 			<button type="button" class="theme-button" (click)="addProduct()">+ Add New</button>
 		</div>
 		<div class="product-table mt-1">
+			<div class="product tab-menu">
+				<div class="tab-menu-item" [class.active]="selectedCategoryID == 0" (click)="getAllProduct(); selectedCategoryID = 0">All</div>
+				<div class="tab-menu-item" [class.active]="selectedCategoryID == category.CategoryID" 
+					*ngFor="let category of lstCategory" (click)="getAllProductByCategoryID(category.CategoryID)">
+					{{category.CategoryName}}
+				</div>
+			</div>
 			<table class="gen-pos">
 				<thead>
 					<tr>
 						<td class="w-5">SL.</td>
 						<td class="w-8">Image</td>
 						<td>Name</td>
-						<td>Desciption</td>
+						<td class="w-15">Desciption</td>
+						<td>Category</td>
+						<td>Brand</td>
 						<td class="w-8">Stock</td>
 						<td>Purchase Price</td>
 						<td>Selling Price</td>
-						<td class="w-8">Status</td>
-						<td class="w-10"></td>
+						<td class="w-7">Status</td>
+						<td class="w-8"></td>
 					</tr>
 				</thead>
 				<tbody>
@@ -46,16 +55,18 @@
 							<span *ngIf="product.Image == ''">-</span>
 						</td>
 						<td>{{product.ProductName}}</td>
-						<td>
+						<td class="w-15">
 							<div class="description-cell" [tooltip]="product.Description" container="body" 
 							[adaptivePosition]="false" placement="top" containerClass="tooltipClass">
 								{{product.Description}}
 							</div>
 						</td>
+						<td>{{product.CategoryName}}</td>
+						<td>{{product.BrandName}}</td>
 						<td class="w-8">{{product.Qty}} {{product.UnitName}}</td>
 						<td>{{product.PurchasePrice | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</td>
 						<td>{{product.FinalPrice | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</td>
-						<td class="w-8">
+						<td class="w-7">
 							<!-- <div class="badge" [class.inactive-badge]="product.Status == 2"
 								[class.active-badge]="product.Status == 1">
 								{{product.Status == 1 ? 'Active' : 'Inactive'}}
@@ -69,7 +80,7 @@
 								</label>
 							</div>
 						</td>
-						<td class="w-10">
+						<td class="w-8">
 							<div class="d-flex align-items-center gap-3 justify-content-end">
 								<button type="button" class="action-button edit" tooltip="Edit"
 									containerClass="tooltipClass" placement="top" [adaptivePosition]="false"

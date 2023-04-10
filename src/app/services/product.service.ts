@@ -16,6 +16,11 @@ export class ProductService {
 		return this.httpHelper.postHelper(url);
 	}
 
+	getAllProductByCategoryID(obj: any): Observable<any> {
+		const url = 'api/Product/GetAllProductByCategoryID';
+		return this.httpHelper.postHelper(url, obj);
+	}
+
 	getInitialDataForSaveProduct(): Observable<any> {
 		const url = 'api/Product/GetInitialDataForSaveProduct';
 		return this.httpHelper.postHelper(url);

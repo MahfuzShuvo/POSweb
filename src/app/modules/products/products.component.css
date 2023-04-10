@@ -4,7 +4,7 @@
 }
 
 .product-table table tbody {
-    height: calc(100vh - 180px);
+    height: calc(100vh - 215px);
 }
 
 .table-row-count {
@@ -37,5 +37,36 @@
 }
 
 img.productImage {
-    width: 50px;
+    width: 40px;
+}
+
+.tab-menu.product {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: var(--font-11);
+    height: 30px;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--body-color);
+}
+
+.tab-menu-item {
+    padding: 5px 12px;
+    background: var(--bs-gray-100);
+    border-radius: 4px;
+    line-height: normal;
+    opacity: 0.75;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tab-menu-item:hover {
+    background: var(--light-secondary-theme-color);
+}
+
+.tab-menu-item.active {
+    opacity: 1;
+    background: var(--secondary-theme-color) !important;
+    color: var(--white-color);
 }

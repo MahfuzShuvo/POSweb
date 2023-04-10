@@ -318,6 +318,10 @@ input.form-control:-moz-placeholder {
     width: 8%;
 }
 
+.w-7 {
+    width: 7%;
+}
+
 .w-5 {
     width: 5%;
 }
