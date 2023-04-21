@@ -24,49 +24,52 @@
 			<button type="button" class="theme-button" (click)="addPurchase()">+ Add New</button>
 		</div>
 		<div class="purchase-table mt-1">
-			<table class="gen-pos">
-				<thead>
-					<tr>
-						<td class="w-5">SL.</td>
-						<td>Purchase</td>
-						<td>Status</td>
-						<td class="w-8"></td>
-					</tr>
-				</thead>
-				<tbody>
-					<tr *ngFor="let purchase of lstPurchase; let i = index">
-						<td>--</td>
-						<td class="w-7">
-							<div class="badge" [class.inactive-badge]="purchase.Status == 2"
-								[class.active-badge]="purchase.Status == 1">
-								{{purchase.Status == 1 ? 'Active' : 'Inactive'}}
-							</div>
-							<!-- <div class="form-group">
-								<label class="toggle">
-									<input class="toggle__checkbox" type="checkbox"
-										(change)="changePurchaseStatus($event, purchase)" [checked]="purchase.Status == 1">
-									<span class="toggle__switch"></span>
-									<span class="toggle__label"></span>
-								</label>
-							</div> -->
-						</td>
-						<td class="w-8">
-							<div class="d-flex align-items-center gap-3 justify-content-end">
-								<button type="button" class="action-button edit" tooltip="Edit"
-									containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
-									(click)="editPurchase(purchase.PurchaseCode)">
-									<i class='bx bxs-edit font-15'></i>
-								</button>
-								<button type="button" class="action-button delete" tooltip="Delete"
-									containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
-									(click)="deletePurchase(purchase)">
-									<i class='bx bx-trash font-15'></i>
-								</button>
-							</div>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<section class="table__body">
+				<table>
+					<thead>
+						<tr>
+							<th>SL.</th>
+							<th>Purchase</th>
+							<th>Status</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let purchase of lstPurchase; let i = index">
+							<td>{{i+1}}</td>
+							<td>{{purchase.PurchaseCode}}</td>
+							<td>
+								<div class="badge" [class.inactive-badge]="purchase.Status == 2"
+									[class.active-badge]="purchase.Status == 1">
+									{{purchase.Status == 1 ? 'Active' : 'Inactive'}}
+								</div>
+								<!-- <div class="form-group">
+									<label class="toggle">
+										<input class="toggle__checkbox" type="checkbox"
+											(change)="changePurchaseStatus($event, purchase)" [checked]="purchase.Status == 1">
+										<span class="toggle__switch"></span>
+										<span class="toggle__label"></span>
+									</label>
+								</div> -->
+							</td>
+							<td>
+								<div class="d-flex align-items-center gap-3 justify-content-end">
+									<button type="button" class="action-button edit" tooltip="Edit"
+										containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+										(click)="editPurchase(purchase.PurchaseCode)">
+										<i class='bx bxs-edit font-15'></i>
+									</button>
+									<button type="button" class="action-button delete" tooltip="Delete"
+										containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+										(click)="deletePurchase(purchase)">
+										<i class='bx bx-trash font-15'></i>
+									</button>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
 			<div class="table-row-count">
 				<span class="txt-light font-11">Total Row:</span>
 				{{totalCount}}

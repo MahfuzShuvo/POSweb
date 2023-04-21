@@ -3,9 +3,10 @@
     padding-bottom: 0;
 }
 
+/* 
 .brand-table table tbody {
     height: calc(100vh - 180px);
-}
+} */
 
 .table-row-count {
     padding: 5px 0;
@@ -38,4 +39,5 @@
 
 img.brandLogo {
     width: 30px;
+    height: 100%;
 }

@@ -1,5 +1,5 @@
-.system-user-table table tbody {
-    height: calc(100vh - 210px);
+.table__body {
+    height: calc(100vh - 180px);
 }
 
 .table-row-count {

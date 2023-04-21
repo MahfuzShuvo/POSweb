@@ -7,7 +7,6 @@
 @import url('./font-size.css');
 @import url('./font-weight.css');
 @import url('./spacing.css');
-@import url('./custom-aggrid-style.css');
 
 /* styling scrollbar */
 ::-webkit-scrollbar {
@@ -335,4 +334,5 @@ input.form-control:-moz-placeholder {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+    max-width: 200px;
 }

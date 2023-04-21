@@ -23,42 +23,44 @@
 		<button type="button" class="theme-button" (click)="createUnit()">+ Add New</button>
 	</div>
 	<div class="unit-table mt-1">
-		<table class="gen-pos">
-			<thead>
-				<tr>
-					<td class="w-5">SL.</td>
-					<td>Unit Name</td>
-					<td class="w-10">Status</td>
-					<td class="w-16"></td>
-				</tr>
-			</thead>
-			<tbody>
-				<tr *ngFor="let unit of lstUnit; let i = index">
-					<td class="w-5">{{i+1}}</td>
-					<td>{{unit.UnitName}}</td>
-					<td class="w-10">
-						<div class="badge" [class.inactive-badge]="unit.Status == 2"
-							[class.active-badge]="unit.Status == 1">
-							{{unit.Status == 1 ? 'Active' : 'Inactive'}}
-						</div>
-					</td>
-					<td class="w-16">
-						<div class="d-flex align-items-center gap-3 justify-content-end">
-							<button type="button" class="action-button edit" tooltip="Edit"
-								containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
-								(click)="editUnit(unit)">
-								<i class='bx bxs-edit font-15'></i>
-							</button>
-							<button type="button" class="action-button delete" tooltip="Delete"
-								containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
-								(click)="deleteUnit(unit)">
-								<i class='bx bx-trash font-15'></i>
-							</button>
-						</div>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+		<section class="table__body">
+			<table>
+				<thead>
+					<tr>
+						<th>SL.</th>
+						<th>Unit Name</th>
+						<th>Status</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let unit of lstUnit; let i = index">
+						<td>{{i+1}}</td>
+						<td>{{unit.UnitName}}</td>
+						<td>
+							<div class="badge" [class.inactive-badge]="unit.Status == 2"
+								[class.active-badge]="unit.Status == 1">
+								{{unit.Status == 1 ? 'Active' : 'Inactive'}}
+							</div>
+						</td>
+						<td>
+							<div class="d-flex align-items-center gap-3 justify-content-end">
+								<button type="button" class="action-button edit" tooltip="Edit"
+									containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+									(click)="editUnit(unit)">
+									<i class='bx bxs-edit font-15'></i>
+								</button>
+								<button type="button" class="action-button delete" tooltip="Delete"
+									containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+									(click)="deleteUnit(unit)">
+									<i class='bx bx-trash font-15'></i>
+								</button>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
 		<div class="table-row-count">
 			<span class="txt-light font-11">Total Row:</span>
 			{{totalCount}}

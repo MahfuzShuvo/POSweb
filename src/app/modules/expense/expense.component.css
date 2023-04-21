@@ -3,9 +3,10 @@
     padding-bottom: 0;
 }
 
+/* 
 .expense-table table tbody {
     height: calc(100vh - 180px);
-}
+} */
 
 .table-row-count {
     padding: 5px 0;

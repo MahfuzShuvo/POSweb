@@ -25,55 +25,57 @@
 			<button type="button" class="theme-button" (click)="createSupplier({})">+ Add New</button>
 		</div>
 		<div class="supplier-table mt-1">
-			<table class="gen-pos">
-				<thead>
-					<tr>
-						<td>Full Name</td>
-						<td>Phone & Email</td>
-						<td>Address</td>
-						<td class="w-8">City</td>
-						<td class="w-8">State</td>
-						<td class="w-8">Zip</td>
-						<td class="w-10">Status</td>
-						<td class="w-10"></td>
-					</tr>
-				</thead>
-				<tbody>
-					<tr *ngFor="let supplier of lstSupplier">
-						<td>{{supplier.SupplierName}}</td>
-						<td>
-							<div class="d-flex flex-column">
-								<span>{{supplier.PhoneNumber}}</span>
-								<span class="txt-light">{{supplier.Email}}</span>
-							</div>
-						</td>
-						<td>{{supplier.Address}}</td>
-						<td class="w-8">{{supplier.City}}</td>
-						<td class="w-8">{{supplier.State}}</td>
-						<td class="w-8">{{supplier.Zip}}</td>
-						<td class="w-10">
-							<div class="badge" [class.inactive-badge]="supplier.Status == 2"
-								[class.active-badge]="supplier.Status == 1">
-								{{supplier.Status == 1 ? 'Active' : 'Inactive'}}
-							</div>
-						</td>
-						<td class="w-10">
-							<div class="d-flex align-items-center gap-3 justify-content-end">
-								<button type="button" class="action-button edit" tooltip="Edit"
-									containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
-									(click)="createSupplier(supplier)">
-									<i class='bx bxs-edit font-15'></i>
-								</button>
-								<button type="button" class="action-button delete" tooltip="Delete"
-									containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
-									(click)="deleteSupplier(supplier)">
-									<i class='bx bx-trash font-15'></i>
-								</button>
-							</div>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<section class="table__body">
+				<table>
+					<thead>
+						<tr>
+							<th>Full Name</th>
+							<th>Phone & Email</th>
+							<th>Address</th>
+							<th>City</th>
+							<th>State</th>
+							<th>Zip</th>
+							<th>Status</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let supplier of lstSupplier">
+							<td>{{supplier.SupplierName}}</td>
+							<td>
+								<div class="d-flex flex-column">
+									<span>{{supplier.PhoneNumber}}</span>
+									<span class="txt-light">{{supplier.Email}}</span>
+								</div>
+							</td>
+							<td>{{supplier.Address}}</td>
+							<td>{{supplier.City}}</td>
+							<td>{{supplier.State}}</td>
+							<td>{{supplier.Zip}}</td>
+							<td>
+								<div class="badge" [class.inactive-badge]="supplier.Status == 2"
+									[class.active-badge]="supplier.Status == 1">
+									{{supplier.Status == 1 ? 'Active' : 'Inactive'}}
+								</div>
+							</td>
+							<td>
+								<div class="d-flex align-items-center gap-3 justify-content-end">
+									<button type="button" class="action-button edit" tooltip="Edit"
+										containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+										(click)="createSupplier(supplier)">
+										<i class='bx bxs-edit font-15'></i>
+									</button>
+									<button type="button" class="action-button delete" tooltip="Delete"
+										containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+										(click)="deleteSupplier(supplier)">
+										<i class='bx bx-trash font-15'></i>
+									</button>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
 			<div class="table-row-count">
 				<span class="txt-light font-11">Total Row:</span>
 				{{totalCount}}

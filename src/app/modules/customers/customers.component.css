@@ -3,9 +3,9 @@
     padding-bottom: 0;
 }
 
-.customer-table table tbody {
+/* .customer-table table tbody {
     height: calc(100vh - 180px);
-}
+} */
 
 .table-row-count {
     padding: 5px 0;

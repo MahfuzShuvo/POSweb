@@ -24,68 +24,60 @@
 		<button type="button" class="theme-button" (click)="createUser({})">+ Add New</button>
 	</div>
 	<div class="system-user-table mt-1">
-		<table class="gen-pos">
-			<thead>
-				<tr>
-					<td>Full Name</td>
-					<td class="w-15">Username</td>
-					<td>Phone & Email</td>
-					<td>Address</td>
-					<td class="w-10">Role</td>
-					<!-- <td>Email</td> -->
-					<td class="w-10">Status</td>
-					<td class="w-10"></td>
-					<!-- <td>Address</td>
-					<td class="w-8">City</td>
-					<td class="w-8">State</td>
-					<td class="w-8">Zip</td> -->
-				</tr>
-			</thead>
-			<tbody>
-				<tr *ngFor="let systemUser of lstSystemUser">
-					<td>{{systemUser.FullName}}</td>
-					<td class="w-15">{{systemUser.Username}}</td>
-					<td>
-						<div class="d-flex flex-column">
-							<span>{{systemUser.PhoneNumber}}</span>
-							<span class="txt-light">{{systemUser.Email}}</span>
-						</div>
-					</td>
-					<td>
-						<div class="d-flex flex-column">
-							<span>{{systemUser.Address}}</span>
-							<span>{{getAddress(systemUser.City, systemUser.State, systemUser.Zip)}}</span>
-						</div>
-					</td>
-					<td class="w-10">{{getRoleName(systemUser.RoleID)}}</td>
-					<!-- <td>{{systemUser.Email}}</td> -->
-					<td class="w-10">
-						<div class="badge" [class.inactive-badge]="systemUser.Status == 2"
-							[class.active-badge]="systemUser.Status == 1">
-							{{systemUser.Status == 1 ? 'Active' : 'Inactive'}}
-						</div>
-					</td>
-					<td class="w-10">
-						<div class="d-flex align-items-center gap-3 justify-content-end">
-							<button type="button" class="action-button edit" tooltip="Edit"
-								containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
-								(click)="createUser(systemUser)">
-								<i class='bx bxs-edit font-15'></i>
-							</button>
-							<button type="button" class="action-button delete" tooltip="Delete"
-								containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
-								(click)="deleteUser(systemUser)">
-								<i class='bx bx-trash font-15'></i>
-							</button>
-						</div>
-					</td>
-					<!-- <td>{{systemUser.Address}}</td>
-					<td class="w-8">{{systemUser.City}}</td>
-					<td class="w-8">{{systemUser.State}}</td>
-					<td class="w-8">{{systemUser.Zip}}</td> -->
-				</tr>
-			</tbody>
-		</table>
+		<section class="table__body">
+			<table>
+				<thead>
+					<tr>
+						<th>Full Name</th>
+						<th>Username</th>
+						<th>Phone & Email</th>
+						<th>Address</th>
+						<th>Role</th>
+						<th>Status</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let systemUser of lstSystemUser">
+						<td>{{systemUser.FullName}}</td>
+						<td>{{systemUser.Username}}</td>
+						<td>
+							<div class="d-flex flex-column">
+								<span>{{systemUser.PhoneNumber}}</span>
+								<span class="txt-light">{{systemUser.Email}}</span>
+							</div>
+						</td>
+						<td>
+							<div class="d-flex flex-column">
+								<span>{{systemUser.Address}}</span>
+								<span>{{getAddress(systemUser.City, systemUser.State, systemUser.Zip)}}</span>
+							</div>
+						</td>
+						<td>{{getRoleName(systemUser.RoleID)}}</td>
+						<td>
+							<div class="badge" [class.inactive-badge]="systemUser.Status == 2"
+								[class.active-badge]="systemUser.Status == 1">
+								{{systemUser.Status == 1 ? 'Active' : 'Inactive'}}
+							</div>
+						</td>
+						<td>
+							<div class="d-flex align-items-center gap-3 justify-content-end">
+								<button type="button" class="action-button edit" tooltip="Edit"
+									containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+									(click)="createUser(systemUser)">
+									<i class='bx bxs-edit font-15'></i>
+								</button>
+								<button type="button" class="action-button delete" tooltip="Delete"
+									containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+									(click)="deleteUser(systemUser)">
+									<i class='bx bx-trash font-15'></i>
+								</button>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
 		<div class="table-row-count">
 			<span class="txt-light font-11">Total Row:</span>
 			{{totalCount}}

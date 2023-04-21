@@ -3,26 +3,28 @@
 	<button type="button" class="secondary-theme-button font-11" (click)="openPermissionModal()">Add Permission</button>
 </div>
 <div class="role-permission-table mt-2">
-	<table class="gen-pos">
-		<thead>
-			<tr>
-				<td>Permission</td>
-				<td *ngFor="let role of lstRole">{{role.RoleName}}</td>
-			</tr>
-		</thead>
-		<tbody>
-			<tr *ngFor="let permission of lstPermission">
-				<td>{{permission.DisplayName}}</td>
-				<td *ngFor="let role of lstRole">
-					<div class="form-check p-0">
-						<input type="checkbox" name="checkRole" id="{{permission.PermissionName}}_{{role.RoleID}}" 
-							[checked]="haveAccess(permission.PermissionID, role.RoleID)" [disabled]="role.RoleID == 1"
-							(change)="changeAccess($event, permission.PermissionID, role.RoleID)">
-					</div>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+	<section class="table__body">
+		<table>
+			<thead>
+				<tr>
+					<th>Permission</th>
+					<th *ngFor="let role of lstRole">{{role.RoleName}}</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let permission of lstPermission">
+					<td>{{permission.DisplayName}}</td>
+					<td *ngFor="let role of lstRole">
+						<div class="form-check d-flex p-0">
+							<input type="checkbox" name="checkRole" id="{{permission.PermissionName}}_{{role.RoleID}}" 
+								[checked]="haveAccess(permission.PermissionID, role.RoleID)" [disabled]="role.RoleID == 1"
+								(change)="changeAccess($event, permission.PermissionID, role.RoleID)">
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
 </div>
 
 <!-- add and edit role modal -->

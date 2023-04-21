@@ -24,48 +24,43 @@
 			<button type="button" class="theme-button" (click)="createExpense()">+ Add New</button>
 		</div>
 		<div class="expense-table mt-1">
-			<table class="gen-pos">
-				<thead>
-					<tr>
-						<td class="w-5">SL.</td>
-						<td>Title</td>
-						<td>Amount</td>
-						<td>Description</td>
-						<td>Account</td>
-						<!-- <td class="w-10">Status</td> -->
-						<td class="w-10"></td>
-					</tr>
-				</thead>
-				<tbody>
-					<tr *ngFor="let expense of lstExpense; let i = index">
-						<td class="w-5">{{i+1}}</td>
-						<td>{{expense.ExpenseTitle}}</td>
-						<td>{{expense.Amount | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</td>
-						<td>{{expense.Description}}</td>
-						<td>{{getAccountName(expense.AccountID)}}</td>
-						<!-- <td class="w-10">
-							<div class="badge" [class.inactive-badge]="expense.Status == 2"
-								[class.active-badge]="expense.Status == 1">
-								{{expense.Status == 1 ? 'Active' : 'Inactive'}}
-							</div>
-						</td> -->
-						<td class="w-10">
-							<div class="d-flex align-items-center gap-3 justify-content-end">
-								<button type="button" class="action-button edit" tooltip="Edit"
-									containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
-									(click)="editExpense(expense)">
-									<i class='bx bxs-edit font-15'></i>
-								</button>
-								<button type="button" class="action-button delete" tooltip="Delete"
-									containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
-									(click)="deleteExpense(expense)">
-									<i class='bx bx-trash font-15'></i>
-								</button>
-							</div>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<section class="table__body">
+				<table>
+					<thead>
+						<tr>
+							<th>SL.</th>
+							<th>Title</th>
+							<th>Amount</th>
+							<th>Description</th>
+							<th>Account</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let expense of lstExpense; let i = index">
+							<td>{{i+1}}</td>
+							<td>{{expense.ExpenseTitle}}</td>
+							<td>{{expense.Amount | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</td>
+							<td>{{expense.Description}}</td>
+							<td>{{getAccountName(expense.AccountID)}}</td>
+							<td>
+								<div class="d-flex align-items-center gap-3 justify-content-end">
+									<button type="button" class="action-button edit" tooltip="Edit"
+										containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+										(click)="editExpense(expense)">
+										<i class='bx bxs-edit font-15'></i>
+									</button>
+									<button type="button" class="action-button delete" tooltip="Delete"
+										containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+										(click)="deleteExpense(expense)">
+										<i class='bx bx-trash font-15'></i>
+									</button>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
 			<div class="table-row-count">
 				<span class="txt-light font-11">Total Row:</span>
 				{{totalCount}}

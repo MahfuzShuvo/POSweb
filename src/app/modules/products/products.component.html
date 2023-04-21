@@ -34,76 +34,78 @@
 					<span class="product-count">{{category.ProductCount}}</span>
 				</div>
 			</div>
-			<table class="gen-pos">
-				<thead>
-					<tr>
-						<td class="w-5">SL.</td>
-						<td class="w-20">Product</td>
-						<td class="w-15">Desciption</td>
-						<td>Category</td>
-						<td>Brand</td>
-						<td class="w-8">Stock</td>
-						<td class="w-10">Purchase Price</td>
-						<td class="w-10">Selling Price</td>
-						<td class="w-7">Status</td>
-						<td class="w-8"></td>
-					</tr>
-				</thead>
-				<tbody>
-					<tr *ngFor="let product of lstProduct; let i = index">
-						<td class="w-5">{{i+1}}</td>
-						<td class="w-20">
-							<div class="d-flex gap-2">
-								<img class="productImage" *ngIf="product.Image != ''"
-									[src]="product.Image | SafeResourceUrl" alt="">
-								<div class="d-flex flex-column">
-									<div class="weight-600">{{product.ProductName}}</div>
-									<div class="font-11">SKU: <span class="txt-light">{{product.SKU}}</span></div>
+			<section class="table__body">
+				<table>
+					<thead>
+						<tr>
+							<th>SL.</th>
+							<th>Product</th>
+							<th>Desciption</th>
+							<th>Category</th>
+							<th>Brand</th>
+							<th>Stock</th>
+							<th>Purchase Price</th>
+							<th>Selling Price</th>
+							<th>Status</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let product of lstProduct; let i = index">
+							<td>{{i+1}}</td>
+							<td>
+								<div class="d-flex gap-2">
+									<img class="productImage" *ngIf="product.Image != ''"
+										[src]="product.Image | SafeResourceUrl" alt="">
+									<div class="d-flex flex-column">
+										<div class="weight-600">{{product.ProductName}}</div>
+										<div class="font-11">SKU: <span class="txt-light">{{product.SKU}}</span></div>
+									</div>
 								</div>
-							</div>
-						</td>
-						<td class="w-15">
-							<div class="description-cell" [tooltip]="product.Description" container="body"
-								[adaptivePosition]="false" placement="top" containerClass="tooltipClass">
-								{{product.Description}}
-							</div>
-						</td>
-						<td>{{product.CategoryName}}</td>
-						<td>{{product.BrandName}}</td>
-						<td class="w-8">{{product.Qty}} {{product.UnitName}}</td>
-						<td class="w-10">{{product.PurchasePrice | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</td>
-						<td class="w-10">{{product.FinalPrice | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</td>
-						<td class="w-7">
-							<!-- <div class="badge" [class.inactive-badge]="product.Status == 2"
-								[class.active-badge]="product.Status == 1">
-								{{product.Status == 1 ? 'Active' : 'Inactive'}}
-							</div> -->
-							<div class="form-group">
-								<label class="toggle">
-									<input class="toggle__checkbox" type="checkbox"
-										(change)="changeProductStatus($event, product)" [checked]="product.Status == 1">
-									<span class="toggle__switch"></span>
-									<span class="toggle__label"></span>
-								</label>
-							</div>
-						</td>
-						<td class="w-8">
-							<div class="d-flex align-items-center gap-3 justify-content-end">
-								<button type="button" class="action-button edit" tooltip="Edit"
-									containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
-									(click)="editProduct(product.Slug)">
-									<i class='bx bxs-edit font-15'></i>
-								</button>
-								<button type="button" class="action-button delete" tooltip="Delete"
-									containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
-									(click)="deleteProduct(product)">
-									<i class='bx bx-trash font-15'></i>
-								</button>
-							</div>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+							</td>
+							<td>
+								<div class="description-cell" [tooltip]="product.Description" container="body"
+									[adaptivePosition]="false" placement="top" containerClass="tooltipClass">
+									{{product.Description}}
+								</div>
+							</td>
+							<td>{{product.CategoryName}}</td>
+							<td>{{product.BrandName}}</td>
+							<td>{{product.Qty}} {{product.UnitName}}</td>
+							<td>{{product.PurchasePrice | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</td>
+							<td>{{product.FinalPrice | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</td>
+							<td>
+								<!-- <div class="badge" [class.inactive-badge]="product.Status == 2"
+									[class.active-badge]="product.Status == 1">
+									{{product.Status == 1 ? 'Active' : 'Inactive'}}
+								</div> -->
+								<div class="form-group">
+									<label class="toggle">
+										<input class="toggle__checkbox" type="checkbox"
+											(change)="changeProductStatus($event, product)" [checked]="product.Status == 1">
+										<span class="toggle__switch"></span>
+										<span class="toggle__label"></span>
+									</label>
+								</div>
+							</td>
+							<td>
+								<div class="d-flex align-items-center gap-3 justify-content-end">
+									<button type="button" class="action-button edit" tooltip="Edit"
+										containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+										(click)="editProduct(product.Slug)">
+										<i class='bx bxs-edit font-15'></i>
+									</button>
+									<button type="button" class="action-button delete" tooltip="Delete"
+										containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+										(click)="deleteProduct(product)">
+										<i class='bx bx-trash font-15'></i>
+									</button>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
 			<div class="table-row-count">
 				<span class="txt-light font-11">Total Row:</span>
 				{{totalCount}}
