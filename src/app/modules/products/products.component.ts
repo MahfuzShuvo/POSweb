@@ -10,8 +10,7 @@ import { ResponseMessage } from 'src/app/models/DTO/responseMessage';
 import { ResponseStatus } from 'src/app/common/enums/appEnums';
 import { AppConstant } from 'src/app/common/constants/appConstant';
 import { VMPrduct } from 'src/app/models/VM/vmProduct';
-import { CategoryService } from 'src/app/services/category.service';
-import { Category } from 'src/app/models/category';
+import { VMCountProductByCategory } from 'src/app/models/VM/vmCountProductByCategory';
 
 @Component({
 	selector: 'app-products',
@@ -31,7 +30,7 @@ export class ProductsComponent implements OnInit {
 	modalTitle: string;
 	file: any = {};
 	uploadedImageUrl: string = '';
-	lstCategory: Category[] = [];
+	lstCategory: VMCountProductByCategory[] = [];
 	selectedCategoryID: number = 0;
 
 	constructor(
@@ -41,19 +40,18 @@ export class ProductsComponent implements OnInit {
 		private productService: ProductService,
 		private messageHelper: MessageHelper,
 		private modalService: BsModalService,
-		private categoryService: CategoryService
 	) {
 		const headerTitle = this.activatedRoute.parent?.snapshot.url[0].path;
 		Promise.resolve().then(() => this.headerService.setTitle(headerTitle!.toString()));
 	}
 
 	ngOnInit() {
-		this.getAllCategory();
+		this.getAllCategoryWithProductCount();
 		this.getAllProduct();
 	}
 
-	getAllCategory() {
-		this.categoryService.getAllCategory()
+	getAllCategoryWithProductCount() {
+		this.productService.getProductCountByCategory()
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {
 				if (response.ResponseCode == ResponseStatus.success) {
@@ -73,7 +71,7 @@ export class ProductsComponent implements OnInit {
 			this.objProduct.Image = this.objProduct.Image.replace(AppConstant.FILE_PATH, '');
 		}
 
-		this.productService.saveProduct(this.objProduct)
+		this.productService.changeProductStatus(this.objProduct)
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {
 				if (response.ResponseCode == ResponseStatus.success) {
@@ -81,10 +79,8 @@ export class ProductsComponent implements OnInit {
 					if (exist) {
 						exist.Status = response.ResponseObj.Status;
 					}
-					this.messageHelper.showMessage(response.ResponseCode, "Status changed successfully");
-				} else {
-					this.messageHelper.showMessage(response.ResponseCode, response.Message);
 				}
+				this.messageHelper.showMessage(response.ResponseCode, response.Message);
 
 				this.objProduct = new Product();
 			})
@@ -140,8 +136,12 @@ export class ProductsComponent implements OnInit {
 	}
 
 	confirmDelete() {
-		if (this.objProduct.ProductID > 0) {
-			this.productService.deleteProduct(this.objProduct.ProductID)
+		if (this.objProduct.SKU != '') {
+			if (this.objProduct.Image?.includes(AppConstant.FILE_PATH)) {
+				this.objProduct.Image = this.objProduct.Image.replace(AppConstant.FILE_PATH, '');
+			}
+
+			this.productService.deleteProduct(this.objProduct)
 				.pipe(takeUntil(this.destroy))
 				.subscribe((response: ResponseMessage) => {
 					if (response.ResponseCode == ResponseStatus.success) {

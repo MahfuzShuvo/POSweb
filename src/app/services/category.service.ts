@@ -11,9 +11,9 @@ export class CategoryService {
 		private httpHelper: HttpHelper
 	) { }
 
-	getAllCategory(): Observable<any> {
+	getAllCategory(obj: any, currentPage: number, pageSize: number): Observable<any> {
 		const url = 'api/Category/GetAllCategory';
-		return this.httpHelper.postHelper(url);
+		return this.httpHelper.postHelper(url, obj, currentPage, pageSize);
 	}
 
 	saveCategory(obj: any): Observable<any> {

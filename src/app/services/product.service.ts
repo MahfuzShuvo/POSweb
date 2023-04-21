@@ -16,6 +16,11 @@ export class ProductService {
 		return this.httpHelper.postHelper(url);
 	}
 
+	getProductCountByCategory(): Observable<any> {
+		const url = 'api/Product/GetProductCountByCategory';
+		return this.httpHelper.postHelper(url);
+	}
+
 	getAllProductByCategoryID(obj: any): Observable<any> {
 		const url = 'api/Product/GetAllProductByCategoryID';
 		return this.httpHelper.postHelper(url, obj);
@@ -33,6 +38,11 @@ export class ProductService {
 
 	saveProduct(obj: any): Observable<any> {
 		const url = 'api/Product/SaveProduct';
+		return this.httpHelper.postHelper(url, obj);
+	}
+
+	changeProductStatus(obj: any): Observable<any> {
+		const url = 'api/Product/ChangeProductStatus';
 		return this.httpHelper.postHelper(url, obj);
 	}
 

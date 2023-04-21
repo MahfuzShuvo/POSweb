@@ -3,8 +3,8 @@
 		<div class="table-headings d-flex align-items-center justify-content-between">
 			<div class="table-search d-flex align-items-center gap-1">
 				<i class='bx bx-search-alt mt-1'></i>
-				<input type="text" class="form-control" name="searchProduct" #searchText placeholder="Search by name ..."
-					(keyup)="searchProduct(searchText.value)">
+				<input type="text" class="form-control" name="searchProduct" #searchText
+					placeholder="Search by name ..." (keyup)="searchProduct(searchText.value)">
 			</div>
 			<!-- <div class="d-flex align-items-center gap-2">
 				<div class="filter-search role-filter">
@@ -25,24 +25,26 @@
 		</div>
 		<div class="product-table mt-1">
 			<div class="product tab-menu">
-				<div class="tab-menu-item" [class.active]="selectedCategoryID == 0" (click)="getAllProduct(); selectedCategoryID = 0">All</div>
-				<div class="tab-menu-item" [class.active]="selectedCategoryID == category.CategoryID" 
-					*ngFor="let category of lstCategory" (click)="getAllProductByCategoryID(category.CategoryID)">
+				<div class="tab-menu-item" [class.active]="selectedCategoryID == 0"
+					(click)="getAllProduct(); selectedCategoryID = 0">All</div>
+				<div class="tab-menu-item d-flex align-items-center gap-1"
+					[class.active]="selectedCategoryID == category.CategoryID" *ngFor="let category of lstCategory"
+					(click)="getAllProductByCategoryID(category.CategoryID)">
 					{{category.CategoryName}}
+					<span class="product-count">{{category.ProductCount}}</span>
 				</div>
 			</div>
 			<table class="gen-pos">
 				<thead>
 					<tr>
 						<td class="w-5">SL.</td>
-						<td class="w-8">Image</td>
-						<td>Name</td>
+						<td class="w-20">Product</td>
 						<td class="w-15">Desciption</td>
 						<td>Category</td>
 						<td>Brand</td>
 						<td class="w-8">Stock</td>
-						<td>Purchase Price</td>
-						<td>Selling Price</td>
+						<td class="w-10">Purchase Price</td>
+						<td class="w-10">Selling Price</td>
 						<td class="w-7">Status</td>
 						<td class="w-8"></td>
 					</tr>
@@ -50,22 +52,27 @@
 				<tbody>
 					<tr *ngFor="let product of lstProduct; let i = index">
 						<td class="w-5">{{i+1}}</td>
-						<td class="w-8">
-							<img class="productImage" *ngIf="product.Image != ''" [src]="product.Image | SafeResourceUrl" alt="">
-							<span *ngIf="product.Image == ''">-</span>
+						<td class="w-20">
+							<div class="d-flex gap-2">
+								<img class="productImage" *ngIf="product.Image != ''"
+									[src]="product.Image | SafeResourceUrl" alt="">
+								<div class="d-flex flex-column">
+									<div class="weight-600">{{product.ProductName}}</div>
+									<div class="font-11">SKU: <span class="txt-light">{{product.SKU}}</span></div>
+								</div>
+							</div>
 						</td>
-						<td>{{product.ProductName}}</td>
 						<td class="w-15">
-							<div class="description-cell" [tooltip]="product.Description" container="body" 
-							[adaptivePosition]="false" placement="top" containerClass="tooltipClass">
+							<div class="description-cell" [tooltip]="product.Description" container="body"
+								[adaptivePosition]="false" placement="top" containerClass="tooltipClass">
 								{{product.Description}}
 							</div>
 						</td>
 						<td>{{product.CategoryName}}</td>
 						<td>{{product.BrandName}}</td>
 						<td class="w-8">{{product.Qty}} {{product.UnitName}}</td>
-						<td>{{product.PurchasePrice | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</td>
-						<td>{{product.FinalPrice | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</td>
+						<td class="w-10">{{product.PurchasePrice | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</td>
+						<td class="w-10">{{product.FinalPrice | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</td>
 						<td class="w-7">
 							<!-- <div class="badge" [class.inactive-badge]="product.Status == 2"
 								[class.active-badge]="product.Status == 1">
@@ -73,8 +80,8 @@
 							</div> -->
 							<div class="form-group">
 								<label class="toggle">
-									<input class="toggle__checkbox" type="checkbox" (change)="changeProductStatus($event, product)"
-										[checked]="product.Status == 1">
+									<input class="toggle__checkbox" type="checkbox"
+										(change)="changeProductStatus($event, product)" [checked]="product.Status == 1">
 									<span class="toggle__switch"></span>
 									<span class="toggle__label"></span>
 								</label>

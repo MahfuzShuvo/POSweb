@@ -1,0 +1,42 @@
+.ag-theme-alpine .ag-root-wrapper {
+    border: none;
+}
+
+.ag-theme-alpine .ag-ltr .ag-cell,
+.ag-theme-alpine .ag-row,
+.ag-theme-alpine {
+    font-size: var(--font-12) !important;
+}
+
+.ag-theme-alpine .ag-header {
+    border-top: 0;
+    border-bottom: 0;
+    border-radius: 4px
+}
+
+.ag-theme-alpine .ag-header-row {
+    color: var(--bs-secondary);
+    font-weight: var(--weight-500) !important;
+    background: var(--thead-color) !important;
+}
+
+.ag-theme-alpine .ag-row {
+    border-color: var(--border-color);
+}
+
+.ag-theme-alpine .ag-ltr .ag-cell {
+    height: 35px;
+}
+
+.ag-row {
+    z-index: 0;
+    background-color: var(--white-color) !important;
+}
+
+.ag-row.ag-row-focus {
+    z-index: 1;
+}
+
+.ag-theme-alpine .ag-header-cell[col-id="Action"] .ag-header-cell-label {
+    justify-content: flex-end;
+}

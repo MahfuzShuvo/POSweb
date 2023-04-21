@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { AppConstant } from 'src/app/common/constants/appConstant';
 import { ResponseStatus } from 'src/app/common/enums/appEnums';
@@ -48,7 +48,8 @@ export class ProductFormComponent implements OnInit {
 		private activatedRoute: ActivatedRoute,
 		private messageHelper: MessageHelper,
 		private productService: ProductService,
-		public dataService: DataService
+		public dataService: DataService,
+		private router: Router
 	) {
 		const headerTitle = this.activatedRoute.parent?.snapshot.url[0].path;
 		var childRoute = "";
@@ -136,7 +137,7 @@ export class ProductFormComponent implements OnInit {
 						this.lstAllProduct.push(response.ResponseObj);
 					}
 
-					this.objProduct = new Product();
+					this.clickCancel();
 				}
 				this.messageHelper.showMessage(response.ResponseCode, response.Message);
 			})
@@ -300,6 +301,11 @@ export class ProductFormComponent implements OnInit {
 		this.uploadedImageUrl = '';
 		this.file = {};
 		this.objProduct.Attachment = new VMAttachment();
+	}
+
+	clickCancel() {
+		this.objProduct = new Product();
+		this.router.navigate(['product']);
 	}
 
 	ngOnDestroy(): void {

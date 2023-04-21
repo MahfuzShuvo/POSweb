@@ -49,13 +49,14 @@ export class CategoryComponent implements OnInit {
 	}
 
 	getAllCategory() {
-		this.categoryService.getAllCategory()
+		this.categoryService.getAllCategory({}, 0, 100)
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {
 				if (response.ResponseCode == ResponseStatus.success) {
 					this.lstCategory = response.ResponseObj;
 					this.lstAllCategory = JSON.parse(JSON.stringify(this.lstCategory));
-					this.totalCount = response.TotalCount
+
+					this.totalCount = response.TotalCount;
 				} else {
 					this.messageHelper.showMessage(response.ResponseCode, response.Message);
 				}

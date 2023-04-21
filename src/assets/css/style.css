@@ -7,6 +7,7 @@
 @import url('./font-size.css');
 @import url('./font-weight.css');
 @import url('./spacing.css');
+@import url('./custom-aggrid-style.css');
 
 /* styling scrollbar */
 ::-webkit-scrollbar {
@@ -324,6 +325,10 @@ input.form-control:-moz-placeholder {
 
 .w-5 {
     width: 5%;
+}
+
+.w-3 {
+    width: 3%;
 }
 
 .description-cell {
