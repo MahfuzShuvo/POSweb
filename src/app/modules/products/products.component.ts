@@ -9,8 +9,8 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ResponseMessage } from 'src/app/models/DTO/responseMessage';
 import { ResponseStatus } from 'src/app/common/enums/appEnums';
 import { AppConstant } from 'src/app/common/constants/appConstant';
-import { VMPrduct } from 'src/app/models/VM/vmProduct';
 import { VMCountProductByCategory } from 'src/app/models/VM/vmCountProductByCategory';
+import { VMProduct } from 'src/app/models/VM/vmProduct';
 
 @Component({
 	selector: 'app-products',
@@ -21,11 +21,11 @@ export class ProductsComponent implements OnInit {
 
 	private destroy: Subject<void> = new Subject<void>();
 	@ViewChild('deleteModal', { read: TemplateRef }) deleteModal: TemplateRef<any>;
-	lstProduct: VMPrduct[] = [];
+	lstProduct: VMProduct[] = [];
 	objProduct: Product = new Product();
 	totalCount: number = 0;
 	modalRef?: BsModalRef;
-	lstAllProduct: VMPrduct[] = [];
+	lstAllProduct: VMProduct[] = [];
 	buttonText: string;
 	modalTitle: string;
 	file: any = {};
@@ -63,7 +63,7 @@ export class ProductsComponent implements OnInit {
 
 	}
 
-	changeProductStatus(event: any, product: VMPrduct) {
+	changeProductStatus(event: any, product: VMProduct) {
 		this.objProduct = new Product();
 		this.objProduct = JSON.parse(JSON.stringify(product));
 		this.objProduct.Status = event.target.checked ? 1 : 2;
@@ -128,7 +128,7 @@ export class ProductsComponent implements OnInit {
 		this.totalCount = this.lstProduct.length;
 	}
 
-	deleteProduct(product: VMPrduct) {
+	deleteProduct(product: VMProduct) {
 		this.objProduct = new Product();
 		this.objProduct = JSON.parse(JSON.stringify(product));
 

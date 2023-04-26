@@ -1,0 +1,21 @@
+.purchase-body {
+    padding: 10px 20px;
+    padding-bottom: 0;
+}
+
+.purchase-form-division:not(:first-child) {
+    border-top: 1px solid var(--light-border-color);
+    margin-top: 25px;
+    padding-top: 25px;
+}
+
+.form-group i.p-search {
+    position: absolute;
+    top: 11px;
+    left: 10px;
+    z-index: 1;
+}
+
+input#searchProduct {
+    padding-left: 35px;
+}

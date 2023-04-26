@@ -23,6 +23,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { MatchPasswordDirective } from './common/directives/match-password.directive';
 import { SafeResourceUrlPipe } from './common/pipes/SafeResourceUrl.pipe';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 @NgModule({
     declarations: [
@@ -52,7 +53,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
         TabsModule.forRoot(),
         ModalModule.forRoot(),
         TooltipModule.forRoot(),
-        BsDropdownModule.forRoot()
+        BsDropdownModule.forRoot(),
+        BsDatepickerModule.forRoot(),
     ],
     exports: [
         HomeLayoutComponent,
@@ -76,7 +78,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
         TabsModule,
         ModalModule,
         TooltipModule,
-        BsDropdownModule
+        BsDropdownModule,
+        BsDatepickerModule
     ],
     bootstrap: [AppComponent],
     providers: [MessageHelper]

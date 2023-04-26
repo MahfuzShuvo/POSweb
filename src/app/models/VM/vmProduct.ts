@@ -1,4 +1,4 @@
-export class VMPrduct {
+export class VMProduct {
     ProductName: string;
     Description: string;
     SKU: string;

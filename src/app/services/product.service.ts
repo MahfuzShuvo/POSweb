@@ -50,4 +50,9 @@ export class ProductService {
 		const url = 'api/Product/DeleteProduct';
 		return this.httpHelper.postHelper(url, obj);
 	}
+
+	searchProduct(obj: any): Observable<any> {
+		const url = 'api/Product/SearchProduct';
+		return this.httpHelper.postHelper(url, obj);
+	}
 }

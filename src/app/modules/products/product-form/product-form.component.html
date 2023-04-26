@@ -32,16 +32,6 @@
 								<label for="category" class="form-label">
 									Category <span class="txt-danger">*</span>
 								</label>
-								<!-- <select name="category" id="category" class="form-select"
-									[(ngModel)]="objProduct.CategoryID" #category="ngModel" required
-									[ngClass]="{ 'is-invalid': productForm.submitted && category.errors }">
-									<option [value]="0" selected disabled>Select</option>
-									<option [value]="category.CategoryID" *ngFor="let category of lstCategory">
-										{{category.CategoryName}}</option>
-								</select>
-								<div *ngIf="productForm.submitted && category.errors && category.value == 0" class="invalid-feedback">
-									<div *ngIf="category.errors['required'] && category.value == 0">Category is required</div>
-								</div> -->
 								<div class="btn-group" dropdown #dropdownCategory="bs-dropdown" [insideClick]="true"
 									(onShown)="openCategoryDrop()">
 									<div dropdownToggle class="custome-select" id="category"
@@ -65,16 +55,10 @@
 									</div>
 								</div>
 							</div>
-
 						</div>
 						<div class="col-md-3">
 							<div class="form-group">
 								<label for="brand" class="form-label">Brand</label>
-								<!-- <select name="brand" id="brand" class="form-select" [(ngModel)]="objProduct.BrandID">
-									<option value="0" selected disabled>Select</option>
-									<option [value]="brand.BrandID" *ngFor="let brand of lstBrand">{{brand.BrandName}}
-									</option>
-								</select> -->
 								<div class="btn-group" dropdown #dropdownBrand="bs-dropdown" [insideClick]="true"
 									(onShown)="openBrandDrop()">
 

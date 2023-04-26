@@ -1,4 +1,6 @@
+import { VMProduct } from './VM/vmProduct';
 import { BaseModel } from './baseModel';
+import { Product } from './product';
 
 export class Purchase extends BaseModel {
     PurchaseID: number;
@@ -11,4 +13,5 @@ export class Purchase extends BaseModel {
     PaymentType!: number;
     PaymentAmount!: number;
     PaymentNote: string;
+    lstProduct: VMProduct[] = [];
 }

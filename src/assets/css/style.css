@@ -336,3 +336,34 @@ input.form-control:-moz-placeholder {
     white-space: nowrap;
     max-width: 200px;
 }
+
+/* custome datepicker style start */
+.bs-datepicker-head button.next span,
+.bs-datepicker-head button.previous span {
+    font-size: var(--font-22) !important;
+    position: absolute !important;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    line-height: normal !important;
+}
+
+.bs-datepicker-head button.next,
+.bs-datepicker-head button.previous {
+    position: relative !important;
+}
+
+.bs-datepicker-body table th {
+    font-size: var(--font-11) !important;
+    font-weight: var(--weight-600) !important;
+}
+
+.theme-green .bs-datepicker-head {
+    background-color: var(--theme-color) !important;
+}
+
+.theme-green .bs-datepicker-body table td.week span {
+    color: var(--secondary-theme-color) !important;
+}
+
+/* custome datepicker style end */

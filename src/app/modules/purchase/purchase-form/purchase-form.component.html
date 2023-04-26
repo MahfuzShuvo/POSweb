@@ -1,3 +1,102 @@
-<p>
-  purchase-form works!
-</p>
+<div class="body-wrapper-card card">
+	<div class="purchase-body">
+		<form autocomplete="off" #purchaseForm="ngForm" (ngSubmit)="purchaseForm.form.valid && savePurchase()"
+			novalidate>
+			<div class="purchase-form-division">
+				<div class="row">
+					<div class="col-md-3">
+						<div class="form-group">
+							<label for="category" class="form-label">
+								Supplier <span class="txt-danger">*</span>
+							</label>
+							<div class="btn-group" dropdown #dropdownSupplier="bs-dropdown" [insideClick]="true"
+								(onShown)="getAllSupplier(); openSupplierDrop()">
+								<div dropdownToggle class="custome-select" id="category" aria-controls="dropdown-basic">
+									<span class="custome-select-txt">{{(objPurchase.SupplierID &&
+										objPurchase.SupplierID > 0) ? selectedSupplier.SupplierName :
+										'Select'}}</span>
+									<i class='bx bx-chevron-down font-17'></i>
+								</div>
+								<div id="dropdown-basic" *dropdownMenu class="dropdown-menu" aria-labelledby="category">
+									<input type="text" name="searchSupplier" id="searchSupplier" class="dropdown-search"
+										placeholder="Search" #searchSupplier
+										(keyup)="searchSupplierDropdown(searchSupplier.value)">
+									<ul class="dropdown-ul">
+										<li class="dropdown-item" *ngFor="let supplier of lstSupplier"
+											(click)="selectSupplier(supplier); dropdownSupplier.isOpen = false">
+											{{supplier.SupplierName}}
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label for="purchaseDate" class="form-label">Purchase Date</label>
+							<input class="form-control" id="purchaseDate" placeholder="00/00/0000" bsDatepicker
+								[maxDate]="maxDate">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label for="purchaseStatus" class="form-label">Status</label>
+							<select name="purchaseStatus" id="purchaseStatus" class="form-select">
+								<option [value]="0" disabled selected>Select</option>
+								<option [value]="1">Recieved</option>
+								<option [value]="2">Pending</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="purchase-form-division">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							<i class='bx bx-search-alt p-search font-15 txt-light'></i>
+
+							<input type="text"
+								class="form-control" name="searchProduct" id="searchProduct"
+								placeholder="Search product" (keyup)="onKeyProductSearch($event)">
+							<!-- <div class="btn-group" dropdown #dropdownSearchProduct="bs-dropdown" [insideClick]="true"> -->
+
+									<!-- <ng-container *ngIf=""> -->
+
+										<div class="dropdown-menu " [class.show]="lstProduct && lstProduct.length > 0">
+											<!-- <input type="text" name="searchSupplier" id="searchSupplier" class="dropdown-search"
+												placeholder="Search" #searchSupplier
+												(keyup)="searchSupplierDropdown(searchSupplier.value)"> -->
+											<ul class="dropdown-ul">
+												<li class="dropdown-item" *ngFor="let product of lstProduct">
+													{{product.ProductName}}
+												</li>
+											</ul>
+										</div>
+									<!-- </ng-container> -->
+							<!-- </div> -->
+						</div>
+					</div>
+				</div>
+				<section class="table__body mt-3">
+					<table>
+						<thead>
+							<tr>
+								<th>Product</th>
+								<th>Quantity</th>
+								<th>Purchase Price / Unit (&#2547;)</th>
+								<th>Total Amount (&#2547;)</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+				</section>
+			</div>
+		</form>
+	</div>
+</div>
