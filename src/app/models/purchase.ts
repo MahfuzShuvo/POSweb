@@ -1,6 +1,5 @@
 import { VMProduct } from './VM/vmProduct';
 import { BaseModel } from './baseModel';
-import { Product } from './product';
 
 export class Purchase extends BaseModel {
     PurchaseID: number;

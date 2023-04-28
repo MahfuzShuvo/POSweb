@@ -21,6 +21,7 @@ export class PurchaseFormComponent implements OnInit {
 
 	private destroy: Subject<void> = new Subject<void>();
 	@ViewChild('searchSupplier') searchSupplier: ElementRef;
+	@ViewChild('searchProductText') searchProductText: ElementRef;
 	purchaseCode: string = '';
 	objPurchase: Purchase = new Purchase();
 	lstSupplier: Supplier[] = [];
@@ -127,6 +128,29 @@ export class PurchaseFormComponent implements OnInit {
 			this.searchSupplier!.nativeElement.value = '';
 			this.searchSupplier!.nativeElement.focus();
 		}, 5);
+	}
+
+	productAddToPurchase(product: VMProduct) {
+		if (product && product.SKU != '') {
+			var existProduct = this.objPurchase.lstProduct.filter(x => x.SKU == product.SKU)[0];
+			if (!existProduct) {
+				product.Qty = 1;
+				this.objPurchase.lstProduct.push(product);
+				this.lstProduct = [];
+				this.searchProductText!.nativeElement.value = '';
+			}
+		}
+	}
+
+	clickToRemoveFromList(index: number) {
+		this.objPurchase.lstProduct.splice(index, 1);
+	}
+
+	numbersOnlyValidator(event: any) {
+		const pattern = /^[0-9\-]*$/;
+		if (!pattern.test(event.target.value)) {
+			event.target.value = event.target.value.replace(/[^0-9\-]/g, "");
+		}
 	}
 
 	savePurchase() {

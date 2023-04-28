@@ -113,3 +113,25 @@ button:disabled {
     background: var(--border-color);
     box-shadow: 0 2px 2px #00000025;
 }
+
+.removeFromList-btn {
+    background: var(--danger-color);
+    border-radius: 4px;
+    width: 26px;
+    height: 26px;
+    border: none;
+    overflow: none;
+    position: relative;
+}
+
+.removeFromList-btn span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+}
+
+.removeFromList-btn:hover {
+    opacity: .7;
+}

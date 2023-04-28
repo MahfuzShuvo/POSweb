@@ -52,6 +52,7 @@ main {
     top: 60px;
     left: 250px;
     padding: 10px 20px;
+    overflow: auto;
 }
 
 ul {

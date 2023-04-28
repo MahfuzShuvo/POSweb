@@ -40,7 +40,7 @@ a.theme-link:hover {
 }
 
 .body-wrapper-card {
-    height: calc(100vh - 80px);
+    min-height: calc(100vh - 80px);
     background: var(--white-color);
     border-radius: 6px !important;
     border: none !important;
