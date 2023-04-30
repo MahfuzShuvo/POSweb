@@ -1,0 +1,165 @@
+<!-- systemUser-form offcanvas -->
+<div class="offcanvas offcanvas-start show" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
+	id="systemUser-form-sidebar" aria-labelledby="systemUser-form-sidebar-Label">
+	<div class="offcanvas-header align-items-center">
+		<div class="offcanvas-title d-flex flex-column gap-1" id="systemUser-form-sidebar-Label">
+			<span class="offcanvas-title-text font-13 weight-600">{{headerText}}</span>
+		</div>
+		<button type="button" class="offcanvas-close-btn" (click)="closeSidebar()">
+			<svg xmlns="http://www.w3.org/2000/svg" width="4.414" height="7.414" viewBox="0 0 4.414 7.414">
+				<path id="Path_320" data-name="Path 320" d="M3896.954-1163.261l3,3,3-3"
+					transform="translate(1163.968 3903.66) rotate(-90)" fill="none" stroke="#222" stroke-linecap="round"
+					stroke-width="1" />
+			</svg>
+		</button>
+	</div>
+	<form autocomplete="off" #userForm="ngForm"
+	(ngSubmit)="userForm.form.valid && saveSystemUser()" novalidate>
+		<div class="offcanvas-body">
+			<p class="font-12 txt-light">Personal Information</p>
+			<div class="row mt-2">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label for="fullname" class="form-label">Full Name <span class="txt-danger">*</span></label>
+					<input type="text" id="fullname" name="fullname" class="form-control" placeholder="Enter fullname"
+						[(ngModel)]="objSystemUser.FullName" required #fullName="ngModel"
+						[ngClass]="{ 'is-invalid': userForm.submitted && fullName.errors }">
+					<div *ngIf="fullName.errors && (fullName.dirty || userForm.submitted) && fullName.invalid"
+						class="invalid-feedback">
+						<div *ngIf="fullName.errors['required']">Full name is required</div>
+					</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label for="phone" class="form-label">Phone Number <span class="txt-danger">*</span></label>
+						<input type="text" id="phone" name="phone" class="form-control" placeholder="Enter phone number"
+							[(ngModel)]="objSystemUser.PhoneNumber" #phoneNumber="ngModel" maxlength="11" [ngClass]="{ 'is-invalid': userForm.submitted && phoneNumber.errors }"
+							(input)="numbersOnlyValidator($event)" required>
+							<div *ngIf="phoneNumber.errors && (phoneNumber.dirty || userForm.submitted) && phoneNumber.invalid"
+								class="invalid-feedback">
+								<div *ngIf="phoneNumber.errors['required']">
+									Phone number is required
+								</div>
+								<div *ngIf="phoneNumber.errors['minlength'] || phoneNumber.errors['maxlength']">
+									Phone number must be at 11 digit
+								</div>
+							</div>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="form-group">
+						<label for="email" class="form-label">Email <span class="txt-danger">*</span></label>
+						<input type="email" id="email" name="email" class="form-control" placeholder="Enter email address"
+							[(ngModel)]="objSystemUser.Email" required email #email="ngModel"
+							[ngClass]="{ 'is-invalid': userForm.submitted && email.errors }">
+							<div *ngIf="email.errors && (email.dirty || userForm.submitted) && email.invalid"
+								class="invalid-feedback">
+								<div *ngIf="email.errors['required']">Email is required</div>
+								<div *ngIf="email.errors['email']">Email is invalid</div>
+							</div>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="form-group">
+						<label for="address" class="form-label">Address <span class="txt-danger">*</span></label>
+						<input type="text" id="address" name="address" class="form-control" placeholder="Enter address"
+							[(ngModel)]="objSystemUser.Address" required #address="ngModel"
+							[ngClass]="{ 'is-invalid': userForm.submitted && address.errors }">
+						<div *ngIf="address.errors && (address.dirty || userForm.submitted) && address.invalid"
+									class="invalid-feedback">
+							<div *ngIf="address.errors['required']">Address is required</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<label for="city" class="form-label">City</label>
+						<input type="text" id="city" name="city" class="form-control" placeholder="Enter city"
+							[(ngModel)]="objSystemUser.City">
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<label for="state" class="form-label">State</label>
+						<input type="text" id="state" name="state" class="form-control" placeholder="Enter state"
+							[(ngModel)]="objSystemUser.State">
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<label for="zip" class="form-label">Zip</label>
+						<input type="text" id="zip" name="zip" class="form-control" placeholder="Enter zip"
+							[(ngModel)]="objSystemUser.Zip">
+					</div>
+				</div>
+			</div>
+			<p class="font-12 txt-light mt-3">Account Information</p>
+			<div class="row mt-2">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label for="username" class="form-label">Username <span class="txt-danger">*</span></label>
+						<input type="text" id="username" name="username" class="form-control" placeholder="Enter username"
+							[(ngModel)]="objSystemUser.Username" required maxlength="20" #username="ngModel"
+							[ngClass]="{ 'is-invalid': userForm.submitted && username.errors }">
+							<div *ngIf="userForm.submitted && username.errors" class="invalid-feedback">
+								<div *ngIf="username.errors['required']">Username is required</div>
+								<div *ngIf="username.errors['maxlength']">
+									Username must be at most 20 characters
+								</div>
+							</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group ico">
+						<label for="password" class="form-label">Password <span class="txt-danger">*</span></label>
+						<input [type]="isPasswordShow ? 'text' : 'password'" name="password" id="password" class="form-control"
+							placeholder="****" [(ngModel)]="objSystemUser.Password" required
+							minlength="4" maxlength="40" #password="ngModel" [disabled]="objSystemUser.SystemUserID > 0"
+							[ngClass]="{ 'is-invalid': userForm.submitted && password.errors }">
+						<i class="fa txt-light" [class.fa-eye]="isPasswordShow" [class.fa-eye-slash]="!isPasswordShow"
+							aria-hidden="true" (click)="isPasswordShow = !isPasswordShow"></i>
+						<div *ngIf="userForm.submitted && password.errors" class="invalid-feedback">
+							<div *ngIf="password.errors['required']">Password is required</div>
+							<div *ngIf="password.errors['minlength']">
+								Password must be at least 4 characters
+							</div>
+							<div *ngIf="password.errors['maxlength']">
+								Password must not exceed 40 characters
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label for="selectRole" class="form-label">Role <span class="txt-danger">*</span></label>
+						<select name="selectRole" id="selectRole" class="form-select" #roleId="ngModel" [(ngModel)]="objSystemUser.RoleID" required
+						[ngClass]="{ 'is-invalid': userForm.submitted && roleId.errors }">
+							<option [value]="0">Select role</option>
+							<option [value]="role.RoleID" *ngFor="let role of lstRole">{{role.RoleName}}</option>
+						</select>
+						<div *ngIf="userForm.submitted && roleId.errors" class="invalid-feedback">
+							<div *ngIf="roleId.errors['required']">Role is required</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label class="toggle">
+							<input class="toggle__checkbox" type="checkbox" (change)="toggleStatus($event)" [checked]="objSystemUser.Status == 1">
+							<span class="toggle__switch"></span>
+							<span class="toggle__label">{{(objSystemUser.Status == 1) ? 'Active' : 'Inactive'}}</span>
+						</label>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+		<div class="offcanvas-footer">
+			<button type="button" class="cancel-button" (click)="closeSidebar()">Cancel</button>
+			<button type="submit" class="theme-button" [disabled]="dataService.isFormSubmitting | async">{{buttonText}}</button>
+		</div>
+	</form>
+</div>

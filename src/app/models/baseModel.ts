@@ -1,5 +1,5 @@
 export class BaseModel {
-    Status!: number;
+    Status: number = 1;
     CreatedBy!: number;
     CreatedDate!: Date;
     UpdatedBy!: number;

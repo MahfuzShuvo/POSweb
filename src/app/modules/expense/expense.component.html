@@ -1,3 +1,144 @@
-<p>
-  expense works!
-</p>
+<div class="body-wrapper-card card">
+	<div class="expense-body">
+		<div class="table-headings d-flex align-items-center justify-content-between">
+			<div class="table-search d-flex align-items-center gap-1">
+				<i class='bx bx-search-alt mt-1'></i>
+				<input type="text" class="form-control" name="searchExpense" #searchText
+					placeholder="Search by name ..." (keyup)="searchExpense(searchText.value)">
+			</div>
+			<!-- <div class="d-flex align-items-center gap-2">
+				<div class="filter-search role-filter">
+					<select name="roleFilter" id="roleFilter">
+						<option [value]="0">All</option>
+						<option [value]="role.RoleID" *ngFor="let role of lstRole">{{role.RoleName}}</option>
+					</select>
+				</div>
+				<div class="filter-search status-filter">
+					<select name="statusFilter" id="statusFilter">
+						<option [value]="0">All</option>
+						<option [value]="1">Active</option>
+						<option [value]="2">Inactive</option>
+					</select>
+				</div>
+			</div> -->
+			<button type="button" class="theme-button" (click)="createExpense()">+ Add New</button>
+		</div>
+		<div class="expense-table mt-1">
+			<section class="table__body">
+				<table>
+					<thead>
+						<tr>
+							<th>SL.</th>
+							<th>Title</th>
+							<th>Amount</th>
+							<th>Description</th>
+							<th>Account</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let expense of lstExpense; let i = index">
+							<td>{{i+1}}</td>
+							<td>{{expense.ExpenseTitle}}</td>
+							<td>{{expense.Amount | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</td>
+							<td>{{expense.Description}}</td>
+							<td>{{getAccountName(expense.AccountID)}}</td>
+							<td>
+								<div class="d-flex align-items-center gap-3 justify-content-end">
+									<button type="button" class="action-button edit" tooltip="Edit"
+										containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+										(click)="editExpense(expense)">
+										<i class='bx bxs-edit font-15'></i>
+									</button>
+									<button type="button" class="action-button delete" tooltip="Delete"
+										containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+										(click)="deleteExpense(expense)">
+										<i class='bx bx-trash font-15'></i>
+									</button>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+			<div class="table-row-count">
+				<span class="txt-light font-11">Total Row:</span>
+				{{totalCount}}
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- add & edit expense -->
+<ng-template #expenseFormModal>
+	<div class="modal-header">
+		<div class="modal-title text-center font-15 weight-500">{{modalTitle}} Expense</div>
+		<!-- <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+		<span aria-hidden="true" class="visually-hidden">&times;</span>
+	  </button> -->
+	</div>
+	<form autocomplete="off" #expenseForm="ngForm" (ngSubmit)="expenseForm.form.valid && saveExpense()" novalidate>
+		<div class="modal-body">
+			<div class="form-group">
+				<label for="expenseTitle" class="form-label">Title <span class="txt-danger">*</span></label>
+				<input type="text" name="expenseTitle" id="expenseTitle" class="form-control"
+					[(ngModel)]="objExpense.ExpenseTitle" placeholder="Enter expense title" required
+					#expenseTitle="ngModel" [ngClass]="{ 'is-invalid': expenseForm.submitted && expenseTitle.errors }">
+				<div *ngIf="expenseTitle.errors && (expenseTitle.dirty || expenseForm.submitted) && expenseTitle.invalid"
+					class="invalid-feedback">
+					<div *ngIf="expenseTitle.errors['required']">Title is required</div>
+				</div>
+			</div>
+			<div class="form-group mt-2">
+				<label for="expenseAmount" class="form-label">Amount <span class="txt-danger">*</span></label>
+				<input type="text" name="expenseAmount" id="expenseAmount" class="form-control"
+					[(ngModel)]="objExpense.Amount" placeholder="Enter expense amount" required #expenseAmount="ngModel"
+					[ngClass]="{ 'is-invalid': expenseForm.submitted && expenseAmount.errors }" (input)="numbersOnlyValidator($event)">
+				<div *ngIf="expenseAmount.errors && (expenseAmount.dirty || expenseForm.submitted) && expenseAmount.invalid"
+					class="invalid-feedback">
+					<div *ngIf="expenseAmount.errors['required']">Amount is required</div>
+				</div>
+			</div>
+			<div class="form-group mt-2">
+				<label for="expenseDesc" class="form-label">Description</label>
+				<textarea type="text" name="expenseDesc" id="expenseDesc" class="form-control"
+					[(ngModel)]="objExpense.Description" #expenseDesc="ngModel"
+					placeholder="Enter brand description"></textarea>
+			</div>
+			<div class="form-group mt-2">
+				<label for="selectAccount" class="form-label">Account <span class="txt-danger">*</span></label>
+				<select name="selectAccount" id="selectAccount" class="form-select" #accounId="ngModel"
+					[(ngModel)]="objExpense.AccountID" required
+					[ngClass]="{ 'is-invalid': expenseForm.submitted && accounId.errors }">
+					<option [value]="0">Select account</option>
+					<option [value]="account.AccountID" *ngFor="let account of lstAccount">{{account.AccountTitle}}
+					</option>
+				</select>
+				<div *ngIf="expenseForm.submitted && accounId.errors" class="invalid-feedback">
+					<div *ngIf="accounId.errors['required']">Account is required</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="cancel-button" (click)="modalRef?.hide()">Cancel</button>
+			<button type="submit" [disabled]="dataService.isFormSubmitting | async" class="theme-button">{{buttonText}}</button>
+		</div>
+	</form>
+</ng-template>
+
+<!-- delete expense -->
+<ng-template #deleteModal>
+	<div class="modal-header">
+		<div class="modal-title text-center font-15 weight-500">Delete Expense</div>
+		<!-- <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+		<span aria-hidden="true" class="visually-hidden">&times;</span>
+	  </button> -->
+	</div>
+	<div class="modal-body">
+		<div class="text-center txt-danger">Are you sure to delete this expense?</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="cancel-button" (click)="modalRef?.hide()">No</button>
+		<button type="button" class="danger-button" (click)="confirmDelete()">Yes</button>
+	</div>
+</ng-template>

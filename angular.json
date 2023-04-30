@@ -26,6 +26,7 @@
               "src/styles.css",
               "src/assets/css/style.css",
               "src/assets/css/lib/bootstrap.min.css",
+              "src/assets/css/lib/bs-datepicker.css",
               "src/assets/css/lib/boxicons.min.css",
               "src/assets/css/lib/font-awesome.min.css",
               "src/assets/css/lib/material-icons.css"

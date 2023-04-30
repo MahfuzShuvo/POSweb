@@ -10,15 +10,18 @@ export class AuthGuardService {
 	constructor(
 		private router: Router
 	) { }
+
 	get isLoggedIn() {
 		return this.loggedIn.asObservable();
 	}
+
 	setLoggedIn() {
 		this.loggedIn.next(true);
 	}
+
 	logout() {
 		this.loggedIn.next(false);
-		this.router.navigate(['/login']);
+		this.router.navigate(['login']);
 	}
 
 	private hasToken(): boolean {

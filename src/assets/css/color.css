@@ -1,6 +1,7 @@
 :root {
     --theme-color: #0b3353;
     --secondary-theme-color: #39c5f8;
+    --light-secondary-theme-color: #39c5f825;
     --light-theme-color: #E3EAFF;
 
     --body-color: #F8F9FF;
@@ -9,11 +10,18 @@
 
     --primary-color: #45a7e7;
     --success-color: #67be4e;
-    --danger-color: #e9493f;
+    --danger-color: #FC2947;
     --warning-color: #ffc825;
     --info-color: #a572ff;
 
+    --light-primary-color: #45a7e725;
+    --light-success-color: #67be4e25;
+    --light-danger-color: #FC294725;
+    --light-warning-color: #ffc82525;
+    --light-info-color: #a572ff25;
+
     --border-color: #e0e0e0;
+    --light-border-color: #e0e0e08c;
     --light-text-color: #a5a5a5;
     --thead-color: #e9ecef;
 }
@@ -36,4 +44,20 @@
 
 .txt-danger {
     color: var(--danger-color) !important;
+}
+
+.txt-success {
+    color: var(--success-color) !important;
+}
+
+.txt-primary {
+    color: var(--primary-color) !important;
+}
+
+.success-bg {
+    background: var(--light-success-color) !important;
+}
+
+.danger-bg {
+    background: var(--light-danger-color) !important;
 }
