@@ -6,6 +6,7 @@ import { ResponseStatus } from 'src/app/common/enums/appEnums';
 import { MessageHelper } from 'src/app/common/helper/messageHelper';
 import { HeaderService } from 'src/app/common/service/header.service';
 import { ResponseMessage } from 'src/app/models/DTO/responseMessage';
+import { VMPurchase } from 'src/app/models/VM/vmPurchase';
 import { Purchase } from 'src/app/models/purchase';
 import { PurchaseService } from 'src/app/services/purchase.service';
 
@@ -18,9 +19,9 @@ export class PurchaseComponent implements OnInit {
 
 	private destroy: Subject<void> = new Subject<void>();
 	@ViewChild('deleteModal', { read: TemplateRef }) deleteModal: TemplateRef<any>;
-	lstPurchase: Purchase[] = [];
-	lstAllPurchase: Purchase[] = [];
-	objPurchase: Purchase = new Purchase();
+	lstPurchase: VMPurchase[] = [];
+	lstAllPurchase: VMPurchase[] = [];
+	objPurchase: VMPurchase = new VMPurchase();
 	totalCount: number = 0;
 	modalRef?: BsModalRef;
 
@@ -66,8 +67,8 @@ export class PurchaseComponent implements OnInit {
 		this.totalCount = this.lstPurchase.length;
 	}
 
-	deletePurchase(purchase: Purchase) {
-		this.objPurchase = new Purchase();
+	deletePurchase(purchase: VMPurchase) {
+		this.objPurchase = new VMPurchase();
 		this.objPurchase = JSON.parse(JSON.stringify(purchase));
 
 		this.modalRef = this.modalService.show(this.deleteModal);
@@ -84,7 +85,7 @@ export class PurchaseComponent implements OnInit {
 						if (index > -1) {
 							this.lstPurchase.splice(index, 1);
 							this.lstAllPurchase.splice(index, 1);
-							this.objPurchase = new Purchase();
+							this.objPurchase = new VMPurchase();
 							this.modalRef?.hide()
 						}
 					}
