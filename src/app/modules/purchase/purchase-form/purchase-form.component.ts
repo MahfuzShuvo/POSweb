@@ -7,9 +7,12 @@ import { DataService } from 'src/app/common/service/data.service';
 import { HeaderService } from 'src/app/common/service/header.service';
 import { ResponseMessage } from 'src/app/models/DTO/responseMessage';
 import { VMProduct } from 'src/app/models/VM/vmProduct';
+import { Account } from 'src/app/models/account';
 import { Purchase } from 'src/app/models/purchase';
 import { Supplier } from 'src/app/models/supplier';
+import { AccountService } from 'src/app/services/account.service';
 import { ProductService } from 'src/app/services/product.service';
+import { PurchaseService } from 'src/app/services/purchase.service';
 import { SupplierService } from 'src/app/services/supplier.service';
 
 @Component({
@@ -30,6 +33,9 @@ export class PurchaseFormComponent implements OnInit {
 	maxDate: Date;
 	lstProduct: VMProduct[] = [];
 	timeout: any = null;
+	totalPurchaseQty: number = 0;
+	discountInput: number = 0;
+	lstAccount: Account[] = [];
 
 	constructor(
 		private headerService: HeaderService,
@@ -37,6 +43,8 @@ export class PurchaseFormComponent implements OnInit {
 		private messageHelper: MessageHelper,
 		private productService: ProductService,
 		private supplierService: SupplierService,
+		private accountService: AccountService,
+		private purchaseService: PurchaseService,
 		public dataService: DataService,
 		private router: Router
 	) {
@@ -61,6 +69,7 @@ export class PurchaseFormComponent implements OnInit {
 	ngOnInit() {
 		// this.getAllSupplier();
 		this.maxDate = new Date();
+		this.objPurchase.PurchaseDate = new Date(this.maxDate).toLocaleString();
 	}
 
 	getPurchaseByCode(purchaseCode: string) {
@@ -90,6 +99,19 @@ export class PurchaseFormComponent implements OnInit {
 					this.lstProduct = response.ResponseObj;
 				}
 			})
+	}
+
+	getAllAccount() {
+		this.accountService.getAllAccount()
+			.pipe(takeUntil(this.destroy))
+			.subscribe((response: ResponseMessage) => {
+				if (response.ResponseCode == ResponseStatus.success) {
+					this.lstAccount = response.ResponseObj;
+				} else {
+					this.messageHelper.showMessage(response.ResponseCode, response.Message);
+				}
+			})
+
 	}
 
 	getAllSupplier() {
@@ -138,12 +160,15 @@ export class PurchaseFormComponent implements OnInit {
 				this.objPurchase.lstProduct.push(product);
 				this.lstProduct = [];
 				this.searchProductText!.nativeElement.value = '';
+
+				this.changeQty();
 			}
 		}
 	}
 
 	clickToRemoveFromList(index: number) {
 		this.objPurchase.lstProduct.splice(index, 1);
+		this.changeQty();
 	}
 
 	numbersOnlyValidator(event: any) {
@@ -153,8 +178,70 @@ export class PurchaseFormComponent implements OnInit {
 		}
 	}
 
-	savePurchase() {
+	changeQty() {
+		if (this.objPurchase.lstProduct.length > 0) {
+			this.totalPurchaseQty = this.objPurchase.lstProduct.map(p => p.Qty).reduce((a, b) => a + b);
+			this.objPurchase.SubTotal = this.objPurchase.lstProduct.reduce((acc, obj) => acc + (obj.PurchasePrice * obj.Qty), 0);
+		} else {
+			this.totalPurchaseQty = 0;
+			this.objPurchase.SubTotal = 0;
+		}
+		this.calculateTotalPrice();
+	}
 
+	calculateTotalPrice() {
+		if (this.objPurchase.SubTotal == 0) {
+			this.objPurchase.OtherCharge = 0;
+			this.objPurchase.Discount = 0;
+			this.discountInput = 0;
+		}
+		this.objPurchase.TotalPurchasePrice = (parseFloat(this.objPurchase.SubTotal.toString()) + parseFloat(this.objPurchase.OtherCharge.toString())) - parseFloat(this.objPurchase.Discount.toString());
+	}
+
+	discountCalculation() {
+		if (this.discountInput > 0) {
+			if (this.objPurchase.DiscountType == 1) {
+				this.objPurchase.Discount = parseFloat(this.objPurchase.SubTotal.toString()) * (parseFloat(this.discountInput.toString()) / 100);
+			} else {
+				this.objPurchase.Discount = this.discountInput;
+			}
+		} else {
+			this.objPurchase.Discount = 0;
+		}
+		this.calculateTotalPrice();
+	}
+
+	savePurchase() {
+		if (!this.objPurchase.SupplierID) {
+			this.messageHelper.showMessage(ResponseStatus.warning, 'Supplier field is required');
+			return;
+		}
+		if (this.objPurchase.lstProduct.length == 0) {
+			this.messageHelper.showMessage(ResponseStatus.warning, "Didn't select any product to purchase");
+			return;
+		}
+		this.objPurchase.PurchaseDate = new Date(this.objPurchase.PurchaseDate).toLocaleString()
+		if (this.objPurchase.PaymentAmount > 0) {
+			if (this.objPurchase.PaymentType == 0) {
+				this.messageHelper.showMessage(ResponseStatus.warning, "For payment, you have to select payment type");
+				return;
+			}
+		}
+		this.purchaseService.savePurchase(this.objPurchase)
+			.pipe(takeUntil(this.destroy))
+			.subscribe((response: ResponseMessage) => {
+				if (response.ResponseCode == ResponseStatus.success) {
+					this.objPurchase = new Purchase();
+					this.selectedSupplier = new Supplier();
+					this.changeQty();
+				}
+				this.messageHelper.showMessage(response.ResponseCode, response.Message);
+			})
+	}
+
+	clickCancel() {
+		this.objPurchase = new Purchase();
+		this.router.navigate(['purchase']);
 	}
 
 	ngOnDestroy(): void {

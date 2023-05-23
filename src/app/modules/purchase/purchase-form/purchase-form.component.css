@@ -69,8 +69,10 @@ input#searchProduct {
     display: flex;
     flex-direction: column;
     justify-content: end;
-    font-size: var(--font-14);
+    font-size: var(--font-13);
     font-weight: var(--weight-600);
+    background: var(--bs-light);
+    padding: 20px;
 }
 
 .cart-row {
@@ -79,4 +81,24 @@ input#searchProduct {
     justify-content: space-between;
     border-bottom: 1px solid var(--light-border-color);
     padding: 8px;
+}
+
+.cart-row:last-child {
+    border-bottom: none;
+    /* border-top: 1px solid var(--border-color); */
+    background: var(--light-success-color);
+    margin: -20px;
+    margin-top: -1px;
+    padding: 8px 30px;
+    border-top: 1px solid var(--white-color);
+}
+
+.cart-column.total {
+    background: var(--success-color);
+    border-radius: 4px;
+    padding: 5px 20px;
+    margin-right: -10px;
+    padding-right: 10px;
+    /* color: #fff; */
+    line-height: 16px;
 }
