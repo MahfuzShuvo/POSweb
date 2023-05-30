@@ -6,6 +6,7 @@ header {
     top: 0;
     background: var(--white-color);
     box-shadow: 0 0px 2px #00000015;
+    transition: all 0.3s ease;
 }
 
 .header-section {
@@ -44,3 +45,13 @@ header {
 .pos-button:hover i {
     transform: translate(-50%, -50%) scale(1.1);
 }
+
+/* after toggle sidebar css  (start) */
+:host.toggled-header {
+    & header {
+        width: calc(100vw - 60px);
+        left: 60px;
+    }
+}
+
+/* after toggle sidebar css (end) */

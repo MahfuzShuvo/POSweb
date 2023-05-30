@@ -1,8 +1,12 @@
 <div class="sidebar-container">
+	<span class="sidebar__togle-btn" (click)="clickToToggleSidebar()">
+		<i class='bx bxs-chevron-left font-20' ></i>
+	</span>
 	<div class="logo-section">
-		<img src="assets/img/logo.png" alt="">
+		<img *ngIf="!(dataService.isSidebarToggle | async)" src="assets/img/logo.png" alt="">
+		<img *ngIf="dataService.isSidebarToggle | async" src="assets/img/pos-fav.png" alt="">
 	</div>
-	<div class="menu-section mt-4">
+	<div class="menu-section mt-3">
 		<!-- <ul> -->
 			<a [routerLink]="['/dashboard']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
 				<i class='bx bx-tachometer'></i>
