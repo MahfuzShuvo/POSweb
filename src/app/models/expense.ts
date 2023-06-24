@@ -4,5 +4,6 @@ export class Expense extends BaseModel {
     ExpenseTitle: string;
     Description: string;
     Amount!: number;
-    AccountID!: number;
+    PurchaseID: number = 0;
+    AccountID: number = 0;
 }

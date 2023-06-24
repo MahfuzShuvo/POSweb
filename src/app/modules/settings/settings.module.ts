@@ -1,3 +1,5 @@
+import { AccountStatementSidebarComponent } from './../../components/account-statement-sidebar/account-statement-sidebar.component';
+import { SystemUserFormComponent } from '../../components/forms/systemUser-form/systemUser-form.component';
 import { AccountsComponent } from './accounts/accounts.component';
 import { SystemUserComponent } from './system-user/system-user.component';
 import { NgModule } from '@angular/core';
@@ -5,8 +7,9 @@ import { CommonModule } from '@angular/common';
 import { SettingsComponent } from './settings.component';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from 'src/app/shared.module';
-import { PermissionComponent } from './permission/permission.component';
+import { RolePermissionComponent } from './role-permission/role-permission.component';
 import { PaymentStatusComponent } from './payment-status/payment-status.component';
+import { UnitComponent } from './unit/unit.component';
 
 const routes: Routes = [
 	{ path: '', redirectTo: 'system-user', pathMatch: 'full' },
@@ -16,8 +19,9 @@ const routes: Routes = [
 		children: [
 			{ path: 'system-user', component: SystemUserComponent },
 			{ path: 'accounts', component: AccountsComponent },
-			{ path: 'permission', component: PermissionComponent },
-			{ path: 'payment-status', component: PaymentStatusComponent }
+			{ path: 'role-permission', component: RolePermissionComponent },
+			{ path: 'unit', component: UnitComponent },
+			{ path: 'payment-status', component: PaymentStatusComponent },
 		]
 	},
 ]
@@ -28,6 +32,14 @@ const routes: Routes = [
 		SharedModule.forRoot(),
 		RouterModule.forChild(routes)
 	],
-	declarations: [SettingsComponent]
+	declarations: [
+		SettingsComponent,
+		SystemUserComponent,
+		SystemUserFormComponent,
+		RolePermissionComponent,
+		AccountsComponent,
+		AccountStatementSidebarComponent,
+		UnitComponent
+	]
 })
 export class SettingsModule { }

@@ -6,6 +6,7 @@ header {
     top: 0;
     background: var(--white-color);
     box-shadow: 0 0px 2px #00000015;
+    transition: all 0.3s ease;
 }
 
 .header-section {
@@ -23,18 +24,34 @@ header {
 
 .pos-button {
     border: none;
+    display: block;
     width: 60px;
     height: 60px;
     background: var(--secondary-theme-color);
     cursor: pointer;
     transition: all 0.3s ease;
+    position: relative;
 }
 
 .pos-button i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
 .pos-button:hover i {
-    transform: scale(1.1);
+    transform: translate(-50%, -50%) scale(1.1);
 }
+
+/* after toggle sidebar css  (start) */
+:host.toggled-header {
+    & header {
+        width: calc(100vw - 60px);
+        left: 60px;
+    }
+}
+
+/* after toggle sidebar css (end) */

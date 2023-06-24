@@ -1,23 +1,24 @@
 button {
     border: none;
-    outline: none;
+    outline: none !important;
     padding: 5px 15px !important;
-    font-weight: var(--weight-700) !important;
+    font-weight: var(--weight-500) !important;
+    font-size: var(--font-12) !important;
     line-height: normal !important;
-    cursor: pointer;
+    cursor: pointer !important;
     transition: all 0.3s ease;
     text-transform: uppercase !important;
+    border-radius: 4px !important;
 }
 
 button:disabled {
     opacity: .5 !important;
-    cursor: not-allowed;
+    cursor: not-allowed !important;
 }
 
 .theme-button {
     background: var(--theme-color);
     color: var(--white-color);
-    border-radius: 4px;
 }
 
 .theme-button:hover {
@@ -25,14 +26,112 @@ button:disabled {
     box-shadow: 0 1px 3px #00000025 !important;
 }
 
+.cancel-button {
+    background: var(--border-color);
+    color: var(--text-color);
+}
+
+.cancel-button:hover {
+    opacity: .9;
+    box-shadow: 0 1px 3px #00000025 !important;
+}
+
 .secondary-theme-button {
     background: var(--secondary-theme-color);
     color: var(--theme-color);
-    border-radius: 4px;
-    font-weight: var(--weight-500);
 }
 
 .secondary-theme-button:hover {
     opacity: .9;
     box-shadow: 0 1px 3px #00000025 !important;
+}
+
+.success-button {
+    background: var(--success-color);
+    color: var(--white-color);
+}
+
+.success-button:hover {
+    opacity: .9;
+    box-shadow: 0 1px 3px #00000025 !important;
+}
+
+.danger-button {
+    background: var(--danger-color);
+    color: var(--white-color);
+}
+
+.danger-button:hover {
+    opacity: .9;
+    box-shadow: 0 1px 3px #00000025 !important;
+}
+
+.action-button {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    position: relative;
+    padding: 0;
+    background: none;
+}
+
+.action-button i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--light-text-color);
+    transition: all 0.3s ease;
+}
+
+.action-button:hover {
+    background: #39c5f817;
+    box-shadow: 0 2px 5px #00000025;
+}
+
+.action-button:hover i {
+    color: var(--theme-color);
+}
+
+.offcanvas-close-btn {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    position: relative;
+    background: var(--light-border-color);
+    padding: 0 !important;
+}
+
+.offcanvas-close-btn svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.offcanvas-close-btn:hover {
+    background: var(--border-color);
+    box-shadow: 0 2px 2px #00000025;
+}
+
+.removeFromList-btn {
+    background: var(--danger-color);
+    border-radius: 4px;
+    width: 26px;
+    height: 26px;
+    border: none;
+    overflow: none;
+    position: relative;
+}
+
+.removeFromList-btn span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+}
+
+.removeFromList-btn:hover {
+    opacity: .7;
 }

@@ -1,3 +1,60 @@
-<p>
-  pos works!
-</p>
+<div class="pos-body">
+	<div class="body-wrapper-card card">
+		<div class="wrapper-content-header d-flex align-items-center justify-content-between">
+			Invoice
+			<span class="font-11 txt-light">Invoice no.: #025148</span>
+		</div>
+		<div class="cart-body">
+hello
+		</div>
+	</div>
+	<div class="body-wrapper-card cart card px-2">
+		<div class="table-headings d-flex align-items-center justify-content-between">
+			<div class="table-search d-flex align-items-center gap-1">
+				<i class='bx bx-search-alt mt-1'></i>
+				<input type="text" class="form-control" name="searchPOS" #searchText placeholder="Search product ..."
+					(keyup)="searchProduct(searchText.value)">
+			</div>
+			<!-- <div class="d-flex align-items-center gap-2">
+				<div class="filter-search role-filter">
+					<select name="roleFilter" id="roleFilter">
+						<option [value]="0">All</option>
+						<option [value]="role.RoleID" *ngFor="let role of lstRole">{{role.RoleName}}</option>
+					</select>
+				</div>
+				<div class="filter-search status-filter">
+					<select name="statusFilter" id="statusFilter">
+						<option [value]="0">All</option>
+						<option [value]="1">Active</option>
+						<option [value]="2">Inactive</option>
+					</select>
+				</div>
+			</div> -->
+			<div class="view-tab">
+				<span class="view-tab-item" [class.active]="activateTab == 1" (click)="clickViewTab(1)">
+					<i class='bx bxs-grid-alt'></i>
+				</span>
+				<span class="view-tab-item" [class.active]="activateTab == 2" (click)="clickViewTab(2)">
+					<i class='bx bx-list-ul font-18'></i>
+				</span>
+			</div>
+		</div>
+		<div class="pos-product-body mt-2" [class.grid-view]="activateTab == 1">
+			<ng-container *ngIf="activateTab == 1">
+				<div class="product-card card" [class.danger-bg]="product.Qty == 0" *ngFor="let product of lstProduct"
+					(click)="clickToAddCart(product)">
+					<img *ngIf="product.Image != ''" [src]="product.Image | SafeResourceUrl" alt="">
+					<div class="product-desc">
+						<span class="product-name font-11 weight-600">{{product.ProductName}}</span>
+						<span class="font-12">{{product.FinalPrice | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</span>
+					</div>
+					<div class="qty-tag" [class.stock-out]="product.Qty == 0" [class.alert]="product.Qty <= product.MinQty && product.Qty != 0">
+						{{product.Qty > 0 ? 'Qty: '+product.Qty : 'Stock out'}}</div>
+				</div>
+			</ng-container>
+			<ng-container *ngIf="activateTab == 2">
+				List View
+			</ng-container>
+		</div>
+	</div>
+</div>

@@ -1,5 +1,5 @@
 import { MessageHelper } from './common/helper/messageHelper';
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
@@ -10,6 +10,10 @@ import { AuthGuard } from './common/auth/auth.guard';
 import { ToastrModule } from 'ngx-toastr';
 import { SharedModule } from './shared.module';
 import { CustomToastComponent } from './components/custom-toast/custom-toast.component';
+import { registerLocaleData } from '@angular/common';
+import localeBn from '@angular/common/locales/bn';
+
+registerLocaleData(localeBn, 'bn');
 
 @NgModule({
 	declarations: [
@@ -32,7 +36,8 @@ import { CustomToastComponent } from './components/custom-toast/custom-toast.com
 		interceptorsLink,
 		MessageHelper,
 		HeaderService,
-		AuthGuard
+		AuthGuard,
+		{ provide: LOCALE_ID, useValue: 'bn-BD' }
 	],
 	entryComponents: [CustomToastComponent],
 	bootstrap: [AppComponent]

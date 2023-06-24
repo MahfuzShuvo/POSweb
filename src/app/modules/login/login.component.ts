@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
 					this.localstoreService.setData('Token', response.ResponseObj.Token);
 					this.localstoreService.setData('User', response.ResponseObj);
 
-					this.router.navigateByUrl('dashboard');
+					this.router.navigate(['dashboard']);
 				} else {
 					this.messageHelper.showMessage(response.ResponseCode, response.Message);
 				}

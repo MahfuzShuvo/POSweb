@@ -1,3 +1,133 @@
-<p>
-  products works!
-</p>
+<div class="body-wrapper-card card">
+	<div class="product-body">
+		<div class="table-headings d-flex align-items-center justify-content-between">
+			<div class="table-search d-flex align-items-center gap-1">
+				<i class='bx bx-search-alt mt-1'></i>
+				<input type="text" class="form-control" name="searchProduct" #searchText
+					placeholder="Search by name ..." (keyup)="searchProduct(searchText.value)">
+			</div>
+			<!-- <div class="d-flex align-items-center gap-2">
+				<div class="filter-search role-filter">
+					<select name="roleFilter" id="roleFilter">
+						<option [value]="0">All</option>
+						<option [value]="role.RoleID" *ngFor="let role of lstRole">{{role.RoleName}}</option>
+					</select>
+				</div>
+				<div class="filter-search status-filter">
+					<select name="statusFilter" id="statusFilter">
+						<option [value]="0">All</option>
+						<option [value]="1">Active</option>
+						<option [value]="2">Inactive</option>
+					</select>
+				</div>
+			</div> -->
+			<button type="button" class="theme-button" (click)="addProduct()">+ Add New</button>
+		</div>
+		<div class="product-table mt-1">
+			<div class="product tab-menu">
+				<div class="tab-menu-item" [class.active]="selectedCategoryID == 0"
+					(click)="getAllProduct(); selectedCategoryID = 0">All</div>
+				<div class="tab-menu-item d-flex align-items-center gap-1"
+					[class.active]="selectedCategoryID == category.CategoryID" *ngFor="let category of lstCategory"
+					(click)="getAllProductByCategoryID(category.CategoryID)">
+					{{category.CategoryName}}
+					<span class="product-count">{{category.ProductCount}}</span>
+				</div>
+			</div>
+			<section class="table__body">
+				<table>
+					<thead>
+						<tr>
+							<th>SL.</th>
+							<th>Product</th>
+							<th>Desciption</th>
+							<th>Category</th>
+							<th>Brand</th>
+							<th>Stock</th>
+							<th>Purchase Price</th>
+							<th>Selling Price</th>
+							<th>Status</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let product of lstProduct; let i = index">
+							<td>{{i+1}}</td>
+							<td>
+								<div class="d-flex gap-2">
+									<img class="productImage" *ngIf="product.Image != ''"
+										[src]="product.Image | SafeResourceUrl" alt="">
+									<div class="d-flex flex-column">
+										<div class="weight-600">{{product.ProductName}}</div>
+										<div class="font-11">SKU: <span class="txt-light">{{product.SKU}}</span></div>
+									</div>
+								</div>
+							</td>
+							<td>
+								<div class="description-cell" [tooltip]="product.Description" container="body"
+									[adaptivePosition]="false" placement="top" containerClass="tooltipClass">
+									{{product.Description}}
+								</div>
+							</td>
+							<td>{{product.CategoryName}}</td>
+							<td>{{product.BrandName}}</td>
+							<td>{{product.Qty}} {{product.UnitName}}</td>
+							<td>{{product.PurchasePrice | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</td>
+							<td>{{product.FinalPrice | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</td>
+							<td>
+								<!-- <div class="badge" [class.inactive-badge]="product.Status == 2"
+									[class.active-badge]="product.Status == 1">
+									{{product.Status == 1 ? 'Active' : 'Inactive'}}
+								</div> -->
+								<div class="form-group">
+									<label class="toggle">
+										<input class="toggle__checkbox" type="checkbox"
+											(change)="changeProductStatus($event, product)" [checked]="product.Status == 1">
+										<span class="toggle__switch"></span>
+										<span class="toggle__label"></span>
+									</label>
+								</div>
+							</td>
+							<td>
+								<div class="d-flex align-items-center gap-3 justify-content-end">
+									<button type="button" class="action-button edit" tooltip="Edit"
+										containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+										(click)="editProduct(product.Slug)">
+										<i class='bx bxs-edit font-15'></i>
+									</button>
+									<button type="button" class="action-button delete" tooltip="Delete"
+										containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+										(click)="deleteProduct(product)">
+										<i class='bx bx-trash font-15'></i>
+									</button>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+			<div class="table-row-count">
+				<span class="txt-light font-11">Total Row:</span>
+				{{totalCount}}
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- delete product -->
+<ng-template #deleteModal>
+	<div class="modal-header">
+		<div class="modal-title text-center font-15 weight-500">Delete Product</div>
+		<!-- <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+		<span aria-hidden="true" class="visually-hidden">&times;</span>
+	  </button> -->
+	</div>
+	<div class="modal-body">
+		<div class="text-center txt-danger">Are you sure to delete this product?</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="cancel-button" (click)="modalRef?.hide()">No</button>
+		<button type="button" class="danger-button" (click)="confirmDelete()">Yes</button>
+	</div>
+</ng-template>

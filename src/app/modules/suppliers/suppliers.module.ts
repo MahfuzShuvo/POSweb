@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SuppliersComponent } from './suppliers.component';
+import { SupplierFormComponent } from 'src/app/components/forms/supplier-form/supplier-form.component';
 
 const routes: Routes = [
 	{ path: '', component: SuppliersComponent }
@@ -14,6 +15,9 @@ const routes: Routes = [
 		SharedModule.forRoot(),
 		RouterModule.forChild(routes)
 	],
-	declarations: [SuppliersComponent]
+	declarations: [
+		SuppliersComponent,
+		SupplierFormComponent
+	]
 })
 export class SuppliersModule { }

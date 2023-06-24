@@ -1,3 +1,105 @@
-<p>
-  suppliers works!
-</p>
+<div class="body-wrapper-card card">
+	<div class="supplier-body">
+		<div class="table-headings d-flex align-items-center justify-content-between">
+			<div class="table-search d-flex align-items-center gap-1">
+				<i class='bx bx-search-alt mt-1'></i>
+				<input type="text" class="form-control" name="searchSupplier" #searchText
+					placeholder="Search by name, phone, email etc ..."
+					(keyup)="searchSupplier(searchText.value)">
+			</div>
+			<!-- <div class="d-flex align-items-center gap-2">
+				<div class="filter-search role-filter">
+					<select name="roleFilter" id="roleFilter">
+						<option [value]="0">All</option>
+						<option [value]="role.RoleID" *ngFor="let role of lstRole">{{role.RoleName}}</option>
+					</select>
+				</div>
+				<div class="filter-search status-filter">
+					<select name="statusFilter" id="statusFilter">
+						<option [value]="0">All</option>
+						<option [value]="1">Active</option>
+						<option [value]="2">Inactive</option>
+					</select>
+				</div>
+			</div> -->
+			<button type="button" class="theme-button" (click)="createSupplier({})">+ Add New</button>
+		</div>
+		<div class="supplier-table mt-1">
+			<section class="table__body">
+				<table>
+					<thead>
+						<tr>
+							<th>Full Name</th>
+							<th>Phone & Email</th>
+							<th>Address</th>
+							<th>City</th>
+							<th>State</th>
+							<th>Zip</th>
+							<th>Status</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let supplier of lstSupplier">
+							<td>{{supplier.SupplierName}}</td>
+							<td>
+								<div class="d-flex flex-column">
+									<span>{{supplier.PhoneNumber}}</span>
+									<span class="txt-light">{{supplier.Email}}</span>
+								</div>
+							</td>
+							<td>{{supplier.Address}}</td>
+							<td>{{supplier.City}}</td>
+							<td>{{supplier.State}}</td>
+							<td>{{supplier.Zip}}</td>
+							<td>
+								<div class="badge" [class.inactive-badge]="supplier.Status == 2"
+									[class.active-badge]="supplier.Status == 1">
+									{{supplier.Status == 1 ? 'Active' : 'Inactive'}}
+								</div>
+							</td>
+							<td>
+								<div class="d-flex align-items-center gap-3 justify-content-end">
+									<button type="button" class="action-button edit" tooltip="Edit"
+										containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+										(click)="createSupplier(supplier)">
+										<i class='bx bxs-edit font-15'></i>
+									</button>
+									<button type="button" class="action-button delete" tooltip="Delete"
+										containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+										(click)="deleteSupplier(supplier)">
+										<i class='bx bx-trash font-15'></i>
+									</button>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+			<div class="table-row-count">
+				<span class="txt-light font-11">Total Row:</span>
+				{{totalCount}}
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- add & edit supplier details -->
+<ng-template #supplierForm></ng-template>
+
+<!-- delete supplier -->
+<ng-template #deleteModal>
+	<div class="modal-header">
+		<div class="modal-title text-center font-15 weight-500">Delete Supplier</div>
+		<!-- <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+		<span aria-hidden="true" class="visually-hidden">&times;</span>
+	  </button> -->
+	</div>
+	<div class="modal-body">
+		<div class="text-center txt-danger">Are you sure to delete this supplier?</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="cancel-button" (click)="modalRef?.hide()">No</button>
+		<button type="button" class="danger-button" (click)="confirmDelete()">Yes</button>
+	</div>
+</ng-template>

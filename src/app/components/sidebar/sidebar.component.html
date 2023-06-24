@@ -1,46 +1,50 @@
 <div class="sidebar-container">
+	<span class="sidebar__togle-btn" (click)="clickToToggleSidebar()">
+		<i class='bx bxs-chevron-left font-20' ></i>
+	</span>
 	<div class="logo-section">
-		<img src="assets/img/logo.png" alt="">
+		<img *ngIf="!(dataService.isSidebarToggle | async)" src="assets/img/logo.png" alt="">
+		<img *ngIf="dataService.isSidebarToggle | async" src="assets/img/pos-fav.png" alt="">
 	</div>
-	<div class="menu-section mt-4">
-		<ul>
-			<li [routerLink]="['/dashboard']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
+	<div class="menu-section mt-3">
+		<!-- <ul> -->
+			<a [routerLink]="['/dashboard']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
 				<i class='bx bx-tachometer'></i>
-				<a>Dashboard</a>
-			</li>
-			<li [routerLink]="['/products']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
+				<span>Dashboard</span>
+			</a>
+			<a [routerLink]="['/product']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
 				<i class='bx bx-gift'></i>
-				<a>Products</a>
-			</li>
-			<li [routerLink]="['/purchase']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
+				<span>Products</span>
+			</a>
+			<a [routerLink]="['/purchase']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
 				<i class='bx bx-basket'></i>
-				<a>Purchase</a>
-			</li>
-			<li [routerLink]="['/category']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
+				<span>Purchase</span>
+			</a>
+			<a [routerLink]="['/category']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
 				<i class='bx bx-category'></i>
-				<a>Category</a>
-			</li>
-			<li [routerLink]="['/brand']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
+				<span>Category</span>
+			</a>
+			<a [routerLink]="['/brand']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
 				<i class='bx bx-bookmarks'></i>
-				<a>Brand</a>
-			</li>
-			<li [routerLink]="['/customers']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
+				<span>Brand</span>
+			</a>
+			<a [routerLink]="['/customers']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
 				<i class='bx bx-user'></i>
-				<a>Customers</a>
-			</li>
-			<li [routerLink]="['/suppliers']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
+				<span>Customers</span>
+			</a>
+			<a [routerLink]="['/suppliers']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
 				<i class='bx bx-user'></i>
-				<a>Suppliers</a>
-			</li>
-			<li [routerLink]="['/expense']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
+				<span>Suppliers</span>
+			</a>
+			<a [routerLink]="['/expense']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
 				<i class='bx bx-dollar' ></i>
-				<a>Expense</a>
-			</li>
-			<li [routerLink]="['/settings']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
+				<span>Expense</span>
+			</a>
+			<a [routerLink]="['/settings']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
 				<i class='bx bx-cog' ></i>
-				<a>Settings</a>
-			</li>
-		</ul>
+				<span>Settings</span>
+			</a>
+		<!-- </ul> -->
 		<div class="menu-section-footer">
 			<div class="auth-section d-flex align-items-center gap-2">
 				<div class="auth-icon">

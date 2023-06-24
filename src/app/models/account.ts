@@ -2,7 +2,7 @@ export class Account {
     AccountID: number;
     AccountTitle: string;
     Description: string;
-    Balance!: number;
+    Balance: number = 0;
     AccountNumber: string;
-    Status!: number;
+    Status: number = 1;
 }

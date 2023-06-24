@@ -21,6 +21,9 @@ import { HomeLayoutComponent } from './common/layout/home-layout.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { MatchPasswordDirective } from './common/directives/match-password.directive';
+import { SafeResourceUrlPipe } from './common/pipes/SafeResourceUrl.pipe';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 @NgModule({
     declarations: [
@@ -34,6 +37,7 @@ import { MatchPasswordDirective } from './common/directives/match-password.direc
         UrlifyPipe,
         PhoneNumberPipe,
         AttachmentExtensionPipe,
+        SafeResourceUrlPipe
     ],
     imports: [
         FormsModule,
@@ -48,7 +52,9 @@ import { MatchPasswordDirective } from './common/directives/match-password.direc
         NgProgressHttpModule,
         TabsModule.forRoot(),
         ModalModule.forRoot(),
-        TooltipModule.forRoot()
+        TooltipModule.forRoot(),
+        BsDropdownModule.forRoot(),
+        BsDatepickerModule.forRoot(),
     ],
     exports: [
         HomeLayoutComponent,
@@ -68,9 +74,12 @@ import { MatchPasswordDirective } from './common/directives/match-password.direc
         UrlifyPipe,
         PhoneNumberPipe,
         AttachmentExtensionPipe,
+        SafeResourceUrlPipe,
         TabsModule,
         ModalModule,
-        TooltipModule
+        TooltipModule,
+        BsDropdownModule,
+        BsDatepickerModule
     ],
     bootstrap: [AppComponent],
     providers: [MessageHelper]
