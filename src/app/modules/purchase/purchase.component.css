@@ -3,9 +3,9 @@
     padding-bottom: 0;
 }
 
-.purchase-table table tbody {
+/* .purchase-table table tbody {
     height: calc(100vh - 215px);
-}
+} */
 
 .table-row-count {
     padding: 5px 0;

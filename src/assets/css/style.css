@@ -53,6 +53,7 @@ main {
     left: 250px;
     padding: 10px 20px;
     overflow: auto;
+    transition: all 0.3s ease;
 }
 
 ul {
@@ -368,3 +369,11 @@ input.form-control:-moz-placeholder {
 }
 
 /* custome datepicker style end */
+
+/* after toggle sidebar css  (start) */
+main.toggled-main {
+    width: calc(100vw - 60px);
+    left: 60px;
+}
+
+/* after toggle sidebar css (end) */

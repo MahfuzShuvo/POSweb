@@ -46,6 +46,10 @@
     color: var(--danger-color) !important;
 }
 
+.txt-warning {
+    color: var(--warning-color) !important;
+}
+
 .txt-success {
     color: var(--success-color) !important;
 }

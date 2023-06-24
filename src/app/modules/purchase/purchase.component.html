@@ -29,29 +29,29 @@
 					<thead>
 						<tr>
 							<th>SL.</th>
-							<th>Purchase</th>
-							<th>Status</th>
+							<th>Purchase Date</th>
+							<th>Purchase Code</th>
+							<th>Purchase Status</th>
+							<th>Supplier</th>
+							<th>Total</th>
+							<th>Paid</th>
+							<th>Due</th>
+							<th>Payment Status</th>
+							<th>Created By</th>
 							<th></th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr *ngFor="let purchase of lstPurchase; let i = index">
 							<td>{{i+1}}</td>
+							<td>{{purchase.PurchaseDate | date: 'dd/MM/yyyy, hh:mm a'}}</td>
 							<td>{{purchase.PurchaseCode}}</td>
-							<td>
-								<div class="badge" [class.inactive-badge]="purchase.Status == 2"
-									[class.active-badge]="purchase.Status == 1">
-									{{purchase.Status == 1 ? 'Active' : 'Inactive'}}
-								</div>
-								<!-- <div class="form-group">
-									<label class="toggle">
-										<input class="toggle__checkbox" type="checkbox"
-											(change)="changePurchaseStatus($event, purchase)" [checked]="purchase.Status == 1">
-										<span class="toggle__switch"></span>
-										<span class="toggle__label"></span>
-									</label>
-								</div> -->
-							</td>
+							<td>{{purchase.PurchaseStatus}}</td>
+							<td>{{purchase.SupplierName}}</td>
+							<td>{{purchase.TotalPurchasePrice}}</td>
+							<td>{{purchase.PaymentAmount}}</td>
+							<td>{{purchase.DueAmount}}</td>
+							<td>{{purchase.DueAmount > 0 ? 'Partial' : (purchase.DueAmount == purchase.TotalPurchasePrice) ? 'Unpaid' : 'Paid'}}</td>
 							<td>
 								<div class="d-flex align-items-center gap-3 justify-content-end">
 									<button type="button" class="action-button edit" tooltip="Edit"

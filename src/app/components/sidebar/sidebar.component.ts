@@ -7,6 +7,7 @@ import { LocalstoreService } from './../../common/service/localstore.service';
 import { Component, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { ResponseStatus } from 'src/app/common/enums/appEnums';
+import { DataService } from 'src/app/common/service/data.service';
 
 @Component({
 	selector: 'app-sidebar',
@@ -18,12 +19,14 @@ export class SidebarComponent implements OnInit {
 	private destroy: Subject<void> = new Subject<void>();
 	objSystemUser: SystemUser = new SystemUser();
 	profileImhText: string = '';
+	isSidebarToggle: boolean = false;
 
 	constructor(
 		private localStoreService: LocalstoreService,
 		private securityService: SecurityService,
 		private messageHelper: MessageHelper,
-		private router: Router
+		private router: Router,
+		public dataService: DataService
 	) { }
 
 	ngOnInit() {
@@ -48,6 +51,12 @@ export class SidebarComponent implements OnInit {
 					this.messageHelper.showMessage(response.ResponseCode, response.Message);
 				}
 			})
+	}
+
+	clickToToggleSidebar() {
+		this.isSidebarToggle = !this.isSidebarToggle;
+
+		this.dataService.isSidebarToggle.next(this.isSidebarToggle)
 	}
 
 	ngOnDestroy(): void {

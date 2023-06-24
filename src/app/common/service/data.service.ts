@@ -7,6 +7,7 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 export class DataService {
 
 	isFormSubmitting: BehaviorSubject<any> = new BehaviorSubject(null);
+	isSidebarToggle: BehaviorSubject<any> = new BehaviorSubject(null);
 	data: any = {};
 	subscription!: Subscription;
 
