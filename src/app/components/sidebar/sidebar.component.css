@@ -82,11 +82,9 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: #4caf50;
-    /* font-size: var(--font-18); */
+    background: var(--tertiary-theme-color);
     font-weight: var(--weight-700);
-    color: var(--white-color);
-    /* padding: 6px; */
+    color: #011a39;
     position: relative;
     flex: none;
 }
@@ -169,6 +167,7 @@
         background: #092a45;
         border-radius: 0 !important;
         border-top-right-radius: 20px !important;
+        z-index: 1;
     }
 
     & .logo-section img {

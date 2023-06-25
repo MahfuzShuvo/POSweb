@@ -255,17 +255,20 @@ export class ProductFormComponent implements OnInit {
 			var tax = ((this.objProduct.Tax && this.objProduct.Tax > 0) ? parseFloat(this.objProduct.Tax.toString()) : 0) / 100;
 			var afterTax = parseFloat(this.objProduct.Price.toString()) * tax
 
-			this.objProduct.PurchasePrice = parseFloat(this.objProduct.Price.toString()) + afterTax;
+			this.objProduct.PurchasePrice = (this.objProduct.TaxType == 1) ? parseFloat(this.objProduct.Price.toString()) + afterTax : parseFloat(this.objProduct.Price.toString());
 		} else {
 			this.objProduct.PurchasePrice = 0;
 		}
+
+		this.objProduct.SellingPrice = this.objProduct.Price;
 	}
 
 	// calculate final price & selling price if input -> PROFIT MARGIN
 	onChangeProfitMargin_calculateFinalPrice() {
+		this.calculatePurchasePrice();
 		if (this.objProduct.ProfitMargin && this.objProduct.ProfitMargin > 0) {
 			// sales = {(profit / 100) * purchase } + purchase 
-			this.objProduct.SellingPrice = (parseInt(this.objProduct.ProfitMargin.toString()) / 100) * parseInt(this.objProduct.PurchasePrice.toString()) + parseInt(this.objProduct.PurchasePrice.toString());
+			this.objProduct.SellingPrice = (parseInt(this.objProduct.ProfitMargin.toString()) / 100) * parseInt(this.objProduct.SellingPrice.toString()) + parseInt(this.objProduct.SellingPrice.toString());
 			if (this.objProduct.TaxType == 1) {
 				// Tax type = EXCLUSIVE
 				var tax = ((this.objProduct.Tax && this.objProduct.Tax > 0) ? parseInt(this.objProduct.Tax.toString()) : 0) / 100;
