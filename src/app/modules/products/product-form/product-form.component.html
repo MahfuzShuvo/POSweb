@@ -1,9 +1,11 @@
 <div class="body-wrapper-card card">
 	<div class="product-body">
 		<div class="d-flex align-items-center justify-content-between">
-			<span class="txt-light font-11">Please fill all fields marked with (<span class="txt-danger">*</span>) before
-			submit.</span>
-			<div *ngIf="objProduct!.SKU && objProduct!.SKU != ''" class="sku-div d-flex align-items-center gap-1 font-12">
+			<span class="txt-light font-11">Please fill all fields marked with (<span class="txt-danger">*</span>)
+				before
+				submit.</span>
+			<div *ngIf="objProduct!.SKU && objProduct!.SKU != ''"
+				class="sku-div d-flex align-items-center gap-1 font-12">
 				<span class="txt-light">Product SKU:</span>
 				<span>{{objProduct!.SKU}}</span>
 			</div>
@@ -112,7 +114,7 @@
 								</div> -->
 								<div class="btn-group" dropdown #dropdownUnit="bs-dropdown" [insideClick]="true"
 									(onShown)="openUnitDrop()">
-									
+
 									<div dropdownToggle class="custome-select" id="unit" aria-controls="dropdown-basic">
 										<span class="custome-select-txt">{{(objProduct.Unit &&
 											objProduct.Unit>0) ? selectedUnit.UnitName : 'Select'}}</span>
@@ -191,7 +193,7 @@
 							<input type="text" id="price" name="price" class="form-control"
 								[(ngModel)]="objProduct.Price" placeholder="Enter phone number" #price="ngModel"
 								[ngClass]="{ 'is-invalid': productForm.submitted && price.errors }"
-								(input)="numbersOnlyValidator($event); calculatePurchasePrice()" required>
+								(input)="numbersOnlyValidator($event); calculateAllPricing()" required>
 							<div *ngIf="price.errors && (price.dirty || productForm.submitted) && price.invalid"
 								class="invalid-feedback">
 								<div *ngIf="price.errors['required']">Price is required</div>
@@ -204,7 +206,7 @@
 							<input type="text" id="tax" name="tax" class="form-control" [(ngModel)]="objProduct.Tax"
 								placeholder="Enter phone number" #tax="ngModel"
 								[ngClass]="{ 'is-invalid': productForm.submitted && tax.errors }"
-								(input)="numbersOnlyValidator($event); calculatePurchasePrice()">
+								(input)="numbersOnlyValidator($event); calculateAllPricing()">
 						</div>
 					</div>
 					<div class="col-md-3">
@@ -221,7 +223,8 @@
 					<div class="col-md-3">
 						<div class="form-group">
 							<label for="taxType" class="form-label">Tax Type</label>
-							<select name="taxType" id="taxType" class="form-select" [(ngModel)]="objProduct.TaxType" (change)="onChangeProfitMargin_calculateFinalPrice()">
+							<select name="taxType" id="taxType" class="form-select" [(ngModel)]="objProduct.TaxType"
+								(change)="calculateAllPricing()">
 								<option [value]="1">Exclusive</option>
 								<option [value]="2">Inclusive</option>
 							</select>
@@ -236,7 +239,7 @@
 								[(ngModel)]="objProduct.ProfitMargin" placeholder="Enter phone number"
 								#profitMargin="ngModel"
 								[ngClass]="{ 'is-invalid': productForm.submitted && profitMargin.errors }"
-								(input)="numbersOnlyValidator($event); onChangeProfitMargin_calculateFinalPrice()" required>
+								(input)="numbersOnlyValidator($event); calculateAllPricing()" required>
 							<div *ngIf="profitMargin.errors && (profitMargin.dirty || productForm.submitted) && profitMargin.invalid"
 								class="invalid-feedback">
 								<div *ngIf="profitMargin.errors['required']">Profit margin is required</div>
@@ -252,7 +255,7 @@
 								[(ngModel)]="objProduct.SellingPrice" placeholder="Enter phone number"
 								#salesPrice="ngModel"
 								[ngClass]="{ 'is-invalid': productForm.submitted && salesPrice.errors }"
-								(input)="numbersOnlyValidator($event); onChangeSellingPrice_calculateFinalPrice()" required>
+								(input)="numbersOnlyValidator($event); inputSellingPrice()" required>
 							<div *ngIf="salesPrice.errors && (salesPrice.dirty || productForm.submitted) && salesPrice.invalid"
 								class="invalid-feedback">
 								<div *ngIf="salesPrice.errors['required']">Selling price is required</div>

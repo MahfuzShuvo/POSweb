@@ -42,6 +42,7 @@ export class ProductFormComponent implements OnInit {
 	selectedBrand: Brand = new Brand();
 	selectedUnit: Unit = new Unit();
 	productSlug: string = '';
+	isSellingPriceInputManually: boolean = false;
 
 	constructor(
 		private headerService: HeaderService,
@@ -71,6 +72,8 @@ export class ProductFormComponent implements OnInit {
 
 	ngOnInit() {
 		this.getInitialDataForSaveProduct();
+		console.log('pro: ', this.objProduct);
+
 	}
 
 	getProductBySlug(slug: string) {
@@ -249,53 +252,91 @@ export class ProductFormComponent implements OnInit {
 		};
 	}
 
-	calculatePurchasePrice() {
-		if (this.objProduct.Price && this.objProduct.Price > 0) {
-			// debugger
-			var tax = ((this.objProduct.Tax && this.objProduct.Tax > 0) ? parseFloat(this.objProduct.Tax.toString()) : 0) / 100;
-			var afterTax = parseFloat(this.objProduct.Price.toString()) * tax
+	calculateAllPricing() {
 
-			this.objProduct.PurchasePrice = parseFloat(this.objProduct.Price.toString()) + afterTax;
-		} else {
-			this.objProduct.PurchasePrice = 0;
+		// calculate purchase price 
+		this.objProduct.PurchasePrice = (this.objProduct.TaxType == 1 && this.objProduct.Tax > 0)
+			? parseFloat(this.objProduct.Price.toString()) + (parseFloat(this.objProduct.Price.toString()) * parseFloat(this.objProduct.Tax.toString()) / 100)
+			: parseFloat(this.objProduct.Price.toString());
+
+		this.objProduct.PurchasePrice = parseFloat(this.objProduct.PurchasePrice.toFixed(2));
+
+		// calculate selling price 
+		if (!this.isSellingPriceInputManually) {
+
+			this.objProduct.SellingPrice = (this.objProduct.ProfitMargin > 0)
+				? parseFloat(this.objProduct.Price.toString()) + (parseFloat(this.objProduct.Price.toString()) * parseFloat(this.objProduct.ProfitMargin.toString()) / 100)
+				: parseFloat(this.objProduct.Price.toString());
+
+			this.objProduct.SellingPrice = parseFloat(this.objProduct.SellingPrice.toFixed(2));
 		}
+
+		// calculate final price 
+		this.objProduct.FinalPrice = (this.objProduct.TaxType == 1 && this.objProduct.Tax > 0)
+			? parseFloat(this.objProduct.PurchasePrice.toString()) + (parseFloat(this.objProduct.PurchasePrice.toString()) * this.objProduct.ProfitMargin / 100)
+			: parseFloat(this.objProduct.SellingPrice.toString());
+
+		this.objProduct.FinalPrice = parseFloat(this.objProduct.FinalPrice.toFixed(2));
 	}
+
+	inputSellingPrice() {
+		this.isSellingPriceInputManually = true;
+		// calculate profit margin 
+		this.objProduct.ProfitMargin = Math.round(parseFloat((((parseInt(this.objProduct.SellingPrice.toString()) / parseInt(this.objProduct.Price.toString())) - 1) * 100).toFixed(2)))
+
+		this.calculateAllPricing()
+	}
+
+	// calculatePurchasePrice() {
+	// 	if (this.objProduct.Price && this.objProduct.Price > 0) {
+	// 		// debugger
+	// 		var tax = ((this.objProduct.Tax && this.objProduct.Tax > 0) ? parseFloat(this.objProduct.Tax.toString()) : 0) / 100;
+	// 		var afterTax = parseFloat(this.objProduct.Price.toString()) * tax
+
+	// 		this.objProduct.PurchasePrice = (this.objProduct.TaxType == 1) ? parseFloat(this.objProduct.Price.toString()) + afterTax : parseFloat(this.objProduct.Price.toString());
+	// 	} else {
+	// 		this.objProduct.PurchasePrice = 0;
+	// 	}
+
+	// 	this.objProduct.SellingPrice = this.objProduct.Price;
+	// }
 
 	// calculate final price & selling price if input -> PROFIT MARGIN
-	onChangeProfitMargin_calculateFinalPrice() {
-		if (this.objProduct.ProfitMargin && this.objProduct.ProfitMargin > 0) {
-			// sales = {(profit / 100) * purchase } + purchase 
-			this.objProduct.SellingPrice = (parseInt(this.objProduct.ProfitMargin.toString()) / 100) * parseInt(this.objProduct.PurchasePrice.toString()) + parseInt(this.objProduct.PurchasePrice.toString());
-			if (this.objProduct.TaxType == 1) {
-				// Tax type = EXCLUSIVE
-				var tax = ((this.objProduct.Tax && this.objProduct.Tax > 0) ? parseInt(this.objProduct.Tax.toString()) : 0) / 100;
-				var afterTax = parseInt(this.objProduct.SellingPrice.toString()) * tax;
+	// onChangeProfitMargin_calculateFinalPrice() {
+	// 	this.calculatePurchasePrice();
+	// 	if (this.objProduct.ProfitMargin && this.objProduct.ProfitMargin > 0) {
+	// 		// sales = {(profit / 100) * purchase } + purchase 
+	// 		this.objProduct.SellingPrice = (parseInt(this.objProduct.ProfitMargin.toString()) / 100) * parseInt(this.objProduct.SellingPrice.toString()) + parseInt(this.objProduct.SellingPrice.toString());
+	// 		if (this.objProduct.TaxType == 1) {
+	// 			// Tax type = EXCLUSIVE
+	// 			var tax = ((this.objProduct.Tax && this.objProduct.Tax > 0) ? parseInt(this.objProduct.Tax.toString()) : 0) / 100;
+	// 			var afterTax = parseInt(this.objProduct.SellingPrice.toString()) * tax;
 
-				this.objProduct.FinalPrice = parseFloat(this.objProduct.SellingPrice.toString()) + afterTax;
-			} else if (this.objProduct.TaxType == 2) {
-				// Tax type = INCLUSIVE
-				this.objProduct.FinalPrice = this.objProduct.SellingPrice;
-			}
-		}
-	}
+	// 			this.objProduct.FinalPrice = parseFloat(this.objProduct.SellingPrice.toString()) + afterTax;
+	// 		} else if (this.objProduct.TaxType == 2) {
+	// 			// Tax type = INCLUSIVE
+	// 			this.objProduct.FinalPrice = this.objProduct.SellingPrice;
+	// 		}
+	// 	}
+	// }
 
 	// calculate final price & profit margin if input -> SELLING PRICE
-	onChangeSellingPrice_calculateFinalPrice() {
-		if (this.objProduct.SellingPrice && this.objProduct.SellingPrice > 0) {
-			// profit = {(sales / purchase) - 1} * 100
-			this.objProduct.ProfitMargin = parseFloat((((parseInt(this.objProduct.SellingPrice.toString()) / parseInt(this.objProduct.PurchasePrice.toString())) - 1) * 100).toFixed(2));
-			if (this.objProduct.TaxType == 1) {
-				// Tax type = EXCLUSIVE
-				var tax = ((this.objProduct.Tax && this.objProduct.Tax > 0) ? parseInt(this.objProduct.Tax.toString()) : 0) / 100;
-				var afterTax = parseInt(this.objProduct.SellingPrice.toString()) * tax;
+	// onChangeSellingPrice_calculateFinalPrice() {
+	// 	if (this.objProduct.SellingPrice && this.objProduct.SellingPrice > 0) {
+	// 		// profit = {(sales / purchase) - 1} * 100
+	// 		this.objProduct.ProfitMargin = parseFloat((((parseInt(this.objProduct.SellingPrice.toString()) / parseInt(this.objProduct.PurchasePrice.toString())) - 1) * 100).toFixed(2));
+	// 		if (this.objProduct.TaxType == 1) {
+	// 			// Tax type = EXCLUSIVE
+	// 			var tax = ((this.objProduct.Tax && this.objProduct.Tax > 0) ? parseInt(this.objProduct.Tax.toString()) : 0) / 100;
+	// 			var afterTax = parseInt(this.objProduct.SellingPrice.toString()) * tax;
 
-				this.objProduct.FinalPrice = parseFloat(this.objProduct.SellingPrice.toString()) + afterTax;
-			} else if (this.objProduct.TaxType == 2) {
-				// Tax type = INCLUSIVE
-				this.objProduct.FinalPrice = this.objProduct.SellingPrice;
-			}
-		}
-	}
+	// 			this.objProduct.FinalPrice = parseFloat(this.objProduct.SellingPrice.toString()) + afterTax;
+	// 		} else if (this.objProduct.TaxType == 2) {
+	// 			// Tax type = INCLUSIVE
+	// 			this.objProduct.FinalPrice = this.objProduct.SellingPrice;
+	// 		}
+	// 	}
+	// }
 
 	clearUpload() {
 		this.uploadedImageUrl = '';
