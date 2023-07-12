@@ -15,11 +15,11 @@ export class Product extends BaseModel {
     Qty: number;
     MinQty: number;
     Cost: number;
-    Price: number;
-    PurchasePrice: number;
-    SellingPrice: number;
-    FinalPrice: number;
-    ProfitMargin: number;
+    Price: number = 0;
+    PurchasePrice: number = 0;
+    SellingPrice: number = 0;
+    FinalPrice: number = 0;
+    ProfitMargin: number = 0;
     TaxType: number = 1;
     Tax: number = 0;
     Discount: number;
