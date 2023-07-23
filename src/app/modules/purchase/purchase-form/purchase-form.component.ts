@@ -244,6 +244,30 @@ export class PurchaseFormComponent implements OnInit {
 		this.router.navigate(['purchase']);
 	}
 
+	incrementValue(event: Event, product: VMProduct) {
+		const inputElement = (event.target as HTMLElement).parentNode?.querySelector(`input[type="number"]#quantity_${product.SKU}`) as HTMLInputElement;
+		if (inputElement) {
+			inputElement.focus();
+			// inputElement.stepUp();
+
+			product.Qty++;
+			this.changeQty();
+		}
+	}
+	decrementValue(event: Event, product: VMProduct) {
+		const inputElement = (event.target as HTMLElement).parentNode?.querySelector(`input[type="number"]#quantity_${product.SKU}`) as HTMLInputElement;
+		if (inputElement) {
+			inputElement.focus();
+			// inputElement.stepDown();
+
+			if (product.Qty > 1) {
+				product.Qty--;
+			}
+			this.changeQty();
+		}
+	}
+
+
 	ngOnDestroy(): void {
 		this.destroy.next();
 		this.destroy.unsubscribe();
