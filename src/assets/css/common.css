@@ -286,6 +286,7 @@ td {
     padding: 5px 10px;
     /* padding: 1rem; */
     text-align: left;
+    line-height: 15px;
 }
 
 thead th {

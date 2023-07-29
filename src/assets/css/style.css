@@ -148,7 +148,22 @@ input.form-control:-moz-placeholder {
     /* Firefox 18- */
     color: #e0e0e0;
 }
+input[type="number"] {
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
+    appearance: textfield;
+    text-align: center;
+    padding: .375rem 2.25rem;
+}
 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+}
+.number-input {
+    width: 125px;
+    position: relative;
+}
 .form-file-label {
     border: 1px dashed #03a9f48a;
     width: 100%;
@@ -243,9 +258,9 @@ input.form-control:-moz-placeholder {
     /* display: inline-block; */
     display: block;
     background: var(--border-color);
-    border-radius: 16px;
+    border-radius: 20px;
     width: 26px;
-    height: 14px;
+    height: 15px;
     position: relative;
     vertical-align: middle;
     transition: background 0.25s;
@@ -260,9 +275,9 @@ input.form-control:-moz-placeholder {
     display: block;
     background: #fff;
     border-radius: 50%;
-    box-shadow: 0 0 4px 0px rgb(0 0 0 / 25%);
-    width: 12px;
-    height: 12px;
+    box-shadow: 0 0 2px 0px rgb(0 0 0 / 25%);
+    width: 13px;
+    height: 13px;
     position: absolute;
     top: 1px;
     left: 1px;
@@ -278,7 +293,7 @@ input.form-control:-moz-placeholder {
 }
 
 .toggle__checkbox:checked+.toggle__switch:before {
-    left: 13px;
+    left: 12px;
 }
 
 .toggle__checkbox {

@@ -1,5 +1,8 @@
+import { VMProduct } from "./vmProduct";
+
 export class VMPurchase {
     PurchaseCode: string;
+    ProductSKUs: string;
     PurchaseDate: string;
     SubTotal: number;
     TotalPurchasePrice: number;
@@ -14,4 +17,5 @@ export class VMPurchase {
     CreatedDate: string;
     SupplierName: string;
     CreatedByName: string;
+    lstProduct: VMProduct[] = [];
 }

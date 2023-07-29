@@ -34,14 +34,15 @@
 					<div class="col-md-3">
 						<div class="form-group">
 							<label for="purchaseDate" class="form-label">Purchase Date</label>
-							<input class="form-control"  name="purchaseDate" id="purchaseDate" placeholder="00/00/0000" bsDatepicker
-								[maxDate]="maxDate" [(ngModel)]="objPurchase.PurchaseDate">
+							<input class="form-control" name="purchaseDate" id="purchaseDate" placeholder="00/00/0000"
+								bsDatepicker [maxDate]="maxDate" [(ngModel)]="objPurchase.PurchaseDate">
 						</div>
 					</div>
 					<div class="col-md-3">
 						<div class="form-group">
 							<label for="purchaseStatus" class="form-label">Status</label>
-							<select name="purchaseStatus" id="purchaseStatus" class="form-select" [(ngModel)]="objPurchase.PurchaseStatus">
+							<select name="purchaseStatus" id="purchaseStatus" class="form-select"
+								[(ngModel)]="objPurchase.PurchaseStatus">
 								<option [value]="1">Recieved</option>
 								<option [value]="2">Pending</option>
 								<option [value]="3">Ordered</option>
@@ -109,8 +110,15 @@
 										[value]="product.ProductName" disabled>
 								</td>
 								<td>
-									<input type="number" id="quantity" name="quantity" class="form-control"
-										[(ngModel)]="product.Qty" min="1" (input)="changeQty()">
+									<div class="number-input">
+										<button type="button" class="number-field-btn minus"
+											(click)="decrementValue($event, product)">-</button>
+										<input type="number" id="quantity_{{product.SKU}}" name="quantity_{{product.SKU}}"
+											class="form-control" [(ngModel)]="product.Qty" min="1"
+											(input)="changeQty()">
+										<button type="button" class="number-field-btn plus"
+											(click)="incrementValue($event, product)">+</button>
+									</div>
 								</td>
 								<td>
 									<input type="text" name="purchasePrice" id="purchasePrice" class="form-control"
@@ -185,17 +193,18 @@
 							</div>
 							<div class="cart-row">
 								<div class="cart-column">
-									Discount 
+									Discount
 									<ng-container *ngIf="objPurchase.DiscountType > 0">
 										(
-											<span class="font-10 weight-400 txt-success">
-												{{(objPurchase.DiscountType == 1) ? '%' 
-												: (objPurchase.DiscountType == 2) ? 'Fixed' : ''}}
-											</span>
+										<span class="font-10 weight-400 txt-success">
+											{{(objPurchase.DiscountType == 1) ? '%'
+											: (objPurchase.DiscountType == 2) ? 'Fixed' : ''}}
+										</span>
 										)
 									</ng-container>
 								</div>
-								<div class="cart-column" [class.txt-success]="objPurchase.Discount > 0">{{objPurchase.Discount | currency: 'BDT':
+								<div class="cart-column" [class.txt-success]="objPurchase.Discount > 0">
+									{{objPurchase.Discount | currency: 'BDT':
 									'symbol':'1.2-2':'bn-BD'}}</div>
 							</div>
 							<div class="cart-row">
@@ -224,7 +233,8 @@
 							<select name="paymentType" id="paymentType" class="form-select"
 								[(ngModel)]="objPurchase.PaymentType" (click)="getAllAccount()">
 								<option [value]="0" selected disabled>Select</option>
-								<option [value]="account.AccountID" *ngFor="let account of lstAccount">{{account.AccountTitle}}</option>
+								<option [value]="account.AccountID" *ngFor="let account of lstAccount">
+									{{account.AccountTitle}}</option>
 							</select>
 						</div>
 					</div>

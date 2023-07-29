@@ -349,6 +349,21 @@ export class ProductFormComponent implements OnInit {
 		this.router.navigate(['product']);
 	}
 
+	incrementValue(event: Event) {
+		const inputElement = (event.target as HTMLElement).parentNode?.querySelector('input[type="number"]') as HTMLInputElement;
+		if (inputElement) {
+			inputElement.focus();
+			inputElement.stepUp();
+		}
+	}
+	decrementValue(event: Event) {
+		const inputElement = (event.target as HTMLElement).parentNode?.querySelector('input[type="number"]') as HTMLInputElement;
+		if (inputElement) {
+			inputElement.focus();
+			inputElement.stepDown();
+		}
+	}
+
 	ngOnDestroy(): void {
 		this.destroy.next();
 		this.destroy.unsubscribe();

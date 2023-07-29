@@ -134,25 +134,40 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-md-3">
-							<div class="form-group">
-								<label for="quantity" class="form-label">
-									Stock Quantity <span class="txt-danger">*</span>
-								</label>
-								<input type="number" id="quantity" name="quantity" class="form-control"
-									[(ngModel)]="objProduct.Qty" #quantity="ngModel" min="0"
-									[ngClass]="{ 'is-invalid': productForm.submitted && quantity.errors }" required>
-								<div *ngIf="quantity.errors && (quantity.dirty || productForm.submitted) && quantity.invalid"
-									class="invalid-feedback">
-									<div *ngIf="quantity.errors['required']">Stock quantity is required</div>
+						<div class="col-md-4">
+							<div class="d-flex align-items-center gap-4">
+								<div class="form-group">
+									<label for="quantity" class="form-label">
+										Stock Quantity <span class="txt-danger">*</span>
+									</label>
+									<div class="number-input">
+										<button type="button" class="number-field-btn minus"
+											(click)="decrementValue($event)">-</button>
+										<input type="number" id="quantity" name="quantity" class="form-control"
+											[(ngModel)]="objProduct.Qty" #quantity="ngModel" value="0" min="0"
+											[ngClass]="{ 'is-invalid': productForm.submitted && quantity.errors }" required>
+										<button type="button" class="number-field-btn plus"
+											(click)="incrementValue($event)">+</button>
+									</div>
+									<div *ngIf="quantity.errors && (quantity.dirty || productForm.submitted) && quantity.invalid"
+										class="invalid-feedback">
+										<div *ngIf="quantity.errors['required']">Stock quantity is required</div>
+									</div>
 								</div>
-							</div>
-						</div>
-						<div class="col-md-3">
-							<div class="form-group">
-								<label for="minQuantity" class="form-label">Alert Quantity</label>
-								<input type="number" id="minQuantity" class="form-control" name="minQuantity"
-									[(ngModel)]="objProduct.MinQty">
+							<!-- </div>
+							<div class="col-md-3"> -->
+								<div class="form-group">
+									<label for="minQuantity" class="form-label">Alert Quantity</label>
+									<div class="number-input">
+										<button type="button" class="number-field-btn minus"
+											(click)="decrementValue($event)">-</button>
+											<input type="number" id="minQuantity" class="form-control" name="minQuantity"
+											[(ngModel)]="objProduct.MinQty" value="0" min="0">
+										<button type="button" class="number-field-btn plus"
+											(click)="incrementValue($event)">+</button>
+									</div>
+									
+								</div>
 							</div>
 						</div>
 						<div class="col-md-3">

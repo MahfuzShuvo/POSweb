@@ -135,3 +135,28 @@ button:disabled {
 .removeFromList-btn:hover {
     opacity: .7;
 }
+
+
+.number-field-btn {
+    position: absolute;
+    bottom: 1px;
+    height: 33px;
+    width: 33px;
+    padding: 0 !important;
+    background: var(--bs-gray-100);
+    font-size: var(--font-20) !important;
+    font-weight: var(--weight-400) !important;
+}
+
+.number-field-btn.minus {
+    left: 1px;
+    border-bottom-right-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+    border-right: 1px solid #e0e0e0;
+}
+.number-field-btn.plus {
+    right: 1px;
+    border-bottom-left-radius: 0 !important;
+    border-top-left-radius: 0 !important;
+    border-left: 1px solid #e0e0e0;
+}

@@ -31,6 +31,7 @@
 							<th>SL.</th>
 							<th>Purchase Date</th>
 							<th>Purchase Code</th>
+							<th>Product</th>
 							<th>Purchase Status</th>
 							<th>Supplier</th>
 							<th>Total</th>
@@ -46,12 +47,27 @@
 							<td>{{i+1}}</td>
 							<td>{{purchase.PurchaseDate | date: 'dd/MM/yyyy, hh:mm a'}}</td>
 							<td>{{purchase.PurchaseCode}}</td>
+							<td>
+								<div class="purchase-product" *ngIf="purchase.lstProduct.length > 0">
+									<div class="purchase-product-item" *ngFor="let product of purchase.lstProduct">
+										<div class="d-flex gap-2">
+											<img class="productImage" *ngIf="product.Image != ''"
+												[src]="product.Image| SafeResourceUrl" alt="">
+											<div class="d-flex flex-column">
+												<div class="weight-600">{{product.ProductName}}</div>
+												<div class="font-11">SKU: <span class="txt-light">{{product.SKU}}</span></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</td>
 							<td>{{purchase.PurchaseStatus}}</td>
 							<td>{{purchase.SupplierName}}</td>
 							<td>{{purchase.TotalPurchasePrice}}</td>
 							<td>{{purchase.PaymentAmount}}</td>
 							<td>{{purchase.DueAmount}}</td>
-							<td>{{purchase.DueAmount > 0 ? 'Partial' : (purchase.DueAmount == purchase.TotalPurchasePrice) ? 'Unpaid' : 'Paid'}}</td>
+							<td>{{purchase.DueAmount > 0 ? 'Partial' : (purchase.PaymentAmount == 0) ? 'Unpaid' : 'Paid'}}</td>
+							<td>{{purchase.CreatedByName}}</td>
 							<td>
 								<div class="d-flex align-items-center gap-3 justify-content-end">
 									<button type="button" class="action-button edit" tooltip="Edit"
