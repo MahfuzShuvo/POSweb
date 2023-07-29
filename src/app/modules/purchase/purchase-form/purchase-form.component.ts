@@ -36,6 +36,7 @@ export class PurchaseFormComponent implements OnInit {
 	totalPurchaseQty: number = 0;
 	discountInput: number = 0;
 	lstAccount: Account[] = [];
+	isEditMode: boolean = false;
 
 	constructor(
 		private headerService: HeaderService,
@@ -55,25 +56,46 @@ export class PurchaseFormComponent implements OnInit {
 		})
 
 		this.activatedRoute.params.subscribe((params: Params) => {
-			this.purchaseCode = (!params['slug']) ? '' : params['slug'];
+			this.purchaseCode = (!params['purchaseCode']) ? '' : params['purchaseCode'];
 			if (this.purchaseCode != '') {
+				this.isEditMode = true;
 				setTimeout(() => {
 
 					this.getPurchaseByCode(this.purchaseCode);
 				}, 500);
+			} else {
+				this.isEditMode= false;
 			}
 		});
 		Promise.resolve().then(() => this.headerService.setTitle(childRoute!.toString() + ' ' + headerTitle!.toString()));
 	}
 
 	ngOnInit() {
-		// this.getAllSupplier();
+		this.getAllSupplier();
 		this.maxDate = new Date();
 		this.objPurchase.PurchaseDate = new Date(this.maxDate).toLocaleString();
 	}
 
 	getPurchaseByCode(purchaseCode: string) {
+		this.purchaseService.getPurchaseByPurchaseCode(purchaseCode).subscribe(response => {
+			if (response.ResponseCode == ResponseStatus.success) {
+				this.objPurchase = JSON.parse(JSON.stringify(response.ResponseObj));
 
+				if (this.objPurchase.Discount > 0) {
+					if (this.objPurchase.DiscountType == 1) {
+						this.discountInput = (parseFloat(this.objPurchase.Discount.toString()) * 100) / parseFloat(this.objPurchase.SubTotal.toString());
+					} else {
+						this.discountInput =this.objPurchase.Discount;
+					}
+				}
+
+				this.objPurchase.PurchaseDate = new Date(this.objPurchase.PurchaseDate).toLocaleString();
+
+				this.changeQty();
+			} else {
+				this.messageHelper.showMessage(response.ResponseCode, response.Message);
+			}
+		})
 	}
 
 	onKeyProductSearch(event: any) {
@@ -122,10 +144,20 @@ export class PurchaseFormComponent implements OnInit {
 					this.lstSupplier = response.ResponseObj;
 					this.lstSupplier = this.lstSupplier.filter(x => x.Status == 1);
 					this.lstAllSupplier = JSON.parse(JSON.stringify(this.lstSupplier));
+
 				} else {
 					this.messageHelper.showMessage(response.ResponseCode, response.Message);
 				}
 			})
+	}
+
+	getSupplierName() {
+		setTimeout(() => {
+			var existSupplier = this.lstAllSupplier.filter(x => x.SupplierID == this.objPurchase?.SupplierID)[0];
+		if (existSupplier) {
+			this.selectedSupplier = JSON.parse(JSON.stringify(existSupplier));
+		}
+		}, 500);
 	}
 
 	selectSupplier(supplier: Supplier) {
@@ -227,6 +259,7 @@ export class PurchaseFormComponent implements OnInit {
 				return;
 			}
 		}
+
 		this.purchaseService.savePurchase(this.objPurchase)
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {
@@ -264,6 +297,15 @@ export class PurchaseFormComponent implements OnInit {
 				product.Qty--;
 			}
 			this.changeQty();
+		}
+	}
+
+	bindingUnderTotalPrice(event: any){
+		if (this.objPurchase.PaymentAmount > this.objPurchase.TotalPurchasePrice) {
+			this.messageHelper.showMessage(ResponseStatus.warning, "Can't pay more than total purchase price");
+
+			event.target.value=this.objPurchase.TotalPurchasePrice;
+			this.objPurchase.PaymentAmount=this.objPurchase.TotalPurchasePrice;
 		}
 	}
 

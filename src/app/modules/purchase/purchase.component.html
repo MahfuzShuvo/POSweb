@@ -45,8 +45,17 @@
 					<tbody>
 						<tr *ngFor="let purchase of lstPurchase; let i = index">
 							<td>{{i+1}}</td>
-							<td>{{purchase.PurchaseDate | date: 'dd/MM/yyyy, hh:mm a'}}</td>
-							<td>{{purchase.PurchaseCode}}</td>
+							<td>
+								<div class="d-flex flex-column">
+									<span>{{purchase.PurchaseDate | date: 'dd/MM/yyyy'}}</span>
+									<span class="txt-light">{{purchase.PurchaseDate | date: 'hh:mm a'}}</span>
+								</div>
+							</td>
+							<td>
+								<div class="weight-600">
+									{{purchase.PurchaseCode}}
+								</div>
+							</td>
 							<td>
 								<div class="purchase-product" *ngIf="purchase.lstProduct.length > 0">
 									<div class="purchase-product-item" *ngFor="let product of purchase.lstProduct">
@@ -55,7 +64,8 @@
 												[src]="product.Image| SafeResourceUrl" alt="">
 											<div class="d-flex flex-column">
 												<div class="weight-600">{{product.ProductName}}</div>
-												<div class="font-11">SKU: <span class="txt-light">{{product.SKU}}</span></div>
+												<div class="font-11">SKU: <span class="txt-light">{{product.SKU}}</span>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -63,13 +73,24 @@
 							</td>
 							<td>{{purchase.PurchaseStatus}}</td>
 							<td>{{purchase.SupplierName}}</td>
-							<td>{{purchase.TotalPurchasePrice}}</td>
-							<td>{{purchase.PaymentAmount}}</td>
-							<td>{{purchase.DueAmount}}</td>
-							<td>{{purchase.DueAmount > 0 ? 'Partial' : (purchase.PaymentAmount == 0) ? 'Unpaid' : 'Paid'}}</td>
+							<td>{{purchase.TotalPurchasePrice | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</td>
+							<td>{{purchase.PaymentAmount | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</td>
+							<td>{{purchase.DueAmount | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</td>
+							<td>
+								<div class="badge" [class.danger-badge]="purchase.PaymentStatus == 'Unpaid'"
+									[class.success-badge]="purchase.PaymentStatus == 'Paid'"
+									[class.warning-badge]="purchase.PaymentStatus == 'Partial'">
+									{{purchase.PaymentStatus}}
+								</div>
+							</td>
 							<td>{{purchase.CreatedByName}}</td>
 							<td>
-								<div class="d-flex align-items-center gap-3 justify-content-end">
+								<div class="d-flex align-items-center gap-2 justify-content-end">
+									<button type="button" class="action-button edit" tooltip="Edit"
+										containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+										(click)="viewPurchase(purchase.PurchaseCode)">
+										<i class='bx bx-show-alt font-15'></i>
+									</button>
 									<button type="button" class="action-button edit" tooltip="Edit"
 										containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
 										(click)="editPurchase(purchase.PurchaseCode)">

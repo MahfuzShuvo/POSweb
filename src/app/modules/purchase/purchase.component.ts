@@ -102,6 +102,10 @@ export class PurchaseComponent implements OnInit {
 		this.router.navigate(['purchase/edit', purchaseCode])
 	}
 
+	viewPurchase(purchaseCode: string) {
+		this.router.navigate(['purchase/edit', purchaseCode])
+	}
+
 	ngOnDestroy(): void {
 		this.destroy.next();
 		this.destroy.unsubscribe();

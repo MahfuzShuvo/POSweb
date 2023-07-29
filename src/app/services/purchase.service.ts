@@ -16,6 +16,11 @@ export class PurchaseService {
 		return this.httpHelper.postHelper(url);
 	}
 
+	getPurchaseByPurchaseCode(obj: any): Observable<any> {
+		const url = 'api/Purchase/GetPurchaseByPurchaseCode';
+		return this.httpHelper.postHelper(url, obj);
+	}
+
 	savePurchase(obj: any): Observable<any> {
 		const url = 'api/Purchase/SavePurchase';
 		return this.httpHelper.postHelper(url, obj);

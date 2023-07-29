@@ -172,6 +172,10 @@ a.theme-link:hover {
     color: var(--danger-color) !important;
     background: var(--light-danger-color);
 }
+.warning-badge {
+    color: var(--warning-color) !important;
+    background: var(--light-warning-color);
+}
 
 .modal-header {
     justify-content: center !important;

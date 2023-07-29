@@ -12,6 +12,7 @@ export class VMPurchase {
     AccountTitle: string;
     PaymentAmount: number;
     DueAmount: number;
+    PaymentStatus: string;
     PaymentNote: string;
     PurchaseStatus: string;
     CreatedDate: string;
