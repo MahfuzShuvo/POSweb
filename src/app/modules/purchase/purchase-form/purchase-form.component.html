@@ -49,6 +49,12 @@
 							</select>
 						</div>
 					</div>
+					<div class="col-md-3">
+						<div class="purchase-code-div" *ngIf="purchaseCode != '' && isEditMode">
+							<span class="txt-light">Purchase code: </span>
+							<span class="weight-600">{{purchaseCode}}</span>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div class="purchase-form-division">

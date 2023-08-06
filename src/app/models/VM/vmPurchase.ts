@@ -2,7 +2,7 @@ import { VMProduct } from "./vmProduct";
 
 export class VMPurchase {
     PurchaseCode: string;
-    ProductSKUs: string;
+    // ProductSKUs: string;
     PurchaseDate: string;
     SubTotal: number;
     TotalPurchasePrice: number;

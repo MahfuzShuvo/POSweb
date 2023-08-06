@@ -103,7 +103,7 @@ export class PurchaseComponent implements OnInit {
 	}
 
 	viewPurchase(purchaseCode: string) {
-		this.router.navigate(['purchase/edit', purchaseCode])
+		this.router.navigate(['purchase/view', purchaseCode])
 	}
 
 	ngOnDestroy(): void {

@@ -4,11 +4,13 @@ import { PurchaseComponent } from './purchase.component';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from 'src/app/shared.module';
 import { PurchaseFormComponent } from './purchase-form/purchase-form.component';
+import { PurchaseViewComponent } from './purchase-view/purchase-view.component';
 
 const routes: Routes = [
 	{ path: '', component: PurchaseComponent },
 	{ path: 'add', component: PurchaseFormComponent },
-	{ path: 'edit/:purchaseCode', component: PurchaseFormComponent }
+	{ path: 'edit/:purchaseCode', component: PurchaseFormComponent },
+	{ path: 'view/:purchaseCode', component: PurchaseViewComponent }
 ]
 
 @NgModule({
@@ -19,7 +21,8 @@ const routes: Routes = [
 	],
 	declarations: [
 		PurchaseComponent,
-		PurchaseFormComponent
+		PurchaseFormComponent,
+		PurchaseViewComponent
 	]
 })
 export class PurchaseModule { }

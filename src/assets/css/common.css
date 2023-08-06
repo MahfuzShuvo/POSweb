@@ -273,7 +273,7 @@ a.theme-link:hover {
 /* table style start */
 .table__body {
     width: 100%;
-    height: calc(100vh - 150px);
+    height: calc(100vh - 152px);
     overflow: auto;
     border-radius: 4px;
     font-size: var(--font-12);
