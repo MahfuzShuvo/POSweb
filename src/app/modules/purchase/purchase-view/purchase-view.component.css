@@ -1,0 +1,70 @@
+.purchase-body {
+    padding: 10px 20px;
+    /* padding-bottom: 0; */
+}
+.view-content,
+.view-title {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-10);
+    font-size: var(--font-12);
+}
+.view-title span:first-child {
+    width: 60px;
+}
+
+.head-label {
+    font-style: italic;
+}
+.view-main {
+    display: flex;
+    flex-direction: column;
+}
+.table__body {
+    max-height: 300px;
+    height: auto;
+}
+.total-tr {
+    border-bottom: 1px solid var(--thead-color);
+    background: var(--bs-light);
+}
+.total-tr td {
+    height: 30px;
+}
+.purchase-cart {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    font-size: var(--font-13);
+    font-weight: var(--weight-600);
+    background: var(--bs-light);
+    padding: 20px;
+}
+
+.cart-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--light-border-color);
+    padding: 8px;
+}
+
+.cart-row:last-child {
+    border-bottom: none;
+    /* border-top: 1px solid var(--border-color); */
+    background: var(--light-success-color);
+    margin: -20px;
+    margin-top: -1px;
+    padding: 8px 30px;
+    border-top: 1px solid var(--white-color);
+}
+
+.cart-column.total {
+    background: var(--success-color);
+    border-radius: 4px;
+    padding: 5px 20px;
+    margin-right: -10px;
+    padding-right: 10px;
+    /* color: #fff; */
+    line-height: 16px;
+}

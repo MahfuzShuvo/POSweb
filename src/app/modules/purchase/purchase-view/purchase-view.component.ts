@@ -66,4 +66,12 @@ export class PurchaseViewComponent implements OnInit {
 		})
 	}
 
+	calculateTotalQty() {
+		return this.objPurchase.lstProduct.map(p => p.Qty).reduce((a, b) => a + b);
+	}
+
+	calculateTotalPrice() {
+		return this.objPurchase.lstProduct.map(p => (p.Qty * p.PurchasePrice)).reduce((a, b) => a + b);
+	}
+
 }

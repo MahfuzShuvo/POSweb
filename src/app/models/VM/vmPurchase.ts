@@ -1,3 +1,4 @@
+import { Supplier } from "../supplier";
 import { VMProduct } from "./vmProduct";
 
 export class VMPurchase {
@@ -19,4 +20,5 @@ export class VMPurchase {
     SupplierName: string;
     CreatedByName: string;
     lstProduct: VMProduct[] = [];
+    objSupplier: Supplier = new Supplier();
 }
