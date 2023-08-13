@@ -72,6 +72,7 @@ export class PurchaseFormComponent implements OnInit {
 
 	ngOnInit() {
 		this.getAllSupplier();
+		this.getAllAccount();
 		this.maxDate = new Date();
 		this.objPurchase.PurchaseDate = new Date(this.maxDate).toLocaleString();
 	}

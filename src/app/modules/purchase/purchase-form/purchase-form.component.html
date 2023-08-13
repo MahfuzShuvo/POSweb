@@ -237,7 +237,7 @@
 						<div class="form-group">
 							<label for="paymentType" class="form-label">Payment Type</label>
 							<select name="paymentType" id="paymentType" class="form-select"
-								[(ngModel)]="objPurchase.PaymentType" (click)="getAllAccount()">
+								[(ngModel)]="objPurchase.PaymentType">
 								<option [value]="0" selected disabled>Select</option>
 								<option [value]="account.AccountID" *ngFor="let account of lstAccount">
 									{{account.AccountTitle}}</option>

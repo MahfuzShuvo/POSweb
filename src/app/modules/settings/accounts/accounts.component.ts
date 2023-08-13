@@ -193,6 +193,8 @@ export class AccountsComponent implements OnInit {
 				if (response.ResponseCode == ResponseStatus.success) {
 					if (response.ResponseObj.lstVMAccountStatement.length > 0) {
 						this.openAccounStatementSisebar(response.ResponseObj.lstVMAccountStatement, response.ResponseObj.totalInBalance, response.ResponseObj.totalOutBalance, account.AccountTitle, account.AccountNumber);
+					} else {
+						this.messageHelper.showMessage(ResponseStatus.warning, "No statement available yet.")
 					}
 				} else {
 					this.messageHelper.showMessage(response.ResponseCode, response.Message);
@@ -211,6 +213,8 @@ export class AccountsComponent implements OnInit {
 			statementRef.instance.lstAccountStatement = JSON.parse(JSON.stringify(statement));
 			statementRef.instance.totalInBalance = totalInBalance;
 			statementRef.instance.totalOutBalance = totalOutBalance;
+		} else {
+			this.messageHelper.showMessage(ResponseStatus.warning, "No statement available yet.")
 		}
 		// destroy component
 		let isShowInstance = statementRef.instance.isShow;
