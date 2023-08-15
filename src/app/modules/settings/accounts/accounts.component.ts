@@ -159,7 +159,7 @@ export class AccountsComponent implements OnInit {
 		this.objAccount = new Account();
 		this.objAccount = JSON.parse(JSON.stringify(account));
 
-		this.modalRef = this.modalService.show(this.balanceModal,);
+		this.modalRef = this.modalService.show(this.balanceModal);
 
 	}
 

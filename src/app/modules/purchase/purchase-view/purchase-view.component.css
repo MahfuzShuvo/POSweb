@@ -61,7 +61,7 @@
 
 .cart-column.total {
     background: var(--success-color);
-    border-radius: 4px;
+    /* border-radius: 4px; */
     padding: 5px 20px;
     margin-right: -10px;
     padding-right: 10px;

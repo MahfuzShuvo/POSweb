@@ -5,7 +5,157 @@
 			<span class="font-11 txt-light">Invoice no.: #025148</span>
 		</div>
 		<div class="cart-body">
-			hello
+			<div class="row">
+				<div class="col-md-5">
+					<div class="form-group">
+						<div class="btn-group" dropdown #dropdownCustomer="bs-dropdown" [insideClick]="true"
+							(onShown)="openCustomerDrop()">
+							<div dropdownToggle class="custome-select" id="customer" aria-controls="dropdown-basic">
+								<span class="custome-select-txt">{{(selectedCustomer.CustomerID &&
+									selectedCustomer.CustomerID > 0) ? selectedCustomer.CustomerName : isEditMode ? getCustomerName() :
+									'Walk-in customer'}}</span>
+								<i class='bx bx-chevron-down font-17'></i>
+							</div>
+							<button type="button" class="number-field-btn plus" (click)="createCustomer()">
+								<i class='bx bx-user-plus'></i>
+							</button>
+							<div id="dropdown-basic" *dropdownMenu class="dropdown-menu" aria-labelledby="customer">
+								<input type="text" name="searchCustomer" id="searchCustomer" class="dropdown-search"
+									placeholder="Search" #searchCustomer
+									(keyup)="searchCustomerDropdown(searchCustomer.value)">
+								<ul class="dropdown-ul">
+									<li class="dropdown-item" *ngFor="let customer of lstCustomer"
+										(click)="selectCustomer(customer); dropdownCustomer.isOpen = false">
+										{{customer.CustomerName}}
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-7">
+					<div class="form-group">
+						<i class='bx bx-search-alt p-search font-15 txt-light'></i>
+						<input type="text" class="form-control" name="searchProduct" id="searchProduct"
+							placeholder="Search product by name or SKU" #searchProductText
+							(keyup)="onKeyProductSearch($event)">
+						<div class="dropdown-menu " [class.show]="lstProductForCart && lstProductForCart.length > 0">
+							<div class="dropdown-table">
+								<table>
+									<thead>
+										<tr>
+											<th>Product</th>
+											<th>SKU</th>
+											<th>Price</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr *ngFor="let product of lstProductForCart"
+											(click)="productAddToCart(product)">
+											<td>{{product.ProductName}}</td>
+											<td>{{product.SKU}}</td>
+											<td>{{product.PurchasePrice | currency: 'BDT':
+												'symbol':'1.2-2':'bn-BD'}}</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<section class="table__body mt-2">
+				<table>
+					<thead>
+						<tr>
+							<th>SL</th>
+							<th>Product</th>
+							<th>Quantity</th>
+							<th>Price / Unit (&#2547;)</th>
+							<th>Total (&#2547;)</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let product of objSales.lstProduct; let i = index">
+							<td>{{i+1}}</td>
+							<td>
+								<input type="text" name="productName" id="productName" class="form-control"
+									[value]="product.ProductName" disabled>
+							</td>
+							<td>
+								<div class="number-input">
+									<button type="button" class="number-field-btn minus"
+										(click)="decrementValue($event, product)">-</button>
+									<input type="number" id="quantity_{{product.SKU}}" name="quantity_{{product.SKU}}"
+										class="form-control" [(ngModel)]="product.Qty" min="1" (input)="changeQty()">
+									<button type="button" class="number-field-btn plus"
+										(click)="incrementValue($event, product)">+</button>
+								</div>
+							</td>
+							<td>
+								{{product.FinalPrice | number: '1.2-2'}}
+							</td>
+							<td>
+								{{(product.FinalPrice * product.Qty) | number: '1.2-2'}}
+							</td>
+							<td>
+								<button type="button" class="removeFromList-btn" (click)="clickToRemoveFromList(i)">
+									<span class="font-35 weight-300">-</span>
+								</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+			<div class="purchase-cart mt-3">
+				<div class="cart-row">
+					<div class="cart-column">Sub Total</div>
+					<div class="cart-column">{{objSales.SubTotal | currency: 'BDT':
+						'symbol':'1.2-2':'bn-BD'}}</div>
+				</div>
+
+				<div class="cart-row">
+					<div class="cart-column">
+						Discount
+						<ng-container *ngIf="objSales.DiscountType > 0">
+							(
+							<span class="font-10 weight-400 txt-success">
+								{{(objSales.DiscountType == 1) ? '%'
+								: (objSales.DiscountType == 2) ? 'Fixed' : ''}}
+							</span>
+							)
+						</ng-container>
+					</div>
+					<div class="cart-column d-flex align-items-center gap-3">
+						<a class="secondary-theme-link" (click)="discountModalOpen()">Add Discount</a>
+						<button type="button" class="danger-button" [disabled]="objSales.Discount == 0"
+							(click)="clearDsicount()">Clear Discount</button>
+					</div>
+					<div class="cart-column" [class.txt-success]="objSales.Discount > 0">
+						{{objSales.Discount | currency: 'BDT':
+						'symbol':'1.2-2':'bn-BD'}}</div>
+				</div>
+				<div class="cart-row">
+					<div class="cart-column">Total</div>
+					<div class="cart-column total">{{objSales.TotalSalesPrice | currency: 'BDT':
+						'symbol':'1.2-2':'bn-BD'}}</div>
+				</div>
+			</div>
+			<div class="pos-button-wrapper mt-3">
+				<button type="button" class="pos-hold-btn" (click)="clickToHoldSales()">
+					<i class='bx bxs-hand'></i>
+					Hold
+				</button>
+				<button type="button" class="pos-payment-btn" (click)="openPaymentModal()">
+					<i class='bx bx-money'></i>
+					Make Payment
+				</button>
+				<!-- <button type="button" class="pos-due-btn">
+					<i class='bx bx-wallet-alt'></i>
+					Due
+				</button> -->
+			</div>
 		</div>
 	</div>
 	<div class="body-wrapper-card cart card px-2">
@@ -61,3 +211,113 @@
 		</div>
 	</div>
 </div>
+
+
+<!-- discount modal -->
+<ng-template #discountModal>
+	<div class="modal-header">
+		<div class="modal-title text-center font-15 weight-500">Add Discount</div>
+		<!-- <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+		<span aria-hidden="true" class="visually-hidden">&times;</span>
+	  </button> -->
+	</div>
+	<form autocomplete="off" #addDiscountForm="ngForm" (ngSubmit)="addDiscountForm.form.valid && addDiscount()">
+
+		<div class="modal-body">
+			<div class="form-group mt-2">
+				<label for="discountType" class="form-label">Discount Type</label>
+				<select name="discountType" id="discountType" class="form-select"
+					[(ngModel)]="objDiscount.discountType">
+					<!-- <option [value]="0" selected disabled>Select</option> -->
+					<option [value]="1">Percentage (%)</option>
+					<option [value]="2">Fixed (&#2547;)</option>
+				</select>
+			</div>
+			<div class="form-group mt-2">
+				<label for="discount" class="form-label">Discount</label>
+				<input type="number" name="discount" id="discount" class="form-control" placeholder="00.00"
+					(input)="discountEntry(discount.value)" required #discount>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="cancel-button" (click)="modalRef?.hide()">Cancel</button>
+			<button type="submit"
+				[disabled]="(dataService.isFormSubmitting | async) || (discount.valueAsNumber == 0 || discount.value == '')"
+				class="success-button">Add</button>
+		</div>
+	</form>
+</ng-template>
+
+<!-- payment modal -->
+<ng-template #paymentModal>
+	<div class="modal-header">
+		<div class="modal-title text-center font-15 weight-500">Payments</div>
+		<!-- <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+		<span aria-hidden="true" class="visually-hidden">&times;</span>
+	  </button> -->
+	</div>
+	<form autocomplete="off" #paymentForm="ngForm" (ngSubmit)="paymentForm.form.valid && saveSales()">
+
+		<div class="modal-body">
+			<div class="row">
+				<div class="col-md-7">
+					<div class="form-group mt-2">
+						<label for="paymentType" class="form-label">Payment Type</label>
+						<select name="paymentType" id="paymentType" class="form-select"
+							[(ngModel)]="objSales.AccountID">
+							<option [value]="0" selected disabled>Select</option>
+							<option [value]="account.AccountID" *ngFor="let account of lstAccount">
+								{{account.AccountTitle}}</option>
+						</select>
+					</div>
+					<div class="form-group mt-2">
+						<label for="payAmount" class="form-label">Amount</label>
+						<input type="number" name="payAmount" id="payAmount" class="form-control" placeholder="00.00"
+							(input)="payAmountEntry(payAmount.value)" required #payAmount>
+					</div>
+				</div>
+				<div class="col-md-5">
+					<div class="payment-cart">
+						<div class="cart-item">
+							<div class="cart-head">Total Quantiy</div>
+							<div class="cart-info font-15">{{objPaymentDTO.TotalQty}}</div>
+						</div>
+						<div class="cart-item">
+							<div class="cart-head">Total</div>
+							<div class="cart-info">{{objPaymentDTO.Total | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</div>
+						</div>
+						<div class="cart-item">
+							<div class="cart-head">Discount (-)</div>
+							<div class="cart-info">{{objPaymentDTO.Discount | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</div>
+						</div>
+						<div class="cart-item payable">
+							<div class="cart-head">Payable</div>
+							<div class="cart-info">{{objPaymentDTO.TotalPayable | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</div>
+						</div>
+						<div class="cart-item">
+							<div class="cart-head">Paying Amount</div>
+							<div class="cart-info">{{objPaymentDTO.Amount | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</div>
+						</div>
+						<div class="cart-item">
+							<div class="cart-head">Remaining</div>
+							<div class="cart-info">{{objPaymentDTO.RemainingAmount | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</div>
+						</div>
+						<div class="cart-item return">
+							<div class="cart-head">Return</div>
+							<div class="cart-info">{{objPaymentDTO.ReturnAmount | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="cancel-button" (click)="modalRef?.hide()">Cancel</button>
+			<button type="submit"
+				[disabled]="(dataService.isFormSubmitting | async) || (payAmount.valueAsNumber == 0 || payAmount.value == '')"
+				class="success-button">Save</button>
+		</div>
+	</form>
+</ng-template>
+
+<!-- add & edit customer details -->
+<ng-template #customerForm></ng-template>

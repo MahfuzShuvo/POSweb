@@ -10,7 +10,7 @@ export class Purchase extends BaseModel {
     SubTotal: number = 0;
     TotalPurchasePrice: number = 0;
     OtherCharge: number = 0;
-    DiscountType: number = 1;
+    DiscountType: number = 0;
     Discount: number = 0;
     PaymentType: number = 0;
     PaymentAmount: number = 0;

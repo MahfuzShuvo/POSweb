@@ -253,7 +253,7 @@ export class PurchaseFormComponent implements OnInit {
 			this.messageHelper.showMessage(ResponseStatus.warning, "Didn't select any product to purchase");
 			return;
 		}
-		this.objPurchase.PurchaseDate = new Date(this.objPurchase.PurchaseDate).toLocaleString()
+		this.objPurchase.PurchaseDate = new Date(this.objPurchase.PurchaseDate).toLocaleString();
 		if (this.objPurchase.PaymentAmount > 0) {
 			if (this.objPurchase.PaymentType == 0) {
 				this.messageHelper.showMessage(ResponseStatus.warning, "For payment, you have to select payment type");
