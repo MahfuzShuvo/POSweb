@@ -377,6 +377,7 @@ export class PosComponent implements OnInit {
 				if (response.ResponseCode == ResponseStatus.success) {
 					this.objSales = new Sales();
 					this.selectedCustomer = new Customer();
+					this.modalRef?.hide();
 				}
 				this.messageHelper.showMessage(response.ResponseCode, response.Message);
 			})
