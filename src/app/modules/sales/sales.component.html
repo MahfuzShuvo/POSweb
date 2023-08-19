@@ -1,10 +1,10 @@
 <div class="body-wrapper-card card">
-	<div class="purchase-body">
+	<div class="sales-body">
 		<div class="table-headings d-flex align-items-center justify-content-between">
 			<div class="table-search d-flex align-items-center gap-1">
 				<i class='bx bx-search-alt mt-1'></i>
-				<input type="text" class="form-control" name="searchPurchase" #searchText
-					placeholder="Search by purchase code ..." (keyup)="searchPurchase(searchText.value)">
+				<input type="text" class="form-control" name="searchSales" #searchText
+					placeholder="Search by sales code ..." (keyup)="searchSales(searchText.value)">
 			</div>
 			<!-- <div class="d-flex align-items-center gap-2">
 				<div class="filter-search role-filter">
@@ -21,19 +21,19 @@
 					</select>
 				</div>
 			</div> -->
-			<button type="button" class="theme-button" (click)="addPurchase()">+ Add New</button>
+			<button type="button" class="theme-button" (click)="addSales()">+ Add New</button>
 		</div>
-		<div class="purchase-table mt-1">
+		<div class="sales-table mt-1">
 			<section class="table__body">
 				<table>
 					<thead>
 						<tr>
 							<th>SL.</th>
-							<th>Purchase Date</th>
-							<th>Purchase Code</th>
+							<th>Sales Date</th>
+							<th>Sales Code</th>
 							<th>Product</th>
-							<th>Purchase Status</th>
-							<th>Supplier</th>
+							<th>Sales Status</th>
+							<th>Customer</th>
 							<th>Total</th>
 							<th>Paid</th>
 							<th>Due</th>
@@ -43,22 +43,22 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr *ngFor="let purchase of lstPurchase; let i = index">
+						<tr *ngFor="let sales of lstSales; let i = index">
 							<td>{{i+1}}</td>
 							<td>
 								<div class="d-flex flex-column">
-									<span>{{purchase.PurchaseDate | date: 'dd/MM/yyyy'}}</span>
-									<span class="txt-light">{{purchase.PurchaseDate | date: 'hh:mm a'}}</span>
+									<span>{{sales.SalesDate | date: 'dd/MM/yyyy'}}</span>
+									<span class="txt-light">{{sales.SalesDate | date: 'hh:mm a'}}</span>
 								</div>
 							</td>
 							<td>
 								<div class="weight-600">
-									{{purchase.PurchaseCode}}
+									{{sales.SalesCode}}
 								</div>
 							</td>
 							<td>
-								<div class="purchase-product" *ngIf="purchase.lstProduct.length > 0">
-									<div class="purchase-product-item" *ngFor="let product of purchase.lstProduct">
+								<div class="sales-product" *ngIf="sales.lstProduct.length > 0">
+									<div class="sales-product-item" *ngFor="let product of sales.lstProduct">
 										<div class="d-flex gap-2">
 											<img class="productImage" *ngIf="product.Image != ''"
 												[src]="product.Image| SafeResourceUrl" alt="">
@@ -71,34 +71,36 @@
 									</div>
 								</div>
 							</td>
-							<td>{{purchase.PurchaseStatus}}</td>
-							<td>{{purchase.SupplierName}}</td>
-							<td>{{purchase.TotalPurchasePrice | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</td>
-							<td>{{purchase.PaymentAmount | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</td>
-							<td>{{purchase.DueAmount | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</td>
+							<td>{{sales.SalesStatus}}</td>
+							<td [class.txt-primary]="sales.CustomerName == 'Walk-in'">
+								{{sales.CustomerName}}
+							</td>
+							<td>{{sales.TotalSalesPrice | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</td>
+							<td>{{sales.PayAmount | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</td>
+							<td>{{sales.DueAmount | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</td>
 							<td>
-								<div class="badge" [class.danger-badge]="purchase.PaymentStatus == 'Unpaid'"
-									[class.success-badge]="purchase.PaymentStatus == 'Paid'"
-									[class.warning-badge]="purchase.PaymentStatus == 'Partial'">
-									{{purchase.PaymentStatus}}
+								<div class="badge" [class.danger-badge]="sales.PaymentStatus == 'Unpaid'"
+									[class.success-badge]="sales.PaymentStatus == 'Paid'"
+									[class.warning-badge]="sales.PaymentStatus == 'Partial'">
+									{{sales.PaymentStatus}}
 								</div>
 							</td>
-							<td>{{purchase.CreatedByName}}</td>
+							<td>{{sales.CreatedByName}}</td>
 							<td>
 								<div class="d-flex align-items-center gap-2 justify-content-end">
 									<button type="button" class="action-button view" tooltip="View"
 										containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
-										(click)="viewPurchase(purchase.PurchaseCode)">
+										(click)="viewSales(sales.SalesCode)">
 										<i class='bx bx-show-alt font-15'></i>
 									</button>
 									<button type="button" class="action-button edit" tooltip="Edit"
 										containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
-										(click)="editPurchase(purchase.PurchaseCode)">
+										(click)="editSales(sales.SalesCode)">
 										<i class='bx bxs-edit font-15'></i>
 									</button>
 									<button type="button" class="action-button delete" tooltip="Delete"
 										containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
-										(click)="deletePurchase(purchase)">
+										(click)="deleteSales(sales)">
 										<i class='bx bx-trash font-15'></i>
 									</button>
 								</div>
@@ -116,16 +118,16 @@
 </div>
 
 
-<!-- delete purchase -->
+<!-- delete sales -->
 <ng-template #deleteModal>
 	<div class="modal-header">
-		<div class="modal-title text-center font-15 weight-500">Delete Purchase</div>
+		<div class="modal-title text-center font-15 weight-500">Delete Sales</div>
 		<!-- <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
 		<span aria-hidden="true" class="visually-hidden">&times;</span>
 	  </button> -->
 	</div>
 	<div class="modal-body">
-		<div class="text-center txt-danger">Are you sure to delete this purchase?</div>
+		<div class="text-center txt-danger">Are you sure to delete this sales?</div>
 	</div>
 	<div class="modal-footer">
 		<button type="button" class="cancel-button" (click)="modalRef?.hide()">No</button>

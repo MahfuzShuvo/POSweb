@@ -2,19 +2,20 @@ import { Customer } from "../customer";
 import { VMProduct } from "./vmProduct";
 
 export class VMSales {
-    salesCode: string;
-    salesDate: string;
-    subTotal: number;
-    totalSalesPrice: number;
-    discountType: string;
-    discount: number;
-    accountTitle: string;
-    payAmount: number;
-    dueAmount: number;
-    salesStatus: string;
-    createdDate: string;
-    customerName: string;
-    createdByName: string;
+    SalesCode: string;
+    SalesDate: string;
+    SubTotal: number;
+    TotalSalesPrice: number;
+    DiscountType: string;
+    Discount: number;
+    AccountTitle: string;
+    PayAmount: number;
+    DueAmount: number;
+    SalesStatus: string;
+    PaymentStatus: string;
+    CreatedDate: string;
+    CustomerName: string;
+    CreatedByName: string;
     lstProduct: VMProduct[] = [];
     objCustomer: Customer = new Customer();
 }

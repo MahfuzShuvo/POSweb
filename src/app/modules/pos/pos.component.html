@@ -1,8 +1,11 @@
 <div class="pos-body">
 	<div class="body-wrapper-card card">
 		<div class="wrapper-content-header d-flex align-items-center justify-content-between">
-			Checkout
-			<span class="font-11 txt-light">Invoice no.: #025148</span>
+			<span class="font-13 weight-600">Checkout</span>
+				<div class="sales-code-div" *ngIf="salesCode != '' && isEditMode">
+					<span class="txt-light">Sales Invoice: </span>
+					<span class="weight-600">{{salesCode}}</span>
+				</div>
 		</div>
 		<div class="cart-body">
 			<div class="row">

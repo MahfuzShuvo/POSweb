@@ -176,7 +176,7 @@
 }
 
 .wrapper-content-header {
-    font-size: var(--font-12);
+    /* font-size: var(--font-12); */
     padding: 8px 15px;
 }
 
@@ -340,4 +340,16 @@ input#searchProduct {
 }
 .cart-item.return {
     background: var(--warning-color);
+}
+.sales-code-div {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-5);
+    font-size: var(--font-12);
+    justify-content: end;
+    /* background-color: var(--light-secondary-theme-color); */
+    /* padding: 3px 10px;
+    border-radius: 4px; */
+    width: fit-content;
+    float: right;
 }

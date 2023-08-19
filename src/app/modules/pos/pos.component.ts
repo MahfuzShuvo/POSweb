@@ -1,6 +1,6 @@
 import { DataService } from './../../common/service/data.service';
 import { Component, ElementRef, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Subject, takeUntil } from 'rxjs';
 import { ResponseStatus } from 'src/app/common/enums/appEnums';
@@ -50,6 +50,7 @@ export class PosComponent implements OnInit {
 	};
 	lstAccount: Account[] = [];
 	objPaymentDTO: PaymentDTO = new PaymentDTO();
+	salesCode: string = '';
 
 	constructor(
 		private headerService: HeaderService,
@@ -64,7 +65,24 @@ export class PosComponent implements OnInit {
 		private modalService: BsModalService
 	) {
 		const headerTitle = this.activatedRoute.parent?.snapshot.url[0].path;
-		Promise.resolve().then(() => this.headerService.setTitle(headerTitle!.toString()));
+		var childRoute = "";
+		this.activatedRoute.url.subscribe((params: Params) => {
+			childRoute = params[0].path;
+		})
+
+		this.activatedRoute.params.subscribe((params: Params) => {
+			this.salesCode = (!params['salesCode']) ? '' : params['salesCode'];
+			if (this.salesCode != '') {
+				this.isEditMode = true;
+				setTimeout(() => {
+
+					this.getSalesByCode(this.salesCode);
+				}, 500);
+			} else {
+				this.isEditMode= false;
+			}
+		});
+		Promise.resolve().then(() => this.headerService.setTitle(childRoute!.toString() + ' ' + headerTitle!.toString()));
 		dataService.isSidebarToggle.next(true);
 	}
 
@@ -75,6 +93,28 @@ export class PosComponent implements OnInit {
 
 	clickViewTab(value: number) {
 		this.activateTab = value;
+	}
+
+	getSalesByCode(salesCode: string) {
+		this.salesService.getSalesBySalesCode(salesCode).subscribe(response => {
+			if (response.ResponseCode == ResponseStatus.success) {
+				this.objSales = JSON.parse(JSON.stringify(response.ResponseObj));
+
+				if (this.objSales.Discount > 0) {
+					if (this.objSales.DiscountType == 1) {
+						this.discountInput = (parseFloat(this.objSales.Discount.toString()) * 100) / parseFloat(this.objSales.SubTotal.toString());
+					} else {
+						this.discountInput =this.objSales.Discount;
+					}
+				}
+
+				this.objSales.SalesDate = new Date(this.objSales.SalesDate).toLocaleString();
+
+				this.changeQty();
+			} else {
+				this.messageHelper.showMessage(response.ResponseCode, response.Message);
+			}
+		})
 	}
 
 	getAllProduct() {
@@ -377,6 +417,9 @@ export class PosComponent implements OnInit {
 				if (response.ResponseCode == ResponseStatus.success) {
 					this.objSales = new Sales();
 					this.selectedCustomer = new Customer();
+					if (this.isEditMode) {
+						this.getSalesByCode(this.salesCode)
+					}
 					this.modalRef?.hide();
 				}
 				this.messageHelper.showMessage(response.ResponseCode, response.Message);
