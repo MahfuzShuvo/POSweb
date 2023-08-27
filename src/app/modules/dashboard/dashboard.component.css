@@ -1,0 +1,63 @@
+.widgets-section {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--gap-15);
+}
+
+.widget-card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px var(--shadow-color);
+    padding: 10px 20px;
+    height: 160px;
+    position: relative;
+}
+
+.widget-card .widget-data {
+    font-weight: var(--weight-900);
+    font-size: var(--font-18);
+    letter-spacing: 1px;
+}
+
+.widget-card .head {
+    color: var(--bs-gray);
+    font-size: var(--font-12);
+    font-weight: var(--weight-400);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.widget-card.sales {
+    background-color: var(--light-success-color);
+}
+
+.widget-card.purchase {
+    background-color: var(--light-warning-color);
+}
+
+.widget-card.revenue {
+    background-color: var(--light-secondary-theme-color);
+}
+
+.widget-card.expense {
+    background-color: var(--light-danger-color);
+}
+
+.widget-card svg {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+}
+
+.chart-container {
+    background: #ffff;
+    border-radius: 10px;
+    padding: 10px 20px;
+    height: 335px;
+    display: block;
+    box-shadow: 0 2px 5px var(--shadow-color);
+}
+
+.chart-container canvas {
+    width: 100% !important;
+}
