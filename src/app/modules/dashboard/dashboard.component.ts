@@ -19,7 +19,11 @@ export class DashboardComponent implements OnInit {
 	private destroy: Subject<void> = new Subject<void>();
 	lstDashboardInitialData: VMDashboardInitialData[] = [];
 	objCurrentMonthDashboardData: VMDashboardInitialData = new VMDashboardInitialData();
-	public chart: Chart;
+	chart: Chart;
+	monthlySales: number = 0;
+	monthlyPurchase: number = 0;
+	monthlyRevenue: number = 0;
+	monthlyExpense: number = 0;
 
 
 	constructor(
@@ -44,10 +48,12 @@ export class DashboardComponent implements OnInit {
 				if (response.ResponseCode == ResponseStatus.success) {
 					this.lstDashboardInitialData = response.ResponseObj;
 					if (this.lstDashboardInitialData.length > 0) {
-						var currentMonth = new Date().getMonth() + 1;
-						console.log(...this.lstDashboardInitialData.map(x => x.MonthName).join(','));
+						// console.log(...this.lstDashboardInitialData.map(x => x.MonthName).join(','));
 						this.createChart();
-						this.objCurrentMonthDashboardData = JSON.parse(JSON.stringify(this.lstDashboardInitialData.filter(x => x.MonthID == currentMonth)[0]));
+
+						this.monthlySales = this.lstDashboardInitialData!.map(p => p.TotalSales).reduce((a, b) => a + b);
+						this.monthlyPurchase = this.lstDashboardInitialData!.map(p => p.TotalPurchases).reduce((a, b) => a + b);
+						this.monthlyExpense = this.lstDashboardInitialData!.map(p => p.TotalExpenses).reduce((a, b) => a + b);
 					}
 				} else {
 					this.messageHelper.showMessage(response.ResponseCode, response.Message);
@@ -57,22 +63,40 @@ export class DashboardComponent implements OnInit {
 
 	createChart() {
 		this.chart = new Chart('canvas', {
-			type: 'bar',
+			type: 'line',
+			options: {
+				responsive: true,
+				plugins: {
+					legend: {
+						labels: {
+							usePointStyle: true,
+							padding: 30,
+						},
+					}
+				}
+			},
 			data: {
-				labels: [...this.lstDashboardInitialData.map(x => x.MonthName)],
+				labels: [...this.lstDashboardInitialData.map(x => x.DayNumber)],
 				datasets: [
 					{
 						label: 'Sales',
 						data: [...this.lstDashboardInitialData.map(x => x.TotalSales)],
-						backgroundColor: '#39C5F8',
-						borderColor: '#39C5F8',
+						backgroundColor: '#67be4e',
+						borderColor: '#67be4e',
 						borderWidth: 1,
 					},
 					{
 						label: 'Purchase',
 						data: [...this.lstDashboardInitialData.map(x => x.TotalPurchases)],
-						backgroundColor: '#011f44',
-						borderColor: '#011f44',
+						backgroundColor: '#ffc825',
+						borderColor: '#ffc825',
+						borderWidth: 1,
+					},
+					{
+						label: 'Expense',
+						data: [...this.lstDashboardInitialData.map(x => x.TotalExpenses)],
+						backgroundColor: '#fc2947',
+						borderColor: '#fc2947',
 						borderWidth: 1,
 					},
 				],

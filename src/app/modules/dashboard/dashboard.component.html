@@ -3,7 +3,7 @@
 		<div class="widgets-section">
 			<div class="card widget-card sales">
 				<div class="head">Sales</div>
-				<div class="widget-data">{{objCurrentMonthDashboardData.TotalSales | currency: 'BDT':
+				<div class="widget-data">{{monthlySales | currency: 'BDT':
 					'symbol':'1.2-2':'bn-BD'}}</div>
 				<svg width="143" height="60" viewBox="0 0 143 60" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<rect x="66" width="11" height="60" rx="3" fill="#67BE4E" />
@@ -17,7 +17,7 @@
 			</div>
 			<div class="card widget-card purchase">
 				<div class="head">Purchase</div>
-				<div class="widget-data">{{objCurrentMonthDashboardData.TotalPurchases | currency: 'BDT':
+				<div class="widget-data">{{monthlyPurchase | currency: 'BDT':
 					'symbol':'1.2-2':'bn-BD'}}</div>
 				<svg width="143" height="60" viewBox="0 0 143 60" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<rect x="66" y="19" width="11" height="41" rx="3" fill="#242424" />
@@ -46,7 +46,7 @@
 			</div>
 			<div class="card widget-card expense">
 				<div class="head">Expense</div>
-				<div class="widget-data">{{objCurrentMonthDashboardData.TotalExpenses | currency: 'BDT':
+				<div class="widget-data">{{monthlyExpense | currency: 'BDT':
 					'symbol':'1.2-2':'bn-BD'}}</div>
 				<svg width="143" height="60" viewBox="0 0 143 60" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<rect x="66" width="11" height="60" rx="3" fill="#FC2947" />

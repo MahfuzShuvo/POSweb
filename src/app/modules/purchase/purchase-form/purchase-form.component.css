@@ -68,7 +68,7 @@ input#searchProduct {
 .purchase-cart {
     display: flex;
     flex-direction: column;
-    justify-content: end;
+    justify-content: flex-end;
     font-size: var(--font-13);
     font-weight: var(--weight-600);
     background: var(--bs-light);
@@ -102,12 +102,13 @@ input#searchProduct {
     /* color: #fff; */
     line-height: 16px;
 }
+
 .purchase-code-div {
     display: flex;
     align-items: center;
     gap: var(--gap-5);
     font-size: var(--font-13);
-    justify-content: end;
+    justify-content: flex-end;
     background-color: var(--light-secondary-theme-color);
     padding: 3px 10px;
     border-radius: 4px;
