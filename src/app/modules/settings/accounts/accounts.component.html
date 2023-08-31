@@ -189,7 +189,7 @@
 			<div class="form-group mt-2">
 				<label for="accounBalance" class="form-label">Balance</label>
 				<input type="number" name="accounBalance" id="accounBalance" class="form-control" placeholder="00.00"
-					[value]="0" (input)="balanceEntry(accountBalance.value)" required #accountBalance>
+					(input)="balanceEntry(accountBalance.value)" required #accountBalance>
 			</div>
 		</div>
 		<div class="modal-footer">

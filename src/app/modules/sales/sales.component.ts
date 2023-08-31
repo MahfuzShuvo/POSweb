@@ -6,22 +6,21 @@ import { ResponseStatus } from 'src/app/common/enums/appEnums';
 import { MessageHelper } from 'src/app/common/helper/messageHelper';
 import { HeaderService } from 'src/app/common/service/header.service';
 import { ResponseMessage } from 'src/app/models/DTO/responseMessage';
-import { VMPurchase } from 'src/app/models/VM/vmPurchase';
-import { Purchase } from 'src/app/models/purchase';
-import { PurchaseService } from 'src/app/services/purchase.service';
+import { VMSales } from 'src/app/models/VM/vmSales';
+import { SalesService } from 'src/app/services/sales.service';
 
 @Component({
-	selector: 'app-purchase',
-	templateUrl: './purchase.component.html',
-	styleUrls: ['./purchase.component.css']
+  selector: 'app-sales',
+  templateUrl: './sales.component.html',
+  styleUrls: ['./sales.component.css']
 })
-export class PurchaseComponent implements OnInit {
+export class SalesComponent implements OnInit {
 
 	private destroy: Subject<void> = new Subject<void>();
 	@ViewChild('deleteModal', { read: TemplateRef }) deleteModal: TemplateRef<any>;
-	lstPurchase: VMPurchase[] = [];
-	lstAllPurchase: VMPurchase[] = [];
-	objPurchase: VMPurchase = new VMPurchase();
+	lstSales: VMSales[] = [];
+	lstAllSales: VMSales[] = [];
+	objSales: VMSales = new VMSales();
 	totalCount: number = 0;
 	modalRef?: BsModalRef;
 
@@ -31,23 +30,23 @@ export class PurchaseComponent implements OnInit {
 		private router: Router,
 		private messageHelper: MessageHelper,
 		private modalService: BsModalService,
-		private purchaseService: PurchaseService
+		private salesService: SalesService
 	) {
 		const headerTitle = this.activatedRoute.parent?.snapshot.url[0].path;
 		Promise.resolve().then(() => this.headerService.setTitle(headerTitle!.toString()));
 	}
 
 	ngOnInit() {
-		this.getAllPurchase();
+		this.getAllSales();
 	}
 
-	getAllPurchase() {
-		this.purchaseService.getAllPurchase()
+	getAllSales() {
+		this.salesService.getAllSales()
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {
 				if (response.ResponseCode == ResponseStatus.success) {
-					this.lstPurchase = response.ResponseObj;
-					this.lstAllPurchase = JSON.parse(JSON.stringify(this.lstPurchase));
+					this.lstSales = response.ResponseObj;
+					this.lstAllSales = JSON.parse(JSON.stringify(this.lstSales));
 					this.totalCount = response.TotalCount
 				} else {
 					this.messageHelper.showMessage(response.ResponseCode, response.Message);
@@ -56,36 +55,36 @@ export class PurchaseComponent implements OnInit {
 
 	}
 
-	searchPurchase(searchText: string) {
+	searchSales(searchText: string) {
 		var str = searchText!.replace(/\s/g, '').toLowerCase();		// remove spaces
 
 		if (str == '') {
-			this.lstPurchase = JSON.parse(JSON.stringify(this.lstAllPurchase));
+			this.lstSales = JSON.parse(JSON.stringify(this.lstAllSales));
 		} else {
-			this.lstPurchase = this.lstAllPurchase.filter(x => x.PurchaseCode.replace(/\s/g, '').toLowerCase().includes(str));
+			this.lstSales = this.lstAllSales.filter(x => x.SalesCode.replace(/\s/g, '').toLowerCase().includes(str));
 		}
-		this.totalCount = this.lstPurchase.length;
+		this.totalCount = this.lstSales.length;
 	}
 
-	deletePurchase(purchase: VMPurchase) {
-		this.objPurchase = new VMPurchase();
-		this.objPurchase = JSON.parse(JSON.stringify(purchase));
+	deleteSales(sales: VMSales) {
+		this.objSales = new VMSales();
+		this.objSales = JSON.parse(JSON.stringify(sales));
 
 		this.modalRef = this.modalService.show(this.deleteModal);
 	}
 
 	confirmDelete() {
-		if (this.objPurchase.PurchaseCode != '') {
+		if (this.objSales.SalesCode != '') {
 
-			this.purchaseService.deletePurchase(this.objPurchase)
+			this.salesService.deleteSales(this.objSales)
 				.pipe(takeUntil(this.destroy))
 				.subscribe((response: ResponseMessage) => {
 					if (response.ResponseCode == ResponseStatus.success) {
-						var index = this.lstPurchase.findIndex(x => x.PurchaseCode == this.objPurchase.PurchaseCode);
+						var index = this.lstSales.findIndex(x => x.SalesCode == this.objSales.SalesCode);
 						if (index > -1) {
-							this.lstPurchase.splice(index, 1);
-							this.lstAllPurchase.splice(index, 1);
-							this.objPurchase = new VMPurchase();
+							this.lstSales.splice(index, 1);
+							this.lstAllSales.splice(index, 1);
+							this.objSales = new VMSales();
 							this.modalRef?.hide()
 						}
 					}
@@ -94,20 +93,21 @@ export class PurchaseComponent implements OnInit {
 		}
 	}
 
-	addPurchase() {
-		this.router.navigate(['purchase/add']);
+	addSales() {
+		this.router.navigate(['pos']);
 	}
 
-	editPurchase(purchaseCode: string) {
-		this.router.navigate(['purchase/edit', purchaseCode])
+	editSales(salesCode: string) {
+		this.router.navigate(['pos/edit', salesCode])
 	}
 
-	viewPurchase(purchaseCode: string) {
-		this.router.navigate(['purchase/view', purchaseCode])
+	viewSales(salesCode: string) {
+		this.router.navigate(['sales/view', salesCode])
 	}
 
 	ngOnDestroy(): void {
 		this.destroy.next();
 		this.destroy.unsubscribe();
 	}
+
 }

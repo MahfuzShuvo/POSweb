@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PosComponent } from './pos.component';
+import { SalesComponent } from './sales.component';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from 'src/app/shared.module';
+import { SalesViewComponent } from './sales-view/sales-view.component';
 
 const routes: Routes = [
-	{ path: '', component: PosComponent },
-	{ path: 'edit/:salesCode', component: PosComponent }
+	{ path: '', component: SalesComponent },
+	{ path: 'view/:salesCode', component: SalesViewComponent }
 ]
 
 @NgModule({
@@ -15,6 +16,9 @@ const routes: Routes = [
 		SharedModule.forRoot(),
 		RouterModule.forChild(routes)
 	],
-	declarations: [PosComponent]
+	declarations: [
+		SalesComponent,
+		SalesViewComponent
+	]
 })
-export class PosModule { }
+export class SalesModule { }

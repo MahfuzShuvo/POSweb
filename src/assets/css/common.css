@@ -172,6 +172,10 @@ a.theme-link:hover {
     color: var(--danger-color) !important;
     background: var(--light-danger-color);
 }
+.warning-badge {
+    color: var(--warning-color) !important;
+    background: var(--light-warning-color);
+}
 
 .modal-header {
     justify-content: center !important;
@@ -269,7 +273,7 @@ a.theme-link:hover {
 /* table style start */
 .table__body {
     width: 100%;
-    height: calc(100vh - 150px);
+    height: calc(100vh - 152px);
     overflow: auto;
     border-radius: 4px;
     font-size: var(--font-12);

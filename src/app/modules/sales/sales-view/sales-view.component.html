@@ -1,0 +1,173 @@
+<div class="body-wrapper-card card">
+	<div class="sales-body">
+		<div class="d-flex justify-content-between">
+			<div class="left">
+				<div class="view-content">
+					<span class="view-item font-13 weight-600">
+						{{objSales.SalesDate | date: 'dd/MM/yyyy, hh:mm a'}}
+					</span>
+				</div>
+				<div class="font-13 head-label mt-3">Customer</div>
+				<div class="font-12 weight-600" *ngIf="!objSales.objCustomer">
+					{{objSales.CustomerName}} customer
+				</div>
+				<div class="view-main mt-1" *ngIf="objSales.objCustomer">
+					<div class="view-content">
+						<!-- <div class="view-title">
+						<span>Name</span>
+						<span>:</span>
+					</div> -->
+						<span class="view-item weight-600">{{objSales.objCustomer.CustomerName}}</span>
+					</div>
+					<div class="view-content">
+						<div class="view-title">
+							<span>Contact</span>
+							<span>:</span>
+						</div>
+						<span class="view-item">{{objSales.objCustomer.PhoneNumber}}</span>
+					</div>
+					<div class="view-content">
+						<div class="view-title">
+							<span>Email</span>
+							<span>:</span>
+						</div>
+						<span class="view-item">{{objSales.objCustomer.Email}}</span>
+					</div>
+					<div class="view-content">
+						<div class="view-title">
+							<span>Address</span>
+							<span>:</span>
+						</div>
+						<span class="view-item">{{objSales.objCustomer.Address}}, {{objSales.objCustomer.City}},
+							{{objSales.objCustomer.State}}, {{objSales.objCustomer.Zip}}</span>
+					</div>
+				</div>
+			</div>
+			<div class="right">
+				<div class="view-main ">
+	
+					<div class="view-content">
+						<div class="view-title">
+							<span>Invoice</span>
+							<span>:</span>
+						</div>
+						<span class="view-item weight-600">{{objSales.SalesCode}}</span>
+					</div>
+					<div class="view-content">
+						<div class="view-title">
+							<span>Status</span>
+							<span>:</span>
+						</div>
+						<span class="view-item weight-600">{{objSales.SalesStatus}}</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<section class="table__body mt-3">
+			<div class="font-13 head-label mt-1">List of product:</div>
+			<table>
+				<thead>
+					<tr>
+						<th>SL</th>
+						<th>Product</th>
+						<th>Quantity</th>
+						<th>Sales Price / Unit (&#2547;)</th>
+						<th>Total Amount (&#2547;)</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngIf="objSales.lstProduct.length == 0">
+						<td colspan="6">
+							<div class="txt-light text-center ">No product found</div>
+						</td>
+					</tr>
+					<tr *ngFor="let product of objSales.lstProduct; let i = index">
+						<td>{{i+1}}</td>
+						<td>
+							<div class="d-flex flex-column">
+								<div class="weight-600">{{product.ProductName}}</div>
+								<div class="font-11">SKU: <span class="txt-light">{{product.SKU}}</span>
+								</div>
+							</div>
+						</td>
+						<td>
+							{{product.Qty}}
+						</td>
+						<td>
+							{{product.FinalPrice | number: '1.2-2'}}
+						</td>
+						<td>
+							{{(product.FinalPrice * product.Qty) | number: '1.2-2'}}
+						</td>
+					</tr>
+					<tr class="total-tr" *ngIf="objSales.lstProduct!.length > 0">
+						<td colspan="2" class="text-end">
+							<span class="weight-600">Total</span>
+						</td>
+						<td>
+							<span class="weight-600">{{calculateTotalQty()}}</span>
+						</td>
+						<td></td>
+						<td>
+							<span class="weight-600">{{calculateTotalPrice() | number: '1.2-2'}}</span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+
+		<section class="d-flex justify-content-between gap-5 mt-5">
+			<div class="table__body">
+				<div class="font-13 head-label">Payment Information</div>
+				<table>
+					<thead>
+						<tr>
+							<th>Payment (&#2547;)</th>
+							<th>Due (&#2547;)</th>
+							<th>Type</th>
+							<th>Status</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>{{objSales.PayAmount | number: '1.2-2'}}</td>
+						<td>{{objSales.DueAmount | number: '1.2-2'}}</td>
+						<td>{{objSales.AccountTitle}}</td>
+						<td>{{objSales.PaymentStatus}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+				
+			<div class="sales-cart w-40">
+				<div class="cart-row">
+					<div class="cart-column">Sub Total</div>
+					<div class="cart-column">{{objSales.SubTotal | currency: 'BDT':
+						'symbol':'1.2-2':'bn-BD'}}</div>
+				</div>
+				
+				<div class="cart-row">
+					<div class="cart-column">
+						Discount
+						<ng-container *ngIf="objSales.DiscountType != ''">
+							(
+							<span class="font-10 weight-400 txt-success">
+								{{objSales.DiscountType}}
+							</span>
+							)
+						</ng-container>
+					</div>
+					<div class="cart-column" [class.txt-success]="objSales.Discount > 0">
+						{{objSales.Discount | currency: 'BDT':
+						'symbol':'1.2-2':'bn-BD'}}</div>
+				</div>
+				<div class="cart-row">
+					<div class="cart-column">Total</div>
+					<div class="cart-column total">{{objSales.TotalSalesPrice | currency: 'BDT':
+						'symbol':'1.2-2':'bn-BD'}}</div>
+				</div>
+			</div>
+		</section>
+	</div>
+</div>

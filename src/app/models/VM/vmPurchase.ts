@@ -1,8 +1,9 @@
+import { Supplier } from "../supplier";
 import { VMProduct } from "./vmProduct";
 
 export class VMPurchase {
     PurchaseCode: string;
-    ProductSKUs: string;
+    // ProductSKUs: string;
     PurchaseDate: string;
     SubTotal: number;
     TotalPurchasePrice: number;
@@ -12,10 +13,12 @@ export class VMPurchase {
     AccountTitle: string;
     PaymentAmount: number;
     DueAmount: number;
+    PaymentStatus: string;
     PaymentNote: string;
     PurchaseStatus: string;
     CreatedDate: string;
     SupplierName: string;
     CreatedByName: string;
     lstProduct: VMProduct[] = [];
+    objSupplier: Supplier = new Supplier();
 }

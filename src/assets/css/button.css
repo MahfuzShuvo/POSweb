@@ -120,7 +120,7 @@ button:disabled {
     width: 26px;
     height: 26px;
     border: none;
-    overflow: none;
+    /* overflow: none; */
     position: relative;
 }
 
@@ -139,24 +139,25 @@ button:disabled {
 
 .number-field-btn {
     position: absolute;
-    bottom: 1px;
-    height: 33px;
+    bottom: 0;
+    height: 35px;
     width: 33px;
     padding: 0 !important;
     background: var(--bs-gray-100);
     font-size: var(--font-20) !important;
     font-weight: var(--weight-400) !important;
+    border: 1px solid #e0e0e0;
 }
 
 .number-field-btn.minus {
-    left: 1px;
+    left: 0;
     border-bottom-right-radius: 0 !important;
     border-top-right-radius: 0 !important;
-    border-right: 1px solid #e0e0e0;
+    /* border-right: 1px solid #e0e0e0; */
 }
 .number-field-btn.plus {
-    right: 1px;
+    right: 0;
     border-bottom-left-radius: 0 !important;
     border-top-left-radius: 0 !important;
-    border-left: 1px solid #e0e0e0;
+    /* border-left: 1px solid #e0e0e0; */
 }

@@ -6,18 +6,18 @@
 				<div class="row">
 					<div class="col-md-3">
 						<div class="form-group">
-							<label for="category" class="form-label">
+							<label for="supplier" class="form-label">
 								Supplier <span class="txt-danger">*</span>
 							</label>
 							<div class="btn-group" dropdown #dropdownSupplier="bs-dropdown" [insideClick]="true"
-								(onShown)="getAllSupplier(); openSupplierDrop()">
-								<div dropdownToggle class="custome-select" id="category" aria-controls="dropdown-basic">
+								(onShown)="openSupplierDrop()">
+								<div dropdownToggle class="custome-select" id="supplier" aria-controls="dropdown-basic">
 									<span class="custome-select-txt">{{(objPurchase.SupplierID &&
-										objPurchase.SupplierID > 0) ? selectedSupplier.SupplierName :
+										objPurchase.SupplierID > 0) ? selectedSupplier.SupplierName : isEditMode ? getSupplierName() :
 										'Select'}}</span>
 									<i class='bx bx-chevron-down font-17'></i>
 								</div>
-								<div id="dropdown-basic" *dropdownMenu class="dropdown-menu" aria-labelledby="category">
+								<div id="dropdown-basic" *dropdownMenu class="dropdown-menu" aria-labelledby="supplier">
 									<input type="text" name="searchSupplier" id="searchSupplier" class="dropdown-search"
 										placeholder="Search" #searchSupplier
 										(keyup)="searchSupplierDropdown(searchSupplier.value)">
@@ -47,6 +47,12 @@
 								<option [value]="2">Pending</option>
 								<option [value]="3">Ordered</option>
 							</select>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="purchase-code-div" *ngIf="purchaseCode != '' && isEditMode">
+							<span class="txt-light">Purchase code: </span>
+							<span class="weight-600">{{purchaseCode}}</span>
 						</div>
 					</div>
 				</div>
@@ -125,7 +131,7 @@
 										[value]="product.PurchasePrice | number: '1.2-2'" disabled>
 								</td>
 								<td>
-									<input type="text" name="purchasePrice" id="purchasePrice" class="form-control"
+									<input type="text" name="totalPurchase" id="totalPurchase" class="form-control"
 										[value]="(product.PurchasePrice * product.Qty) | number: '1.2-2'" disabled>
 								</td>
 								<td>
@@ -174,7 +180,7 @@
 									<label for="discount" class="form-label">Discount</label>
 									<input type="text" id="discount" class="form-control" placeholder="0.00"
 										name="discount" [(ngModel)]="discountInput"
-										(input)="numbersOnlyValidator($event); calculateTotalPrice(); discountCalculation()">
+										(input)="numbersOnlyValidator($event); discountCalculation()">
 								</div>
 							</div>
 						</div>
@@ -224,14 +230,14 @@
 							<label for="paymentAmount" class="form-label">Amount</label>
 							<input type="text" id="paymentAmount" class="form-control" placeholder="0.00"
 								name="paymentAmount" [(ngModel)]="objPurchase.PaymentAmount"
-								(input)="numbersOnlyValidator($event);">
+								(input)="numbersOnlyValidator($event); bindingUnderTotalPrice($event)">
 						</div>
 					</div>
 					<div class="col-md-3">
 						<div class="form-group">
 							<label for="paymentType" class="form-label">Payment Type</label>
 							<select name="paymentType" id="paymentType" class="form-select"
-								[(ngModel)]="objPurchase.PaymentType" (click)="getAllAccount()">
+								[(ngModel)]="objPurchase.PaymentType">
 								<option [value]="0" selected disabled>Select</option>
 								<option [value]="account.AccountID" *ngFor="let account of lstAccount">
 									{{account.AccountTitle}}</option>
