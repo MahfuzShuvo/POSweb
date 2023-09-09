@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
-import { ResponseStatus } from 'src/app/common/enums/appEnums';
+import { MonthList, ResponseStatus } from 'src/app/common/enums/appEnums';
 import { MessageHelper } from 'src/app/common/helper/messageHelper';
 import { HeaderService } from 'src/app/common/service/header.service';
 import { ResponseMessage } from 'src/app/models/DTO/responseMessage';
 import { VMDashboardInitialData } from 'src/app/models/VM/vmDashboardInitialData';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { Chart, ChartOptions, ChartType } from 'chart.js/auto';
+import { DataService } from 'src/app/common/service/data.service';
 
 @Component({
 	selector: 'app-dashboard',
@@ -17,6 +18,7 @@ import { Chart, ChartOptions, ChartType } from 'chart.js/auto';
 export class DashboardComponent implements OnInit {
 
 	private destroy: Subject<void> = new Subject<void>();
+	@ViewChild('searchMonth') searchMonth: ElementRef;
 	lstDashboardInitialData: VMDashboardInitialData[] = [];
 	objCurrentMonthDashboardData: VMDashboardInitialData = new VMDashboardInitialData();
 	chart: Chart;
@@ -24,13 +26,21 @@ export class DashboardComponent implements OnInit {
 	monthlyPurchase: number = 0;
 	monthlyRevenue: number = 0;
 	monthlyExpense: number = 0;
+	lstMonth = this.dataService.getENUM(MonthList);
+	lstAllMonth = this.dataService.getENUM(MonthList);
+	currentDate: Date = new Date();
+	selectedMonth: any = {
+		value: (this.currentDate.getMonth() + 1),
+		key: this.currentDate.toLocaleString('default', { month: 'long' })
+	}
 
 
 	constructor(
 		private headerService: HeaderService,
 		private activatedRoute: ActivatedRoute,
 		private dashboardService: DashboardService,
-		private messageHelper: MessageHelper
+		private messageHelper: MessageHelper,
+		private dataService: DataService
 	) {
 		const headerTitle = this.activatedRoute.parent?.snapshot.url[0].path;
 		Promise.resolve().then(() => this.headerService.setTitle(headerTitle!.toString()));
@@ -38,11 +48,36 @@ export class DashboardComponent implements OnInit {
 
 	ngOnInit() {
 		this.getDashboardInitialData();
+		var d = new Date();
+		console.log(d.toLocaleString('default', { month: 'long' }));
 
 	}
 
+	openMonthDrop() {
+		// this.lstSupplier = JSON.parse(JSON.stringify(this.lstAllSupplier));
+		setTimeout(() => {
+			this.searchMonth!.nativeElement.value = '';
+			this.searchMonth!.nativeElement.focus();
+		}, 5);
+	}
+
+	searchMonthDropdown(str: string) {
+		if (str == '') {
+			this.lstMonth = JSON.parse(JSON.stringify(this.lstAllMonth));
+		} else {
+			this.lstMonth = this.lstAllMonth.filter(x => x.key.toLowerCase().includes(str.toLowerCase()))
+		}
+	}
+
+	selectMonth(monthValue: string) {
+		this.selectedMonth = JSON.parse(JSON.stringify(this.lstMonth.filter(x => x.value == monthValue)[0]));
+		if (this.selectedMonth) {
+			this.getDashboardInitialData();
+		}
+	}
+
 	getDashboardInitialData() {
-		this.dashboardService.getDashboardInitialData()
+		this.dashboardService.getDashboardInitialData(this.selectedMonth.value)
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {
 				if (response.ResponseCode == ResponseStatus.success) {
@@ -62,6 +97,8 @@ export class DashboardComponent implements OnInit {
 	}
 
 	createChart() {
+		this.chart?.destroy();
+
 		this.chart = new Chart('canvas', {
 			type: 'line',
 			options: {

@@ -51,20 +51,20 @@ export enum CommonAction {
 	Edit = 5
 }
 
-export let monthList = [
-	'Jan',
-	'Feb',
-	'Mar',
-	'Apr',
-	'May',
-	'Jun',
-	'Jul',
-	'Aug',
-	'Sep',
-	'Oct',
-	'Nov',
-	'Dec',
-];
+export enum MonthList {
+	January = 1,
+	February,
+	March,
+	April,
+	May,
+	June,
+	July,
+	August,
+	September,
+	October,
+	November,
+	December
+}
 
 export const NO_OF_AUTO_COMPLETE_DATA = 100;
 export const NO_OF_ROW_DATA = 20;

@@ -1,6 +1,6 @@
 <div class="body-wrapper-card card">
 	<div class="product-body">
-		<div class="table-headings d-flex align-items-center justify-content-between">
+		<div class="table-headings d-flex align-items-center gap-2 justify-content-between">
 			<div class="table-search d-flex align-items-center gap-1">
 				<i class='bx bx-search-alt mt-1'></i>
 				<input type="text" class="form-control" name="searchProduct" #searchText
@@ -21,6 +21,8 @@
 					</select>
 				</div>
 			</div> -->
+
+			<button type="button" class="theme-ouline-button" (click)="openImportModal()">Import Product</button>
 			<button type="button" class="theme-button" (click)="addProduct()">+ Add New</button>
 		</div>
 		<div class="product-table mt-1">
@@ -82,7 +84,8 @@
 								<div class="form-group">
 									<label class="toggle">
 										<input class="toggle__checkbox" type="checkbox"
-											(change)="changeProductStatus($event, product)" [checked]="product.Status == 1">
+											(change)="changeProductStatus($event, product)"
+											[checked]="product.Status == 1">
 										<span class="toggle__switch"></span>
 										<span class="toggle__label"></span>
 									</label>
@@ -130,4 +133,39 @@
 		<button type="button" class="cancel-button" (click)="modalRef?.hide()">No</button>
 		<button type="button" class="danger-button" (click)="confirmDelete()">Yes</button>
 	</div>
+</ng-template>
+
+<!-- import product -->
+<ng-template #importModal>
+	<div class="modal-header">
+		<div class="modal-title text-center font-15 weight-500">Import Product</div>
+		<!-- <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+		<span aria-hidden="true" class="visually-hidden">&times;</span>
+	  </button> -->
+	</div>
+	<div class="modal-body">
+		<div class="text-center txt-light font-12">Download <a href="assets/excel/Product_Import_Template.csv"
+				class="secondary-theme-link">Example Template</a>
+			to import product.</div>
+
+		<div class="button-group d-flex align-items-center justify-content-center gap-2 mt-3">
+			<div class="file-uploader">
+				<input type="file" hidden #importFile name="csv-upload" id="product-csv" accept=".xlsx,.csv"
+					(change)="uploadCsv(importFile.files)">
+				<label for="product-csv" class="d-flex align-items-center gap-2">
+					<div class="file-upload-browser">
+						<span *ngIf="!fileName">Import Template</span>
+						<span *ngIf="fileName" class="txt-theme">{{fileName}}</span>
+					</div>
+					<button *ngIf="fileName" type="button" class="secondary-theme-button" (click)="clickUploadBtn()"
+						[disabled]="dataService.isFormSubmitting | async">Upload</button>
+				</label>
+			</div>
+			<button type="button" class="cancel-button" (click)="closeImportModal()">Cancel</button>
+		</div>
+	</div>
+	<!-- <div class="modal-footer">
+		<button type="button" class="cancel-button" (click)="modalRef?.hide()">No</button>
+		<button type="button" class="danger-button" (click)="confirmDelete()">Yes</button>
+	</div> -->
 </ng-template>

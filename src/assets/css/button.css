@@ -19,6 +19,7 @@ button:disabled {
 .theme-button {
     background: var(--theme-color);
     color: var(--white-color);
+    border: 1px solid var(--theme-color);
 }
 
 .theme-button:hover {
@@ -26,9 +27,21 @@ button:disabled {
     box-shadow: 0 1px 3px #00000025 !important;
 }
 
+.theme-ouline-button {
+    color: var(--theme-color);
+    background: var(--white-color);
+    border: 1px solid var(--theme-color);
+}
+
+.theme-ouline-button:hover {
+    opacity: .9;
+    box-shadow: 0 1px 3px #00000025 !important;
+}
+
 .cancel-button {
     background: var(--border-color);
     color: var(--text-color);
+    border: 1px solid var(--border-color);
 }
 
 .cancel-button:hover {
@@ -39,6 +52,7 @@ button:disabled {
 .secondary-theme-button {
     background: var(--secondary-theme-color);
     color: var(--theme-color);
+    border: 1px solid var(--secondary-theme-color);
 }
 
 .secondary-theme-button:hover {
@@ -46,8 +60,20 @@ button:disabled {
     box-shadow: 0 1px 3px #00000025 !important;
 }
 
+.secondary-theme-outline-button {
+    color: var(--secondary-theme-color);
+    background: var(--white-color);
+    border: 1px solid var(--secondary-theme-color);
+}
+
+.secondary-theme-outline-button:hover {
+    opacity: .9;
+    box-shadow: 0 1px 3px #00000025 !important;
+}
+
 .success-button {
     background: var(--success-color);
+    border: 1px solid var(--success-color);
     color: var(--white-color);
 }
 
@@ -58,6 +84,7 @@ button:disabled {
 
 .danger-button {
     background: var(--danger-color);
+    border: 1px solid var(--danger-color);
     color: var(--white-color);
 }
 
@@ -155,6 +182,7 @@ button:disabled {
     border-top-right-radius: 0 !important;
     /* border-right: 1px solid #e0e0e0; */
 }
+
 .number-field-btn.plus {
     right: 0;
     border-bottom-left-radius: 0 !important;

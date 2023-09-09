@@ -11,9 +11,9 @@ export class DashboardService {
 		private httpHelper: HttpHelper
 	) { }
 
-	getDashboardInitialData(): Observable<any> {
+	getDashboardInitialData(obj: any): Observable<any> {
 		const url = 'api/Dashboard/GetDashboardInitialData';
-		return this.httpHelper.postHelper(url);
+		return this.httpHelper.postHelper(url, obj);
 	}
 
 }

@@ -56,8 +56,16 @@
     height: 100%;
     display: block;
     box-shadow: 0 2px 5px var(--shadow-color);
+    position: relative;
 }
 
 .chart-container canvas {
     width: 100% !important;
+}
+
+.month-select {
+    position: absolute;
+    top: 15px;
+    right: 30px;
+    width: 15%;
 }

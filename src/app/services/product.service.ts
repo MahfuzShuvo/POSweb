@@ -55,4 +55,9 @@ export class ProductService {
 		const url = 'api/Product/SearchProduct';
 		return this.httpHelper.postHelper(url, obj);
 	}
+
+	importProduct(obj: any): Observable<any> {
+		const url = 'api/Product/ImportProduct';
+		return this.httpHelper.postHelper(url, obj);
+	}
 }

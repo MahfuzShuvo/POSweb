@@ -16,31 +16,12 @@ h6.active {
     color: var(--secondary-theme-color);
 }
 
-p {
-    color: var(--body-text);
-    font-size: var(--font-13);
-    font-weight: var(--weight-400);
-}
-
-a.theme-link {
-    color: var(--theme-color);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-decoration: none;
-}
-
-a.theme-link:hover {
-    text-decoration: underline;
-}
-
-
-
 .tooltipClass {
     font-size: var(--font-11) !important;
 }
 
 .body-wrapper-card {
-    min-height: calc(100vh - 80px);
+    height: calc(100vh - 80px);
     background: var(--white-color);
     border-radius: 6px !important;
     border: none !important;
@@ -172,6 +153,7 @@ a.theme-link:hover {
     color: var(--danger-color) !important;
     background: var(--light-danger-color);
 }
+
 .warning-badge {
     color: var(--warning-color) !important;
     background: var(--light-warning-color);
@@ -383,3 +365,18 @@ tbody td.active {
 } */
 
 /* table style end */
+
+.file-upload-browser {
+    border: 1px solid var(--secondary-theme-color);
+    color: var(--secondary-theme-color);
+    border-radius: 4px;
+    padding: 5px 15px;
+    font-weight: var(--weight-500);
+    font-size: var(--font-12);
+    cursor: pointer;
+    line-height: normal;
+    max-width: 180px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
