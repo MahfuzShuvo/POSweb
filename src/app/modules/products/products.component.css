@@ -9,6 +9,10 @@
     height: calc(100vh - 125px);
 }
 
+.table__body.importReport {
+    height: 340px;
+}
+
 .table-row-count {
     padding: 5px 0;
     font-size: var(--font-12);
@@ -100,4 +104,30 @@ img.productImage {
     padding: 2px 5px;
     line-height: normal;
     font-weight: 500;
+}
+
+.ex-template-container {
+    background: var(--light-secondary-theme-color);
+    height: 100px;
+    margin: -15px;
+    margin-bottom: 15px;
+    display: flex;
+    padding: 10px 20px 0;
+}
+
+.ex-template-btn {
+    text-decoration: none;
+    width: fit-content;
+    padding: 3px 15px;
+    border-radius: 4px;
+    color: #fff !important;
+    line-height: normal;
+}
+
+.ex-template-btn:hover {
+    box-shadow: 0 2px 10px #00000035;
+}
+
+.letter-space-2 {
+    letter-spacing: 2px;
 }

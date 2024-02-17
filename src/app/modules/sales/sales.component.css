@@ -50,3 +50,24 @@ img.productImage {
 .sales-product-item:not(:last-child) {
     border-bottom: 1px solid #e0e0e0;
 }
+
+.sales-product-item {
+    background: #fff !important;
+    cursor: default;
+}
+
+.product-list-drop {
+    width: auto;
+}
+
+.show-all-product {
+    cursor: pointer;
+}
+
+.show-all-product i {
+    color: var(--border-color);
+}
+
+.show-all-product:hover i {
+    color: var(--theme-color);
+}

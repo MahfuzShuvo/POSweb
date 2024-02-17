@@ -57,7 +57,34 @@
 								</div>
 							</td>
 							<td>
-								<div class="purchase-product" *ngIf="purchase.lstProduct.length > 0">
+								<div class="d-flex align-items-center gap-3">
+									<span>{{purchase.lstProduct.length}}</span>
+									<div class="btn-group" dropdown #dropdownProduct="bs-dropdown" [insideClick]="true">
+										<div dropdownToggle class="show-all-product" id="product"
+											aria-controls="dropdown-basic">
+											<i class='bx bx-detail font-17'></i>
+										</div>
+										<div id="dropdown-basic" *dropdownMenu class="dropdown-menu product-list-drop"
+											aria-labelledby="product">
+											<ul class="dropdown-ul">
+												<li class="dropdown-item purchase-product-item"
+													*ngFor="let product of purchase.lstProduct">
+													<div class="d-flex gap-2">
+														<img class="productImage" *ngIf="product.Image != ''"
+															[src]="product.Image| SafeResourceUrl" alt="">
+														<div class="d-flex flex-column">
+															<div class="weight-600">{{product.ProductName}}</div>
+															<div class="font-11">SKU: <span
+																	class="txt-light">{{product.SKU}}</span>
+															</div>
+														</div>
+													</div>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<!-- <div class="purchase-product" *ngIf="purchase.lstProduct.length > 0">
 									<div class="purchase-product-item" *ngFor="let product of purchase.lstProduct">
 										<div class="d-flex gap-2">
 											<img class="productImage" *ngIf="product.Image != ''"
@@ -69,7 +96,7 @@
 											</div>
 										</div>
 									</div>
-								</div>
+								</div> -->
 							</td>
 							<td>{{purchase.PurchaseStatus}}</td>
 							<td>{{purchase.SupplierName}}</td>

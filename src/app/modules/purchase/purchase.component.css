@@ -35,15 +35,39 @@
     background: var(--border-color);
     padding: 2px 10px;
 }
+
 img.productImage {
     width: 40px;
     height: 100%;
 }
+
 .purchase-product {
     display: flex;
     flex-direction: column;
     padding: 5px 0;
 }
+
 .purchase-product-item:not(:last-child) {
     border-bottom: 1px solid #e0e0e0;
+}
+
+.purchase-product-item {
+    background: #fff !important;
+    cursor: default;
+}
+
+.product-list-drop {
+    width: auto;
+}
+
+.show-all-product {
+    cursor: pointer;
+}
+
+.show-all-product i {
+    color: var(--border-color);
+}
+
+.show-all-product:hover i {
+    color: var(--theme-color);
 }

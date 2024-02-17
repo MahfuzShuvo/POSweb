@@ -14,6 +14,7 @@ import { VMProduct } from 'src/app/models/VM/vmProduct';
 import * as XLSX from 'xlsx';
 import { VMProductImport } from 'src/app/models/VM/vmProductImport';
 import { DataService } from 'src/app/common/service/data.service';
+import { VMProductImportReport } from 'src/app/models/VM/vmProductImportReport';
 
 @Component({
 	selector: 'app-products',
@@ -41,6 +42,7 @@ export class ProductsComponent implements OnInit {
 	arrayBuffer: any;
 	isUploading: boolean = false;
 	processedDataLength: number = 0;
+	lstProductImportReport: VMProductImportReport[] = [];
 
 	constructor(
 		private headerService: HeaderService,
@@ -182,7 +184,8 @@ export class ProductsComponent implements OnInit {
 	closeImportModal() {
 		this.csvfile = '';
 		this.fileName = '';
-		this.modalRef?.hide()
+		this.lstProductImportReport = [];
+		this.modalRef?.hide();
 	}
 
 	uploadCsv(files: any) {
@@ -235,6 +238,7 @@ export class ProductsComponent implements OnInit {
 
 	updateImportedFile(chunckFile: any[] = [], fileLength: number) {
 		var lstProductImport: VMProductImport[] = [];
+		this.lstProductImportReport = [];
 		if (chunckFile.length > 0) {
 			var countChunckFileError = 0;
 			chunckFile.forEach(element => {
@@ -306,8 +310,12 @@ export class ProductsComponent implements OnInit {
 								}
 							})
 							this.closeImportModal();
+							this.messageHelper.showMessage(response.ResponseCode, response.Message);
+						} else if (response.ResponseCode == ResponseStatus.warning) {
+							this.lstProductImportReport = response!.ResponseObj;
+						} else {
+							this.messageHelper.showMessage(response.ResponseCode, response.Message);
 						}
-						this.messageHelper.showMessage(response.ResponseCode, response.Message);
 					})
 			}
 		}
