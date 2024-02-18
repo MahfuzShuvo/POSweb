@@ -25,6 +25,7 @@ import { SafeResourceUrlPipe } from './common/pipes/SafeResourceUrl.pipe';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { CustomSelectDropdownComponent } from './components/custom-select-dropdown/custom-select-dropdown.component';
+import { NgxMaskModule } from 'ngx-mask';
 
 @NgModule({
     declarations: [
@@ -59,6 +60,7 @@ import { CustomSelectDropdownComponent } from './components/custom-select-dropdo
         TooltipModule.forRoot(),
         BsDropdownModule.forRoot(),
         BsDatepickerModule.forRoot(),
+        NgxMaskModule.forRoot()
     ],
     exports: [
         HomeLayoutComponent,
@@ -78,6 +80,7 @@ import { CustomSelectDropdownComponent } from './components/custom-select-dropdo
         TooltipModule,
         BsDropdownModule,
         BsDatepickerModule,
+        NgxMaskModule,
 
         MatchPasswordDirective,
 

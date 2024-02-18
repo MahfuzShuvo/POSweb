@@ -46,7 +46,7 @@ export class PosComponent implements OnInit {
 	selectedCustomer: Customer = new Customer();
 	isEditMode: boolean = false;
 	objDiscount = {
-		discountType: 1,
+		discountType: 0,
 		discount: 0
 	};
 	lstAccount: Account[] = [];
@@ -56,6 +56,7 @@ export class PosComponent implements OnInit {
 	selectedPaymentType: Account = new Account();
 	lstDiscountType: any[] = AppConstant.DISCOUNT_TYPE;
 	selectedDiscountType: any;
+	isDisablePaymentAmount: boolean = false;
 
 	constructor(
 		private headerService: HeaderService,
@@ -351,10 +352,7 @@ export class PosComponent implements OnInit {
 	}
 
 	discountModalOpen() {
-		this.objDiscount = {
-			discountType: 1,
-			discount: 0
-		};
+		this.cancelDiscount();
 		this.modalRef = this.modalService.show(this.discountModal);
 	}
 
@@ -363,16 +361,37 @@ export class PosComponent implements OnInit {
 			this.messageHelper.showMessage(ResponseStatus.warning, 'Please add product before applying discount');
 			return;
 		}
-		this.objSales.DiscountType = this.objDiscount.discountType;
+
+
 		if (this.objDiscount.discount > 0) {
+
+			this.objSales.DiscountType = this.objDiscount.discountType;
 			if (this.objSales.DiscountType == 1) {
 				this.objSales.Discount = parseFloat(this.objSales.SubTotal.toString()) * (parseFloat(this.objDiscount.discount.toString()) / 100);
 			} else {
 				this.objSales.Discount = this.objDiscount.discount;
 			}
+
+			if (this.objSales.Discount > this.objSales.SubTotal) {
+				this.objDiscount = {
+					discountType: 0,
+					discount: 0
+				};
+				this.objSales.DiscountType = 0;
+				this.objSales.Discount = 0;
+				this.messageHelper.showMessage(ResponseStatus.warning, "Discount can not exceed total price");
+				return;
+			}
 		} else {
+			this.objSales.DiscountType = 0;
 			this.objSales.Discount = 0;
 		}
+
+		this.selectedDiscountType = null;
+		this.objDiscount = {
+			discountType: 0,
+			discount: 0
+		};
 		this.calculateTotalPrice();
 		this.modalRef?.hide();
 	}
@@ -387,16 +406,28 @@ export class PosComponent implements OnInit {
 
 	discountEntry(discount: any) {
 		if (discount > 0) {
-			this.objDiscount.discount = discount;
+			this.objDiscount.discount = parseFloat(discount);
 		}
 	}
 
-	payAmountEntry(amount: any) {
+	payAmountEntry(value: any) {
+		var amount;
+		if (typeof (value) == 'number') {
+			amount = value;
+		} else {
+			amount = value
+				? parseFloat((value!.indexOf(',') > -1) ? value!.replaceAll(",", "") : value)
+				: 0;
+		}
+
 		if (amount > 0) {
 			this.objPaymentDTO.Amount = amount;
-			this.objPaymentDTO.RemainingAmount = (this.objPaymentDTO.Amount < this.objPaymentDTO.TotalPayable) ? (this.objPaymentDTO.TotalPayable - this.objPaymentDTO.Amount) : 0;
-			this.objPaymentDTO.ReturnAmount = (this.objPaymentDTO.Amount > this.objPaymentDTO.TotalPayable) ? (this.objPaymentDTO.Amount - this.objPaymentDTO.TotalPayable) : 0;
+		} else {
+			this.objPaymentDTO.Amount = 0;
 		}
+
+		this.objPaymentDTO.RemainingAmount = (this.objPaymentDTO.Amount > 0 && this.objPaymentDTO.Amount < this.objPaymentDTO.TotalPayable) ? (this.objPaymentDTO.TotalPayable - this.objPaymentDTO.Amount) : 0;
+		this.objPaymentDTO.ReturnAmount = (this.objPaymentDTO.Amount > 0 && this.objPaymentDTO.Amount > this.objPaymentDTO.TotalPayable) ? (this.objPaymentDTO.Amount - this.objPaymentDTO.TotalPayable) : 0;
 	}
 
 	clickToHoldSales() {
@@ -405,6 +436,8 @@ export class PosComponent implements OnInit {
 
 	openPaymentModal() {
 		this.getAllAccount();
+		this.selectedPaymentType = new Account();
+		this.isDisablePaymentAmount = false;
 		this.objPaymentDTO = new PaymentDTO();
 		this.objPaymentDTO.TotalQty = this.totalSalesQty;
 		this.objPaymentDTO.TotalPayable = this.objSales.TotalSalesPrice;
@@ -459,6 +492,7 @@ export class PosComponent implements OnInit {
 
 			if (this.selectedPaymentType!.AccountID > 0 && this.selectedPaymentType!.AccountTitle!.toLowerCase() != 'cash') {
 				this.payAmountEntry(this.objSales.TotalSalesPrice);
+				this.isDisablePaymentAmount = true;
 			}
 
 		} else {
@@ -479,7 +513,11 @@ export class PosComponent implements OnInit {
 		this.selectedDiscountType = null;
 		this.objSales.Discount = 0;
 		this.objSales.DiscountType = 0;
-		this.modalRef?.hide();
+		this.objDiscount = {
+			discountType: 0,
+			discount: 0
+		};
+
 	}
 
 	ngOnDestroy(): void {

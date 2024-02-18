@@ -383,3 +383,19 @@ input#searchProduct {
     top: 10px;
     right: 10px;
 }
+
+input#payAmount:disabled:-moz-placeholder {
+    color: var(--light-text-color) !important;
+}
+
+input#payAmount:disabled::-moz-placeholder {
+    color: var(--light-text-color) !important;
+}
+
+input#payAmount:disabled:-ms-input-placeholder {
+    color: var(--light-text-color) !important;
+}
+
+input#payAmount:disabled::-webkit-input-placeholder {
+    color: var(--light-text-color) !important;
+}

@@ -246,12 +246,13 @@
 			</div>
 			<div class="form-group mt-2">
 				<label for="discount" class="form-label">Discount</label>
-				<input type="number" name="discount" id="discount" class="form-control" placeholder="00.00"
-					(input)="discountEntry(discount.value)" required #discount>
+				<input type="text" name="discount" id="discount" class="form-control" placeholder="00.00"
+					(input)="discountEntry(discount.value)" mask="separator.2" thousandSeparator="," decimalMarker="."
+					required #discount>
 			</div>
 		</div>
 		<div class="modal-footer">
-			<button type="button" class="cancel-button" (click)="cancelDiscount()">Cancel</button>
+			<button type="button" class="cancel-button" (click)="cancelDiscount(); modalRef?.hide();">Cancel</button>
 			<button type="submit"
 				[disabled]="(dataService.isFormSubmitting | async) || (discount.valueAsNumber == 0 || discount.value == '')"
 				class="success-button">Add</button>
@@ -286,9 +287,10 @@
 					</div>
 					<div class="form-group mt-2">
 						<label for="payAmount" class="form-label">Amount</label>
-						<input type="number" name="payAmount" id="payAmount" class="form-control" placeholder="00.00"
-							(input)="payAmountEntry(payAmount.value)" [value]="objPaymentDTO.Amount" required
-							#payAmount>
+						<input type="text" name="payAmount" id="payAmount" class="form-control"
+							[placeholder]="isDisablePaymentAmount ? objPaymentDTO.Amount :'00.00'"
+							(input)="payAmountEntry(payAmount.value)" [disabled]="isDisablePaymentAmount" required
+							mask="separator.2" thousandSeparator="," decimalMarker="." #payAmount>
 					</div>
 				</div>
 				<div class="col-md-5">
