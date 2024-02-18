@@ -8,7 +8,14 @@
 			<thead>
 				<tr>
 					<th>Permission</th>
-					<th *ngFor="let role of lstRole">{{role.RoleName}}</th>
+					<th *ngFor="let role of lstRole">
+						<div class="d-flex align-items-center gap-2">
+							<span>{{role.RoleName}}</span>
+							<button type="button" class="action-button role-edit" (click)="editRole(role)">
+								<i class='bx bx-edit-alt font-15'></i>
+							</button>
+						</div>
+					</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -16,8 +23,9 @@
 					<td>{{permission.DisplayName}}</td>
 					<td *ngFor="let role of lstRole">
 						<div class="form-check d-flex p-0">
-							<input type="checkbox" name="checkRole" id="{{permission.PermissionName}}_{{role.RoleID}}" 
-								[checked]="haveAccess(permission.PermissionID, role.RoleID)" [disabled]="role.RoleID == 1"
+							<input type="checkbox" name="checkRole" id="{{permission.PermissionName}}_{{role.RoleID}}"
+								[checked]="haveAccess(permission.PermissionID, role.RoleID)"
+								[disabled]="role.RoleID == 1"
 								(change)="changeAccess($event, permission.PermissionID, role.RoleID)">
 						</div>
 					</td>
@@ -57,22 +65,24 @@
 	<div class="modal-header">
 		<div class="modal-title text-center font-15 weight-500">Add Permission</div>
 	</div>
-	<form autocomplete="off" #permissionForm="ngForm" (ngSubmit)="permissionForm.form.valid && savePermission()" novalidate>
+	<form autocomplete="off" #permissionForm="ngForm" (ngSubmit)="permissionForm.form.valid && savePermission()"
+		novalidate>
 		<div class="modal-body">
 			<div class="form-group">
 				<label for="displayName" class="form-label">Display name <span class="txt-danger">*</span></label>
-				<input type="text" name="displayName" id="displayName" class="form-control" [(ngModel)]="objPermission.DisplayName"
-				(input)="toSlugify(objPermission.DisplayName)"
-					required #displayName="ngModel" [ngClass]="{ 'is-invalid': permissionForm.submitted && displayName.errors }">
+				<input type="text" name="displayName" id="displayName" class="form-control"
+					[(ngModel)]="objPermission.DisplayName" (input)="toSlugify(objPermission.DisplayName)" required
+					#displayName="ngModel" [ngClass]="{ 'is-invalid': permissionForm.submitted && displayName.errors }">
 				<div *ngIf="displayName.errors && (displayName.dirty || permissionForm.submitted) && displayName.invalid"
 					class="invalid-feedback">
 					<div *ngIf="displayName.errors['required']">Display name is required</div>
 				</div>
 			</div>
-			<div class="form-group">
+			<div class="form-group mt-2">
 				<label for="permissionName" class="form-label">Permission name <span class="txt-danger">*</span></label>
-				<input type="text" name="permissionName" id="permissionName" class="form-control" [(ngModel)]="objPermission.PermissionName"
-					required #permissionName="ngModel" [ngClass]="{ 'is-invalid': permissionForm.submitted && permissionName.errors }">
+				<input type="text" name="permissionName" id="permissionName" class="form-control"
+					[(ngModel)]="objPermission.PermissionName" required #permissionName="ngModel"
+					[ngClass]="{ 'is-invalid': permissionForm.submitted && permissionName.errors }">
 				<div *ngIf="permissionName.errors && (permissionName.dirty || permissionForm.submitted) && permissionName.invalid"
 					class="invalid-feedback">
 					<div *ngIf="permissionName.errors['required']">Permission name is required</div>

@@ -25,7 +25,11 @@ input#searchProduct {
 }
 
 .dropdown-table {
-    padding: 5px 15px;
+    /* padding: 5px 15px; */
+    border: 1px solid var(--border-color);
+    margin: 5px 15px;
+    overflow: auto;
+    max-height: 250px;
 }
 
 .dropdown-table table tbody tr td {
@@ -33,7 +37,8 @@ input#searchProduct {
 }
 
 .dropdown-table table tr {
-    border: 1px solid var(--border-color);
+    /* border: 1px solid var(--border-color); */
+    height: 27px;
 }
 
 .dropdown-table table tbody tr {
@@ -119,4 +124,12 @@ input#searchProduct {
     width: fit-content;
     float: right;
     margin-top: 25px;
+}
+
+.noMatch-txt {
+    color: var(--danger-color);
+    position: absolute;
+    font-size: var(--font-11);
+    top: 10px;
+    right: 10px;
 }

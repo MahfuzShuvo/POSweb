@@ -30,6 +30,7 @@ export class ExpenseComponent implements OnInit {
 	buttonText: string;
 	modalTitle: string;
 	lstAccount: Account[] = [];
+	selectedAccount: Account = new Account();
 
 	constructor(
 		private headerService: HeaderService,
@@ -110,7 +111,13 @@ export class ExpenseComponent implements OnInit {
 	}
 
 	saveExpense() {
+
+		if (this.objExpense.AccountID == 0 || !this.objExpense.AccountID) {
+			this.messageHelper.showMessage(ResponseStatus.warning, 'Account must be required');
+			return;
+		}
 		this.dataService.isFormSubmitting.next(true);
+
 		this.expenseService.saveExpense(this.objExpense)
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {
@@ -125,6 +132,7 @@ export class ExpenseComponent implements OnInit {
 					}
 
 					this.objExpense = new Expense();
+					this.selectedAccount = new Account();
 					this.modalRef?.hide();
 				}
 				this.messageHelper.showMessage(response.ResponseCode, response.Message);
@@ -169,6 +177,15 @@ export class ExpenseComponent implements OnInit {
 					}
 					this.messageHelper.showMessage(response.ResponseCode, response.Message);
 				})
+		}
+	}
+
+	selectAccount(account: Account) {
+		if (account) {
+			this.selectedAccount = this.lstAccount.filter(x => x.AccountID == account.AccountID)[0];
+			this.objExpense.AccountID = account.AccountID;
+		} else {
+			this.objExpense.AccountID = 0;
 		}
 	}
 

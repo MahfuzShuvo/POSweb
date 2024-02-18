@@ -150,73 +150,79 @@ export class ProductFormComponent implements OnInit {
 		if (category) {
 			this.selectedCategory = JSON.parse(JSON.stringify(category));
 			this.objProduct.CategoryID = category.CategoryID;
-		}
-	}
-
-	searchCategoryDropdown(str: string) {
-		if (str == '') {
-			this.lstCategory = JSON.parse(JSON.stringify(this.tempLstCategory));
 		} else {
-			this.lstCategory = this.tempLstCategory.filter(x => x.CategoryName.toLowerCase().includes(str.toLowerCase()))
+			this.objProduct.CategoryID = 0;
 		}
-
 	}
 
-	openCategoryDrop() {
-		this.lstCategory = JSON.parse(JSON.stringify(this.tempLstCategory));
-		setTimeout(() => {
-			this.searchCategory!.nativeElement.value = '';
-			this.searchCategory!.nativeElement.focus();
-		}, 5);
-	}
+	// searchCategoryDropdown(str: string) {
+	// 	if (str == '') {
+	// 		this.lstCategory = JSON.parse(JSON.stringify(this.tempLstCategory));
+	// 	} else {
+	// 		this.lstCategory = this.tempLstCategory.filter(x => x.CategoryName.toLowerCase().includes(str.toLowerCase()))
+	// 	}
+
+	// }
+
+	// openCategoryDrop() {
+	// 	this.lstCategory = JSON.parse(JSON.stringify(this.tempLstCategory));
+	// 	setTimeout(() => {
+	// 		this.searchCategory!.nativeElement.value = '';
+	// 		this.searchCategory!.nativeElement.focus();
+	// 	}, 5);
+	// }
 
 	selectBrand(brand: Brand) {
 		if (brand) {
 			this.selectedBrand = JSON.parse(JSON.stringify(brand));
 			this.objProduct.BrandID = brand.BrandID;
-		}
-	}
-
-	searchBrandDropdown(str: string) {
-		if (str == '') {
-			this.lstBrand = JSON.parse(JSON.stringify(this.tempLstBrand));
 		} else {
-			this.lstBrand = this.tempLstBrand.filter(x => x.BrandName.toLowerCase().includes(str.toLowerCase()))
+			this.objProduct.BrandID = 0;
 		}
-
 	}
 
-	openBrandDrop() {
-		this.lstBrand = JSON.parse(JSON.stringify(this.tempLstBrand));
-		setTimeout(() => {
-			this.searchBrand!.nativeElement.value = '';
-			this.searchBrand!.nativeElement.focus();
-		}, 5);
-	}
+	// searchBrandDropdown(str: string) {
+	// 	if (str == '') {
+	// 		this.lstBrand = JSON.parse(JSON.stringify(this.tempLstBrand));
+	// 	} else {
+	// 		this.lstBrand = this.tempLstBrand.filter(x => x.BrandName.toLowerCase().includes(str.toLowerCase()))
+	// 	}
+
+	// }
+
+	// openBrandDrop() {
+	// 	this.lstBrand = JSON.parse(JSON.stringify(this.tempLstBrand));
+	// 	setTimeout(() => {
+	// 		this.searchBrand!.nativeElement.value = '';
+	// 		this.searchBrand!.nativeElement.focus();
+	// 	}, 5);
+	// }
 
 	selectUnit(unit: Unit) {
 		if (unit) {
 			this.selectedUnit = JSON.parse(JSON.stringify(unit));
 			this.objProduct.Unit = unit.UnitID;
-		}
-	}
-
-	searchUnitDropdown(str: string) {
-		if (str == '') {
-			this.lstUnit = JSON.parse(JSON.stringify(this.tempLstUnit));
 		} else {
-			this.lstUnit = this.tempLstUnit.filter(x => x.UnitName.toLowerCase().includes(str.toLowerCase()))
+			this.objProduct.Unit = 0;
 		}
-
 	}
 
-	openUnitDrop() {
-		this.lstUnit = JSON.parse(JSON.stringify(this.tempLstUnit));
-		setTimeout(() => {
-			this.searchUnit!.nativeElement.value = '';
-			this.searchUnit!.nativeElement.focus();
-		}, 5);
-	}
+	// searchUnitDropdown(str: string) {
+	// 	if (str == '') {
+	// 		this.lstUnit = JSON.parse(JSON.stringify(this.tempLstUnit));
+	// 	} else {
+	// 		this.lstUnit = this.tempLstUnit.filter(x => x.UnitName.toLowerCase().includes(str.toLowerCase()))
+	// 	}
+
+	// }
+
+	// openUnitDrop() {
+	// 	this.lstUnit = JSON.parse(JSON.stringify(this.tempLstUnit));
+	// 	setTimeout(() => {
+	// 		this.searchUnit!.nativeElement.value = '';
+	// 		this.searchUnit!.nativeElement.focus();
+	// 	}, 5);
+	// }
 
 	numbersOnlyValidator(event: any) {
 		const pattern = /^[0-9\-]*$/;

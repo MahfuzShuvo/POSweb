@@ -3,3 +3,13 @@
     align-items: center;
     gap: var(--gap-10);
 }
+
+.role-edit {
+    background: transparent !important;
+    box-shadow: none !important;
+
+}
+
+.role-edit:hover i {
+    color: var(--secondary-theme-color);
+}

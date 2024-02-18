@@ -34,7 +34,10 @@
 								<label for="category" class="form-label">
 									Category <span class="txt-danger">*</span>
 								</label>
-								<div class="btn-group" dropdown #dropdownCategory="bs-dropdown" [insideClick]="true"
+								<custom-select-dropdown [id]="'category'" [lstItem]="lstCategory" [key]="'CategoryName'"
+									(onSelectEvent)="selectCategory($event)"
+									[selectedItem]="selectedCategory"></custom-select-dropdown>
+								<!-- <div class="btn-group" dropdown #dropdownCategory="bs-dropdown" [insideClick]="true"
 									(onShown)="openCategoryDrop()">
 									<div dropdownToggle class="custome-select" id="category"
 										aria-controls="dropdown-basic">
@@ -55,13 +58,16 @@
 											</li>
 										</ul>
 									</div>
-								</div>
+								</div> -->
 							</div>
 						</div>
 						<div class="col-md-3">
 							<div class="form-group">
 								<label for="brand" class="form-label">Brand</label>
-								<div class="btn-group" dropdown #dropdownBrand="bs-dropdown" [insideClick]="true"
+								<custom-select-dropdown [id]="'brand'" [lstItem]="lstBrand" [key]="'BrandName'"
+									(onSelectEvent)="selectBrand($event)"
+									[selectedItem]="selectedBrand"></custom-select-dropdown>
+								<!-- <div class="btn-group" dropdown #dropdownBrand="bs-dropdown" [insideClick]="true"
 									(onShown)="openBrandDrop()">
 
 									<div dropdownToggle class="custome-select" id="brand"
@@ -82,7 +88,7 @@
 											</li>
 										</ul>
 									</div>
-								</div>
+								</div> -->
 							</div>
 						</div>
 					</div>
@@ -103,16 +109,12 @@
 								<label for="productName" class="form-label">
 									Unit <span class="txt-danger">*</span>
 								</label>
-								<!-- <select name="unit" id="unit" class="form-select" [(ngModel)]="objProduct.Unit" 
-									#unit="ngModel" required [ngClass]="{ 'is-invalid': productForm.submitted && unit.errors }">
-									<option value="0" selected disabled>Select</option>
-									<option [value]="unit.UnitID" *ngFor="let unit of lstUnit">{{unit.UnitName}}
-									</option>
-								</select>
-								<div *ngIf="productForm.submitted && unit.errors" class="invalid-feedback">
-									<div *ngIf="unit.errors['required']">Unit is required</div>
-								</div> -->
-								<div class="btn-group" dropdown #dropdownUnit="bs-dropdown" [insideClick]="true"
+
+								<custom-select-dropdown [id]="'unit'" [lstItem]="lstUnit" [key]="'UnitName'"
+									(onSelectEvent)="selectUnit($event)"
+									[selectedItem]="selectedUnit"></custom-select-dropdown>
+
+								<!-- <div class="btn-group" dropdown #dropdownUnit="bs-dropdown" [insideClick]="true"
 									(onShown)="openUnitDrop()">
 
 									<div dropdownToggle class="custome-select" id="unit" aria-controls="dropdown-basic">
@@ -131,7 +133,7 @@
 											</li>
 										</ul>
 									</div>
-								</div>
+								</div> -->
 							</div>
 						</div>
 						<div class="col-md-4">
@@ -145,7 +147,8 @@
 											(click)="decrementValue($event)">-</button>
 										<input type="number" id="quantity" name="quantity" class="form-control"
 											[(ngModel)]="objProduct.Qty" #quantity="ngModel" value="0" min="0"
-											[ngClass]="{ 'is-invalid': productForm.submitted && quantity.errors }" required>
+											[ngClass]="{ 'is-invalid': productForm.submitted && quantity.errors }"
+											required>
 										<button type="button" class="number-field-btn plus"
 											(click)="incrementValue($event)">+</button>
 									</div>
@@ -154,19 +157,19 @@
 										<div *ngIf="quantity.errors['required']">Stock quantity is required</div>
 									</div>
 								</div>
-							<!-- </div>
+								<!-- </div>
 							<div class="col-md-3"> -->
 								<div class="form-group">
 									<label for="minQuantity" class="form-label">Alert Quantity</label>
 									<div class="number-input">
 										<button type="button" class="number-field-btn minus"
 											(click)="decrementValue($event)">-</button>
-											<input type="number" id="minQuantity" class="form-control" name="minQuantity"
+										<input type="number" id="minQuantity" class="form-control" name="minQuantity"
 											[(ngModel)]="objProduct.MinQty" value="0" min="0">
 										<button type="button" class="number-field-btn plus"
 											(click)="incrementValue($event)">+</button>
 									</div>
-									
+
 								</div>
 							</div>
 						</div>

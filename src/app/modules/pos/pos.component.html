@@ -2,16 +2,19 @@
 	<div class="body-wrapper-card card">
 		<div class="wrapper-content-header d-flex align-items-center justify-content-between">
 			<span class="font-13 weight-600">Checkout</span>
-				<div class="sales-code-div" *ngIf="salesCode != '' && isEditMode">
-					<span class="txt-light">Sales Invoice: </span>
-					<span class="weight-600">{{salesCode}}</span>
-				</div>
+			<div class="sales-code-div" *ngIf="salesCode != '' && isEditMode">
+				<span class="txt-light">Sales Invoice: </span>
+				<span class="weight-600">{{salesCode}}</span>
+			</div>
 		</div>
 		<div class="cart-body">
 			<div class="row">
 				<div class="col-md-5">
 					<div class="form-group">
-						<div class="btn-group" dropdown #dropdownCustomer="bs-dropdown" [insideClick]="true"
+						<custom-select-dropdown [id]="'customer'" [lstItem]="lstCustomer" [key]="'CustomerName'"
+							(onSelectEvent)="selectCustomer($event)" [placeholderText]="'Walk-in customer'"
+							[selectedItem]="selectedCustomer"></custom-select-dropdown>
+						<!-- <div class="btn-group" dropdown #dropdownCustomer="bs-dropdown" [insideClick]="true"
 							(onShown)="openCustomerDrop()">
 							<div dropdownToggle class="custome-select" id="customer" aria-controls="dropdown-basic">
 								<span class="custome-select-txt">{{(selectedCustomer.CustomerID &&
@@ -33,7 +36,7 @@
 									</li>
 								</ul>
 							</div>
-						</div>
+						</div> -->
 					</div>
 				</div>
 				<div class="col-md-7">
@@ -42,6 +45,7 @@
 						<input type="text" class="form-control" name="searchProduct" id="searchProduct"
 							placeholder="Search product by name or SKU" #searchProductText
 							(keyup)="onKeyProductSearch($event)">
+						<span *ngIf="noMatchFound !=''" class="noMatch-txt">{{noMatchFound}}</span>
 						<div class="dropdown-menu " [class.show]="lstProductForCart && lstProductForCart.length > 0">
 							<div class="dropdown-table">
 								<table>
@@ -146,11 +150,13 @@
 				</div>
 			</div>
 			<div class="pos-button-wrapper mt-3">
-				<button type="button" class="pos-hold-btn" (click)="clickToHoldSales()">
+				<button type="button" class="pos-hold-btn" (click)="clickToHoldSales()"
+					[disabled]="objSales!.lstProduct!.length == 0">
 					<i class='bx bxs-hand'></i>
 					Hold
 				</button>
-				<button type="button" class="pos-payment-btn" (click)="openPaymentModal()">
+				<button type="button" class="pos-payment-btn" (click)="openPaymentModal()"
+					[disabled]="objSales!.lstProduct!.length == 0">
 					<i class='bx bx-money'></i>
 					Make Payment
 				</button>
@@ -229,12 +235,14 @@
 		<div class="modal-body">
 			<div class="form-group mt-2">
 				<label for="discountType" class="form-label">Discount Type</label>
-				<select name="discountType" id="discountType" class="form-select"
+				<custom-select-dropdown [id]="'discount'" [lstItem]="lstDiscountType" [key]="'Discount'"
+					(onSelectEvent)="selectDiscount($event)"
+					[selectedItem]="selectedDiscountType"></custom-select-dropdown>
+				<!-- <select name="discountType" id="discountType" class="form-select"
 					[(ngModel)]="objDiscount.discountType">
-					<!-- <option [value]="0" selected disabled>Select</option> -->
 					<option [value]="1">Percentage (%)</option>
 					<option [value]="2">Fixed (&#2547;)</option>
-				</select>
+				</select> -->
 			</div>
 			<div class="form-group mt-2">
 				<label for="discount" class="form-label">Discount</label>
@@ -243,7 +251,7 @@
 			</div>
 		</div>
 		<div class="modal-footer">
-			<button type="button" class="cancel-button" (click)="modalRef?.hide()">Cancel</button>
+			<button type="button" class="cancel-button" (click)="cancelDiscount()">Cancel</button>
 			<button type="submit"
 				[disabled]="(dataService.isFormSubmitting | async) || (discount.valueAsNumber == 0 || discount.value == '')"
 				class="success-button">Add</button>
@@ -266,17 +274,21 @@
 				<div class="col-md-7">
 					<div class="form-group mt-2">
 						<label for="paymentType" class="form-label">Payment Type</label>
-						<select name="paymentType" id="paymentType" class="form-select"
+						<custom-select-dropdown [id]="'payment-type'" [lstItem]="lstAccount" [key]="'AccountTitle'"
+							(onSelectEvent)="selectPayentType($event)"
+							[selectedItem]="selectedPaymentType"></custom-select-dropdown>
+						<!-- <select name="paymentType" id="paymentType" class="form-select"
 							[(ngModel)]="objSales.AccountID">
 							<option [value]="0" selected disabled>Select</option>
 							<option [value]="account.AccountID" *ngFor="let account of lstAccount">
 								{{account.AccountTitle}}</option>
-						</select>
+						</select> -->
 					</div>
 					<div class="form-group mt-2">
 						<label for="payAmount" class="form-label">Amount</label>
 						<input type="number" name="payAmount" id="payAmount" class="form-control" placeholder="00.00"
-							(input)="payAmountEntry(payAmount.value)" required #payAmount>
+							(input)="payAmountEntry(payAmount.value)" [value]="objPaymentDTO.Amount" required
+							#payAmount>
 					</div>
 				</div>
 				<div class="col-md-5">
@@ -287,27 +299,33 @@
 						</div>
 						<div class="cart-item">
 							<div class="cart-head">Total</div>
-							<div class="cart-info">{{objPaymentDTO.Total | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</div>
+							<div class="cart-info">{{objPaymentDTO.Total | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}
+							</div>
 						</div>
 						<div class="cart-item">
 							<div class="cart-head">Discount (-)</div>
-							<div class="cart-info">{{objPaymentDTO.Discount | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</div>
+							<div class="cart-info">{{objPaymentDTO.Discount | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}
+							</div>
 						</div>
 						<div class="cart-item payable">
 							<div class="cart-head">Payable</div>
-							<div class="cart-info">{{objPaymentDTO.TotalPayable | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</div>
+							<div class="cart-info">{{objPaymentDTO.TotalPayable |
+								currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</div>
 						</div>
 						<div class="cart-item">
 							<div class="cart-head">Paying Amount</div>
-							<div class="cart-info">{{objPaymentDTO.Amount | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</div>
+							<div class="cart-info">{{objPaymentDTO.Amount | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}
+							</div>
 						</div>
 						<div class="cart-item">
 							<div class="cart-head">Remaining</div>
-							<div class="cart-info">{{objPaymentDTO.RemainingAmount | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</div>
+							<div class="cart-info">{{objPaymentDTO.RemainingAmount |
+								currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</div>
 						</div>
 						<div class="cart-item return">
 							<div class="cart-head">Return</div>
-							<div class="cart-info">{{objPaymentDTO.ReturnAmount | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</div>
+							<div class="cart-info">{{objPaymentDTO.ReturnAmount |
+								currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</div>
 						</div>
 					</div>
 				</div>

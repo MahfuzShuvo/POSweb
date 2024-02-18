@@ -4,5 +4,5 @@ export class Branch extends BaseModel {
     BranchID: number;
     BranchName: string;
     Address: string;
-    BranchManagerID!: number;
+    BranchManagerID: number = 0;
 }

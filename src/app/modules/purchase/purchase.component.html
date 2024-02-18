@@ -59,7 +59,8 @@
 							<td>
 								<div class="d-flex align-items-center gap-3">
 									<span>{{purchase.lstProduct.length}}</span>
-									<div class="btn-group" dropdown #dropdownProduct="bs-dropdown" [insideClick]="true">
+									<div class="btn-group" dropdown container="body" #dropdownProduct="bs-dropdown"
+										[insideClick]="true">
 										<div dropdownToggle class="show-all-product" id="product"
 											aria-controls="dropdown-basic">
 											<i class='bx bx-detail font-17'></i>

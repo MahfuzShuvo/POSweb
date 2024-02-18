@@ -240,6 +240,10 @@ h6.active {
     background: var(--light-secondary-theme-color);
 }
 
+.dropdown-menu li.dropdown-item.selected {
+    background: var(--secondary-theme-color) !important;
+}
+
 .dropdown-ul {
     max-height: 220px;
     overflow: auto;

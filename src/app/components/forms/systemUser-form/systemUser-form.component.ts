@@ -23,6 +23,7 @@ export class SystemUserFormComponent implements OnInit {
 	isPasswordShow: boolean = false;
 	@Output() objSystemUser: SystemUser = new SystemUser();
 	@Output() lstRole: Role[] = [];
+	selectedRole: Role = new Role();
 
 	constructor(
 		private systemUserService: SystemUserService,
@@ -31,6 +32,9 @@ export class SystemUserFormComponent implements OnInit {
 	) { }
 
 	ngOnInit() {
+		if (this.objSystemUser && this.objSystemUser!.RoleID > 0) {
+			this.selectedRole = this.lstRole.filter(x => x.RoleID == this.objSystemUser.RoleID)[0];
+		}
 	}
 
 	getRoleName(roleID: number) {
@@ -43,6 +47,7 @@ export class SystemUserFormComponent implements OnInit {
 
 	closeSidebar() {
 		this.objSystemUser = new SystemUser();
+		this.selectedRole = new Role();
 		this.isShow.emit(false);
 	}
 
@@ -59,6 +64,10 @@ export class SystemUserFormComponent implements OnInit {
 	}
 
 	saveSystemUser() {
+		if (this.objSystemUser!.RoleID == 0) {
+			this.messageHelper.showMessage(ResponseStatus.warning, 'Must be assign role');
+			return;
+		}
 		this.dataService.isFormSubmitting.next(true);
 		this.systemUserService.saveSystemUser(this.objSystemUser)
 			.pipe(takeUntil(this.destroy))
@@ -70,6 +79,15 @@ export class SystemUserFormComponent implements OnInit {
 				}
 				this.messageHelper.showMessage(response.ResponseCode, response.Message);
 			})
+	}
+
+	selectRole(role: Role) {
+		if (role) {
+			this.selectedRole = this.lstRole.filter(x => x.RoleID == role.RoleID)[0];
+			this.objSystemUser.RoleID = role.RoleID;
+		} else {
+			this.objSystemUser.RoleID = 0;
+		}
 	}
 
 	ngOnDestroy(): void {

@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
+import { AppConstant } from 'src/app/common/constants/appConstant';
 import { ResponseStatus } from 'src/app/common/enums/appEnums';
 import { MessageHelper } from 'src/app/common/helper/messageHelper';
 import { DataService } from 'src/app/common/service/data.service';
@@ -37,6 +38,12 @@ export class PurchaseFormComponent implements OnInit {
 	discountInput: number = 0;
 	lstAccount: Account[] = [];
 	isEditMode: boolean = false;
+	lstPurchaseStatus: any[] = AppConstant.PURCHASE_STATUS;
+	lstDiscountType: any[] = AppConstant.DISCOUNT_TYPE;
+	selectedStatus: any;
+	selectedDiscountType: any;
+	selectedPaymentType: Account = new Account();
+	noMatchFound: string = '';
 
 	constructor(
 		private headerService: HeaderService,
@@ -64,7 +71,7 @@ export class PurchaseFormComponent implements OnInit {
 					this.getPurchaseByCode(this.purchaseCode);
 				}, 500);
 			} else {
-				this.isEditMode= false;
+				this.isEditMode = false;
 			}
 		});
 		Promise.resolve().then(() => this.headerService.setTitle(childRoute!.toString() + ' ' + headerTitle!.toString()));
@@ -75,6 +82,7 @@ export class PurchaseFormComponent implements OnInit {
 		this.getAllAccount();
 		this.maxDate = new Date();
 		this.objPurchase.PurchaseDate = new Date(this.maxDate).toLocaleString();
+		this.selectedStatus = this.lstPurchaseStatus.filter(x => x.Id == this.objPurchase.PurchaseStatus)[0];
 	}
 
 	getPurchaseByCode(purchaseCode: string) {
@@ -85,13 +93,15 @@ export class PurchaseFormComponent implements OnInit {
 				if (this.objPurchase.Discount > 0) {
 					if (this.objPurchase.DiscountType == 1) {
 						this.discountInput = (parseFloat(this.objPurchase.Discount.toString()) * 100) / parseFloat(this.objPurchase.SubTotal.toString());
+						this.selectedDiscountType = this.lstDiscountType.filter(x => x.Id == this.objPurchase.DiscountType)[0];
 					} else {
-						this.discountInput =this.objPurchase.Discount;
+						this.discountInput = this.objPurchase.Discount;
 					}
 				}
 
 				this.objPurchase.PurchaseDate = new Date(this.objPurchase.PurchaseDate).toLocaleString();
-
+				this.selectedStatus = this.lstPurchaseStatus.filter(x => x.Id == this.objPurchase.PurchaseStatus)[0];
+				this.selectedPaymentType = this.lstAccount.filter(x => x.AccountID == this.objPurchase.PaymentType)[0];
 				this.changeQty();
 			} else {
 				this.messageHelper.showMessage(response.ResponseCode, response.Message);
@@ -110,6 +120,7 @@ export class PurchaseFormComponent implements OnInit {
 				}
 			} else {
 				this.lstProduct = [];
+				this.noMatchFound = '';
 			}
 		}, 500);
 	}
@@ -120,6 +131,9 @@ export class PurchaseFormComponent implements OnInit {
 			.subscribe((response: ResponseMessage) => {
 				if (response.ResponseCode == ResponseStatus.success) {
 					this.lstProduct = response.ResponseObj;
+					this.noMatchFound = '';
+				} else {
+					this.noMatchFound = response.Message;
 				}
 			})
 	}
@@ -155,9 +169,9 @@ export class PurchaseFormComponent implements OnInit {
 	getSupplierName() {
 		setTimeout(() => {
 			var existSupplier = this.lstAllSupplier.filter(x => x.SupplierID == this.objPurchase?.SupplierID)[0];
-		if (existSupplier) {
-			this.selectedSupplier = JSON.parse(JSON.stringify(existSupplier));
-		}
+			if (existSupplier) {
+				this.selectedSupplier = JSON.parse(JSON.stringify(existSupplier));
+			}
 		}, 500);
 	}
 
@@ -165,6 +179,8 @@ export class PurchaseFormComponent implements OnInit {
 		if (supplier) {
 			this.selectedSupplier = JSON.parse(JSON.stringify(supplier));
 			this.objPurchase.SupplierID = supplier.SupplierID;
+		} else {
+			this.objPurchase.SupplierID = 0;
 		}
 	}
 
@@ -301,15 +317,35 @@ export class PurchaseFormComponent implements OnInit {
 		}
 	}
 
-	bindingUnderTotalPrice(event: any){
+	bindingUnderTotalPrice(event: any) {
 		if (this.objPurchase.PaymentAmount > this.objPurchase.TotalPurchasePrice) {
 			this.messageHelper.showMessage(ResponseStatus.warning, "Can't pay more than total purchase price");
 
-			event.target.value=this.objPurchase.TotalPurchasePrice;
-			this.objPurchase.PaymentAmount=this.objPurchase.TotalPurchasePrice;
+			event.target.value = this.objPurchase.TotalPurchasePrice;
+			this.objPurchase.PaymentAmount = this.objPurchase.TotalPurchasePrice;
 		}
 	}
 
+	selectPurchaseStatus(event: any) {
+		this.selectedStatus = this.lstPurchaseStatus.filter(x => x.Id == event.Id)[0];
+		this.objPurchase.PurchaseStatus = event.Id;
+	}
+	selectDiscount(event: any) {
+		if (event) {
+			this.selectedDiscountType = this.lstDiscountType.filter(x => x.Id == event.Id)[0];
+			this.objPurchase.DiscountType = event.Id;
+		} else {
+			this.objPurchase.DiscountType = 0;
+		}
+	}
+	selectPayentType(event: any) {
+		if (event) {
+			this.selectedPaymentType = this.lstAccount.filter(x => x.AccountID == event.AccountID)[0];
+			this.objPurchase.PaymentType = event.Id;
+		} else {
+			this.objPurchase.PaymentType = 0;
+		}
+	}
 
 	ngOnDestroy(): void {
 		this.destroy.next();

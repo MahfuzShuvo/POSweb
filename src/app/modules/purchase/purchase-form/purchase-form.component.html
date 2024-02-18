@@ -9,11 +9,15 @@
 							<label for="supplier" class="form-label">
 								Supplier <span class="txt-danger">*</span>
 							</label>
-							<div class="btn-group" dropdown #dropdownSupplier="bs-dropdown" [insideClick]="true"
+							<custom-select-dropdown [id]="'supplier'" [lstItem]="lstSupplier" [key]="'SupplierName'"
+								(onSelectEvent)="selectSupplier($event)"
+								[selectedItem]="selectedSupplier"></custom-select-dropdown>
+							<!-- <div class="btn-group" dropdown #dropdownSupplier="bs-dropdown" [insideClick]="true"
 								(onShown)="openSupplierDrop()">
 								<div dropdownToggle class="custome-select" id="supplier" aria-controls="dropdown-basic">
 									<span class="custome-select-txt">{{(objPurchase.SupplierID &&
-										objPurchase.SupplierID > 0) ? selectedSupplier.SupplierName : isEditMode ? getSupplierName() :
+										objPurchase.SupplierID > 0) ? selectedSupplier.SupplierName : isEditMode ?
+										getSupplierName() :
 										'Select'}}</span>
 									<i class='bx bx-chevron-down font-17'></i>
 								</div>
@@ -28,7 +32,7 @@
 										</li>
 									</ul>
 								</div>
-							</div>
+							</div> -->
 						</div>
 					</div>
 					<div class="col-md-3">
@@ -41,12 +45,16 @@
 					<div class="col-md-3">
 						<div class="form-group">
 							<label for="purchaseStatus" class="form-label">Status</label>
-							<select name="purchaseStatus" id="purchaseStatus" class="form-select"
+							<custom-select-dropdown [id]="'purchase-status'" [lstItem]="lstPurchaseStatus"
+								[key]="'Status'" [isClearSelection]="false"
+								(onSelectEvent)="selectPurchaseStatus($event)"
+								[selectedItem]="selectedStatus"></custom-select-dropdown>
+							<!-- <select name="purchaseStatus" id="purchaseStatus" class="form-select"
 								[(ngModel)]="objPurchase.PurchaseStatus">
 								<option [value]="1">Recieved</option>
 								<option [value]="2">Pending</option>
 								<option [value]="3">Ordered</option>
-							</select>
+							</select> -->
 						</div>
 					</div>
 					<div class="col-md-3">
@@ -66,6 +74,7 @@
 							<input type="text" class="form-control" name="searchProduct" id="searchProduct"
 								placeholder="Search product by name or SKU" #searchProductText
 								(keyup)="onKeyProductSearch($event)">
+							<span *ngIf="noMatchFound !=''" class="noMatch-txt">{{noMatchFound}}</span>
 							<div class="dropdown-menu " [class.show]="lstProduct && lstProduct.length > 0">
 								<div class="dropdown-table">
 									<table>
@@ -119,9 +128,9 @@
 									<div class="number-input">
 										<button type="button" class="number-field-btn minus"
 											(click)="decrementValue($event, product)">-</button>
-										<input type="number" id="quantity_{{product.SKU}}" name="quantity_{{product.SKU}}"
-											class="form-control" [(ngModel)]="product.Qty" min="1"
-											(input)="changeQty()">
+										<input type="number" id="quantity_{{product.SKU}}"
+											name="quantity_{{product.SKU}}" class="form-control"
+											[(ngModel)]="product.Qty" min="1" (input)="changeQty()">
 										<button type="button" class="number-field-btn plus"
 											(click)="incrementValue($event, product)">+</button>
 									</div>
@@ -167,12 +176,14 @@
 							<div class="col-md-4">
 								<div class="form-group">
 									<label for="discountType" class="form-label">Discount Type</label>
-									<select name="discountType" id="discountType" class="form-select"
+									<custom-select-dropdown [id]="'discount'" [lstItem]="lstDiscountType"
+										[key]="'Discount'" (onSelectEvent)="selectDiscount($event)"
+										[selectedItem]="selectedDiscountType"></custom-select-dropdown>
+									<!-- <select name="discountType" id="discountType" class="form-select"
 										[(ngModel)]="objPurchase.DiscountType" (change)="discountCalculation()">
-										<!-- <option [value]="0" selected disabled>Select</option> -->
 										<option [value]="1">Percentage (%)</option>
 										<option [value]="2">Fixed (&#2547;)</option>
-									</select>
+									</select> -->
 								</div>
 							</div>
 							<div class="col-md-4">
@@ -236,12 +247,15 @@
 					<div class="col-md-3">
 						<div class="form-group">
 							<label for="paymentType" class="form-label">Payment Type</label>
-							<select name="paymentType" id="paymentType" class="form-select"
+							<custom-select-dropdown [id]="'payment-type'" [lstItem]="lstAccount" [key]="'AccountTitle'"
+								(onSelectEvent)="selectPayentType($event)" [isDropup]="true"
+								[selectedItem]="selectedPaymentType"></custom-select-dropdown>
+							<!-- <select name="paymentType" id="paymentType" class="form-select"
 								[(ngModel)]="objPurchase.PaymentType">
 								<option [value]="0" selected disabled>Select</option>
 								<option [value]="account.AccountID" *ngFor="let account of lstAccount">
 									{{account.AccountTitle}}</option>
-							</select>
+							</select> -->
 						</div>
 					</div>
 					<div class="col-md-6">

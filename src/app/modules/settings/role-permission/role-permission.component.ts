@@ -111,6 +111,11 @@ export class RolePermissionComponent implements OnInit {
 			})
 	}
 
+	editRole(role: Role) {
+		this.objRole = JSON.parse(JSON.stringify(role));
+		this.openRoleModal();
+	}
+
 	openRoleModal() {
 		this.modalRef = this.modalService.show(this.roleFormModal);
 	}

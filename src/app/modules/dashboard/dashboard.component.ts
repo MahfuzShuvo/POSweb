@@ -69,8 +69,8 @@ export class DashboardComponent implements OnInit {
 		}
 	}
 
-	selectMonth(monthValue: string) {
-		this.selectedMonth = JSON.parse(JSON.stringify(this.lstMonth.filter(x => x.value == monthValue)[0]));
+	selectMonth(month: any) {
+		this.selectedMonth = JSON.parse(JSON.stringify(this.lstMonth.filter(x => x.value == month.value)[0]));
 		if (this.selectedMonth) {
 			this.getDashboardInitialData();
 		}

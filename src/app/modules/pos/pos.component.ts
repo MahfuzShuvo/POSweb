@@ -3,6 +3,7 @@ import { Component, ElementRef, OnInit, TemplateRef, ViewChild, ViewContainerRef
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Subject, takeUntil } from 'rxjs';
+import { AppConstant } from 'src/app/common/constants/appConstant';
 import { ResponseStatus } from 'src/app/common/enums/appEnums';
 import { MessageHelper } from 'src/app/common/helper/messageHelper';
 import { HeaderService } from 'src/app/common/service/header.service';
@@ -51,6 +52,10 @@ export class PosComponent implements OnInit {
 	lstAccount: Account[] = [];
 	objPaymentDTO: PaymentDTO = new PaymentDTO();
 	salesCode: string = '';
+	noMatchFound: string = '';
+	selectedPaymentType: Account = new Account();
+	lstDiscountType: any[] = AppConstant.DISCOUNT_TYPE;
+	selectedDiscountType: any;
 
 	constructor(
 		private headerService: HeaderService,
@@ -67,7 +72,7 @@ export class PosComponent implements OnInit {
 		const headerTitle = this.activatedRoute.parent?.snapshot.url[0].path;
 		var childRoute = "";
 		this.activatedRoute.url.subscribe((params: Params) => {
-			childRoute = params[0].path;
+			childRoute = params[0]?.path;
 		})
 
 		this.activatedRoute.params.subscribe((params: Params) => {
@@ -79,10 +84,10 @@ export class PosComponent implements OnInit {
 					this.getSalesByCode(this.salesCode);
 				}, 500);
 			} else {
-				this.isEditMode= false;
+				this.isEditMode = false;
 			}
 		});
-		Promise.resolve().then(() => this.headerService.setTitle(childRoute!.toString() + ' ' + headerTitle!.toString()));
+		Promise.resolve().then(() => this.headerService.setTitle(childRoute?.toString() + ' ' + headerTitle!.toString()));
 		dataService.isSidebarToggle.next(true);
 	}
 
@@ -104,7 +109,7 @@ export class PosComponent implements OnInit {
 					if (this.objSales.DiscountType == 1) {
 						this.discountInput = (parseFloat(this.objSales.Discount.toString()) * 100) / parseFloat(this.objSales.SubTotal.toString());
 					} else {
-						this.discountInput =this.objSales.Discount;
+						this.discountInput = this.objSales.Discount;
 					}
 				}
 
@@ -171,25 +176,27 @@ export class PosComponent implements OnInit {
 		if (customer) {
 			this.selectedCustomer = JSON.parse(JSON.stringify(customer));
 			this.objSales.CustomerID = customer.CustomerID;
-		}
-	}
-
-	searchCustomerDropdown(str: string) {
-		if (str == '') {
-			this.lstCustomer = JSON.parse(JSON.stringify(this.lstAllCustomer));
 		} else {
-			this.lstCustomer = this.lstAllCustomer.filter(x => x.CustomerName.toLowerCase().includes(str.toLowerCase()))
+			this.objSales.CustomerID = 0;
 		}
-
 	}
 
-	openCustomerDrop() {
-		// this.lstCustomer = JSON.parse(JSON.stringify(this.lstAllCustomer));
-		setTimeout(() => {
-			this.searchCustomer!.nativeElement.value = '';
-			this.searchCustomer!.nativeElement.focus();
-		}, 5);
-	}
+	// searchCustomerDropdown(str: string) {
+	// 	if (str == '') {
+	// 		this.lstCustomer = JSON.parse(JSON.stringify(this.lstAllCustomer));
+	// 	} else {
+	// 		this.lstCustomer = this.lstAllCustomer.filter(x => x.CustomerName.toLowerCase().includes(str.toLowerCase()))
+	// 	}
+
+	// }
+
+	// openCustomerDrop() {
+	// 	// this.lstCustomer = JSON.parse(JSON.stringify(this.lstAllCustomer));
+	// 	setTimeout(() => {
+	// 		this.searchCustomer!.nativeElement.value = '';
+	// 		this.searchCustomer!.nativeElement.focus();
+	// 	}, 5);
+	// }
 
 	createCustomer() {
 		// Clear the container
@@ -232,6 +239,7 @@ export class PosComponent implements OnInit {
 				}
 			} else {
 				this.lstProductForCart = [];
+				this.noMatchFound = '';
 			}
 		}, 500);
 	}
@@ -242,6 +250,9 @@ export class PosComponent implements OnInit {
 			.subscribe((response: ResponseMessage) => {
 				if (response.ResponseCode == ResponseStatus.success) {
 					this.lstProductForCart = response.ResponseObj;
+					this.noMatchFound = '';
+				} else {
+					this.noMatchFound = response.Message;
 				}
 			})
 	}
@@ -348,6 +359,10 @@ export class PosComponent implements OnInit {
 	}
 
 	addDiscount() {
+		if (this.objSales!.lstProduct!.length == 0) {
+			this.messageHelper.showMessage(ResponseStatus.warning, 'Please add product before applying discount');
+			return;
+		}
 		this.objSales.DiscountType = this.objDiscount.discountType;
 		if (this.objDiscount.discount > 0) {
 			if (this.objSales.DiscountType == 1) {
@@ -378,11 +393,9 @@ export class PosComponent implements OnInit {
 
 	payAmountEntry(amount: any) {
 		if (amount > 0) {
-
 			this.objPaymentDTO.Amount = amount;
 			this.objPaymentDTO.RemainingAmount = (this.objPaymentDTO.Amount < this.objPaymentDTO.TotalPayable) ? (this.objPaymentDTO.TotalPayable - this.objPaymentDTO.Amount) : 0;
 			this.objPaymentDTO.ReturnAmount = (this.objPaymentDTO.Amount > this.objPaymentDTO.TotalPayable) ? (this.objPaymentDTO.Amount - this.objPaymentDTO.TotalPayable) : 0;
-
 		}
 	}
 
@@ -404,7 +417,7 @@ export class PosComponent implements OnInit {
 	saveSales() {
 		this.objSales.PayAmount = (this.objPaymentDTO.Amount >= this.objSales.TotalSalesPrice) ? this.objSales.TotalSalesPrice : this.objPaymentDTO.Amount;
 		this.objSales.DueAmount = this.objPaymentDTO.RemainingAmount;
-		
+
 		if (this.objSales.CustomerID == 0 && this.objSales.DueAmount > 0) {
 			this.messageHelper.showMessage(ResponseStatus.warning, "Walk-in customer should pay complete amount");
 			return
@@ -437,6 +450,36 @@ export class PosComponent implements OnInit {
 				}
 			})
 
+	}
+
+	selectPayentType(account: Account) {
+		if (account) {
+			this.selectedPaymentType = this.lstAccount.filter(x => x.AccountID == account.AccountID)[0];
+			this.objSales.AccountID = account.AccountID;
+
+			if (this.selectedPaymentType!.AccountID > 0 && this.selectedPaymentType!.AccountTitle!.toLowerCase() != 'cash') {
+				this.payAmountEntry(this.objSales.TotalSalesPrice);
+			}
+
+		} else {
+			this.objSales.AccountID = 0;
+		}
+	}
+
+	selectDiscount(event: any) {
+		if (event) {
+			this.selectedDiscountType = this.lstDiscountType.filter(x => x.Id == event.Id)[0];
+			this.objDiscount.discountType = event.Id;
+		} else {
+			this.objDiscount.discountType = 0;
+		}
+	}
+
+	cancelDiscount() {
+		this.selectedDiscountType = null;
+		this.objSales.Discount = 0;
+		this.objSales.DiscountType = 0;
+		this.modalRef?.hide();
 	}
 
 	ngOnDestroy(): void {

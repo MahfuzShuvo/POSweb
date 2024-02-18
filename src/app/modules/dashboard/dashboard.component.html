@@ -64,7 +64,11 @@
 		<div class="chart-container">
 			<div class="form-group month-select">
 				<!-- <label for="month" class="form-label">Month</label> -->
-				<div class="btn-group" dropdown #dropdownMonth="bs-dropdown" [insideClick]="true"
+				<custom-select-dropdown [id]="'unit'" [lstItem]="lstMonth" [rightAlign]="true" [key]="'key'"
+					[isClearSelection]="false" (onSelectEvent)="selectMonth($event)"
+					[selectedItem]="selectedMonth"></custom-select-dropdown>
+
+				<!-- <div class="btn-group" dropdown #dropdownMonth="bs-dropdown" [insideClick]="true"
 					(onShown)="openMonthDrop()">
 					<div dropdownToggle class="custome-select" id="month" aria-controls="dropdown-basic">
 						<span class="custome-select-txt">{{selectedMonth ? selectedMonth.key :
@@ -81,7 +85,7 @@
 							</li>
 						</ul>
 					</div>
-				</div>
+				</div> -->
 			</div>
 			<canvas id="canvas"></canvas>
 		</div>

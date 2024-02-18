@@ -412,12 +412,21 @@ input[type=number]::-webkit-outer-spin-button {
     font-weight: var(--weight-600) !important;
 }
 
-.theme-green .bs-datepicker-head {
+.bs-datepicker-head {
     background-color: var(--theme-color) !important;
 }
 
-.theme-green .bs-datepicker-body table td.week span {
+.bs-datepicker-body table td.week span {
     color: var(--secondary-theme-color) !important;
+}
+
+.bs-datepicker-body table td span.selected,
+.bs-datepicker-body table td.selected span {
+    background-color: var(--secondary-theme-color) !important;
+}
+
+.bs-datepicker-body table.days span {
+    line-height: 34px !important;
 }
 
 /* custome datepicker style end */

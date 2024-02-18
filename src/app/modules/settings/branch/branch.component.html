@@ -1,0 +1,150 @@
+<div class="branch-body">
+	<div class="table-headings d-flex align-items-center justify-content-between">
+		<div class="table-search d-flex align-items-center gap-1">
+			<i class='bx bx-search-alt mt-1'></i>
+			<input type="text" class="form-control" name="searchBranch" #searchText placeholder="Search by name ..."
+				(keyup)="searchBranch(searchText.value)">
+		</div>
+		<!-- <div class="d-flex align-items-center gap-2">
+				<div class="filter-search role-filter">
+					<select name="roleFilter" id="roleFilter">
+						<option [value]="0">All</option>
+						<option [value]="role.RoleID" *ngFor="let role of lstRole">{{role.RoleName}}</option>
+					</select>
+				</div>
+				<div class="filter-search status-filter">
+					<select name="statusFilter" id="statusFilter">
+						<option [value]="0">All</option>
+						<option [value]="1">Active</option>
+						<option [value]="2">Inactive</option>
+					</select>
+				</div>
+			</div> -->
+		<button type="button" class="theme-button" (click)="createBranch()">+ Add New</button>
+	</div>
+	<div class="branch-table mt-1">
+		<section class="table__body">
+			<table>
+				<thead>
+					<tr>
+						<th>SL.</th>
+						<th>Branch Name</th>
+						<th>Address</th>
+						<th>Manager</th>
+						<th>Status</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let branch of lstBranch; let i = index">
+						<td>{{i+1}}</td>
+						<td>{{branch.BranchName}}</td>
+						<td>{{branch.Address}}</td>
+						<td>{{getManagerName(branch.BranchManagerID)}}</td>
+						<td>
+							<div class="badge" [class.inactive-badge]="branch.Status == 2"
+								[class.active-badge]="branch.Status == 1">
+								{{branch.Status == 1 ? 'Active' : 'Inactive'}}
+							</div>
+						</td>
+						<td>
+							<div class="d-flex align-items-center gap-3 justify-content-end">
+								<button type="button" class="action-button edit" tooltip="Edit"
+									containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+									(click)="editBranch(branch)">
+									<i class='bx bxs-edit font-15'></i>
+								</button>
+								<button type="button" class="action-button delete" tooltip="Delete"
+									containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+									(click)="deleteBranch(branch)">
+									<i class='bx bx-trash font-15'></i>
+								</button>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+		<div class="table-row-count">
+			<span class="txt-light font-11">Total Row:</span>
+			{{totalCount}}
+		</div>
+	</div>
+</div>
+
+
+<!-- add & edit branch -->
+<ng-template #branchFormModal>
+	<div class="modal-header">
+		<div class="modal-title text-center font-15 weight-500">{{modalTitle}} Branch</div>
+		<!-- <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+		<span aria-hidden="true" class="visually-hidden">&times;</span>
+	  </button> -->
+	</div>
+	<form autocomplete="off" #branchForm="ngForm" (ngSubmit)="branchForm.form.valid && saveBranch()" novalidate>
+		<div class="modal-body">
+			<div class="form-group">
+				<label for="branchName" class="form-label">Branch <span class="txt-danger">*</span></label>
+				<input type="text" name="branchName" id="branchName" class="form-control"
+					[(ngModel)]="objBranch.BranchName" placeholder="Enter branch name" required #branchName="ngModel"
+					[ngClass]="{ 'is-invalid': branchForm.submitted && branchName.errors }">
+				<div *ngIf="branchName.errors && (branchName.dirty || branchForm.submitted) && branchName.invalid"
+					class="invalid-feedback">
+					<div *ngIf="branchName.errors['required']">Branch name is required</div>
+				</div>
+			</div>
+			<div class="form-group mt-2">
+				<label for="address" class="form-label">Address <span class="txt-danger">*</span></label>
+				<textarea id="address" name="address" class="form-control" placeholder="Enter address"
+					[(ngModel)]="objBranch.Address" required #address="ngModel"
+					[ngClass]="{ 'is-invalid': branchForm.submitted && address.errors }"></textarea>
+				<div *ngIf="address.errors && (address.dirty || branchForm.submitted) && address.invalid"
+					class="invalid-feedback">
+					<div *ngIf="address.errors['required']">Address is required</div>
+				</div>
+			</div>
+			<div class="form-group mt-2">
+				<label for="branchManager" class="form-label">Branch Manager <span class="txt-danger">*</span></label>
+				<custom-select-dropdown [lstItem]="lstSystemUser" [key]="'FullName'"
+					[selectedItem]="selectedBranchManager"
+					(onSelectEvent)="selectBranchManager($event)"></custom-select-dropdown>
+			</div>
+			<div class="row mt-3">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label class="toggle">
+							<input class="toggle__checkbox" type="checkbox" (change)="toggleStatus($event)"
+								[checked]="objBranch.Status == 1">
+							<span class="toggle__switch"></span>
+							<span class="toggle__label">{{(objBranch.Status == 1) ? 'Active' : 'Inactive'}}</span>
+						</label>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group"></div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="cancel-button" (click)="modalRef?.hide()">Cancel</button>
+			<button type="submit" class="theme-button">{{buttonText}}</button>
+		</div>
+	</form>
+</ng-template>
+
+<!-- delete branch -->
+<ng-template #deleteModal>
+	<div class="modal-header">
+		<div class="modal-title text-center font-15 weight-500">Delete Branch</div>
+		<!-- <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+		<span aria-hidden="true" class="visually-hidden">&times;</span>
+	  </button> -->
+	</div>
+	<div class="modal-body">
+		<div class="text-center txt-danger">Are you sure to delete this branch?</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="cancel-button" (click)="modalRef?.hide()">No</button>
+		<button type="button" class="danger-button" (click)="confirmDelete()">Yes</button>
+	</div>
+</ng-template>

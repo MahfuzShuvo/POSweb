@@ -1,0 +1,23 @@
+<div class="btn-group" dropdown #dropdown="bs-dropdown" [insideClick]="true" [dropup]="isDropup"
+	(onShown)="openDropdown()">
+	<div dropdownToggle class="custome-select" [id]="Id" aria-controls="dropdown-basic">
+		<span class="custome-select-txt">
+			{{(selectedItem && selectedItem[key] && selectedItem[key] != '') ? selectedItem[key] : placeholderText}}
+		</span>
+		<i class='bx bx-chevron-down font-17'></i>
+	</div>
+	<div id="dropdown-basic" *dropdownMenu class="dropdown-menu" [class.right]="rightAlign"
+		attr.aria-labelledby="{{Id}}">
+		<input type="text" name="search-{{Id}}" id="search-{{Id}}" class="dropdown-search" placeholder="Search"
+			#searchInput (keyup)="searchDropdwon($event)">
+		<ul class="dropdown-ul mt-2">
+			<li class="dropdown-item clear" (click)="selectItem(null)" *ngIf="isClearSelection">-- Clear Selection --
+			</li>
+			<li class="txt-warning font-12 px-3 py-2" *ngIf="lstItem!.length == 0">No data found</li>
+			<li class="dropdown-item" [class.selected]="selectedItem && selectedItem[key] == item[key]"
+				*ngFor="let item of lstItem" (click)="selectItem(item); dropdown.isOpen = false">
+				{{item[key]}}
+			</li>
+		</ul>
+	</div>
+</div>

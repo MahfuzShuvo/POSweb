@@ -24,6 +24,7 @@ import { MatchPasswordDirective } from './common/directives/match-password.direc
 import { SafeResourceUrlPipe } from './common/pipes/SafeResourceUrl.pipe';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { CustomSelectDropdownComponent } from './components/custom-select-dropdown/custom-select-dropdown.component';
 
 @NgModule({
     declarations: [
@@ -31,7 +32,10 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
         LoginLayoutComponent,
         SidebarComponent,
         HeaderComponent,
+        CustomSelectDropdownComponent,
+
         MatchPasswordDirective,
+
         // pipes
         CustomDateFormatPipe,
         UrlifyPipe,
@@ -61,12 +65,20 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
         LoginLayoutComponent,
         SidebarComponent,
         HeaderComponent,
+        CustomSelectDropdownComponent,
+
         ReactiveFormsModule,
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
         HttpClientModule,
         RouterModule,
+        TabsModule,
+        ModalModule,
+        TooltipModule,
+        BsDropdownModule,
+        BsDatepickerModule,
+
         MatchPasswordDirective,
 
         // pipes
@@ -75,11 +87,6 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
         PhoneNumberPipe,
         AttachmentExtensionPipe,
         SafeResourceUrlPipe,
-        TabsModule,
-        ModalModule,
-        TooltipModule,
-        BsDropdownModule,
-        BsDatepickerModule
     ],
     bootstrap: [AppComponent],
     providers: [MessageHelper]
