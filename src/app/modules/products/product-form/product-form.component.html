@@ -37,28 +37,7 @@
 								<custom-select-dropdown [id]="'category'" [lstItem]="lstCategory" [key]="'CategoryName'"
 									(onSelectEvent)="selectCategory($event)"
 									[selectedItem]="selectedCategory"></custom-select-dropdown>
-								<!-- <div class="btn-group" dropdown #dropdownCategory="bs-dropdown" [insideClick]="true"
-									(onShown)="openCategoryDrop()">
-									<div dropdownToggle class="custome-select" id="category"
-										aria-controls="dropdown-basic">
-										<span class="custome-select-txt">{{(objProduct.CategoryID &&
-											objProduct.CategoryID>0) ? selectedCategory.CategoryName :
-											'Select'}}</span>
-										<i class='bx bx-chevron-down font-17'></i>
-									</div>
-									<div id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-										aria-labelledby="category">
-										<input type="text" name="searchCategory" id="searchCategory"
-											class="dropdown-search" placeholder="Search" #searchCategory
-											(keyup)="searchCategoryDropdown(searchCategory.value)">
-										<ul class="dropdown-ul">
-											<li class="dropdown-item" *ngFor="let category of lstCategory"
-												(click)="selectCategory(category); dropdownCategory.isOpen = false">
-												{{category.CategoryName}}
-											</li>
-										</ul>
-									</div>
-								</div> -->
+
 							</div>
 						</div>
 						<div class="col-md-3">
@@ -67,28 +46,7 @@
 								<custom-select-dropdown [id]="'brand'" [lstItem]="lstBrand" [key]="'BrandName'"
 									(onSelectEvent)="selectBrand($event)"
 									[selectedItem]="selectedBrand"></custom-select-dropdown>
-								<!-- <div class="btn-group" dropdown #dropdownBrand="bs-dropdown" [insideClick]="true"
-									(onShown)="openBrandDrop()">
 
-									<div dropdownToggle class="custome-select" id="brand"
-										aria-controls="dropdown-basic">
-										<span class="custome-select-txt">{{(objProduct.BrandID &&
-											objProduct.BrandID>0) ? selectedBrand.BrandName : 'Select'}}</span>
-										<i class='bx bx-chevron-down font-17'></i>
-									</div>
-									<div id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-										aria-labelledby="brand">
-										<input type="text" name="searchBrand" id="searchBrand" class="dropdown-search"
-											placeholder="Search" #searchBrand
-											(keyup)="searchBrandDropdown(searchBrand.value)">
-										<ul class="dropdown-ul">
-											<li class="dropdown-item" *ngFor="let brand of lstBrand"
-												(click)="selectBrand(brand); dropdownBrand.isOpen = false">
-												{{brand.BrandName}}
-											</li>
-										</ul>
-									</div>
-								</div> -->
 							</div>
 						</div>
 					</div>
@@ -110,30 +68,10 @@
 									Unit <span class="txt-danger">*</span>
 								</label>
 
-								<custom-select-dropdown [id]="'unit'" [lstItem]="lstUnit" [key]="'UnitName'"
+								<custom-select-dropdown [Id]="'unit'" [lstItem]="lstUnit" [key]="'UnitName'"
 									(onSelectEvent)="selectUnit($event)"
 									[selectedItem]="selectedUnit"></custom-select-dropdown>
 
-								<!-- <div class="btn-group" dropdown #dropdownUnit="bs-dropdown" [insideClick]="true"
-									(onShown)="openUnitDrop()">
-
-									<div dropdownToggle class="custome-select" id="unit" aria-controls="dropdown-basic">
-										<span class="custome-select-txt">{{(objProduct.Unit &&
-											objProduct.Unit>0) ? selectedUnit.UnitName : 'Select'}}</span>
-										<i class='bx bx-chevron-down font-17'></i>
-									</div>
-									<div id="dropdown-basic" *dropdownMenu class="dropdown-menu" aria-labelledby="unit">
-										<input type="text" name="searchUnit" id="searchUnit" class="dropdown-search"
-											placeholder="Search" #searchUnit
-											(keyup)="searchUnitDropdown(searchUnit.value)">
-										<ul class="dropdown-ul">
-											<li class="dropdown-item" *ngFor="let unit of lstUnit"
-												(click)="selectUnit(unit); dropdownUnit.isOpen = false">
-												{{unit.UnitName}}
-											</li>
-										</ul>
-									</div>
-								</div> -->
 							</div>
 						</div>
 						<div class="col-md-4">

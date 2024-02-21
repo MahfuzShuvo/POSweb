@@ -8,65 +8,41 @@
 			</div>
 		</div>
 		<div class="cart-body">
-			<div class="row">
-				<div class="col-md-5">
-					<div class="form-group">
-						<custom-select-dropdown [id]="'customer'" [lstItem]="lstCustomer" [key]="'CustomerName'"
-							(onSelectEvent)="selectCustomer($event)" [placeholderText]="'Walk-in customer'"
-							[selectedItem]="selectedCustomer"></custom-select-dropdown>
-						<!-- <div class="btn-group" dropdown #dropdownCustomer="bs-dropdown" [insideClick]="true"
-							(onShown)="openCustomerDrop()">
-							<div dropdownToggle class="custome-select" id="customer" aria-controls="dropdown-basic">
-								<span class="custome-select-txt">{{(selectedCustomer.CustomerID &&
-									selectedCustomer.CustomerID > 0) ? selectedCustomer.CustomerName : isEditMode ? getCustomerName() :
-									'Walk-in customer'}}</span>
-								<i class='bx bx-chevron-down font-17'></i>
-							</div>
-							<button type="button" class="number-field-btn plus" (click)="createCustomer()">
-								<i class='bx bx-user-plus'></i>
-							</button>
-							<div id="dropdown-basic" *dropdownMenu class="dropdown-menu" aria-labelledby="customer">
-								<input type="text" name="searchCustomer" id="searchCustomer" class="dropdown-search"
-									placeholder="Search" #searchCustomer
-									(keyup)="searchCustomerDropdown(searchCustomer.value)">
-								<ul class="dropdown-ul">
-									<li class="dropdown-item" *ngFor="let customer of lstCustomer"
-										(click)="selectCustomer(customer); dropdownCustomer.isOpen = false">
-										{{customer.CustomerName}}
-									</li>
-								</ul>
-							</div>
-						</div> -->
-					</div>
+			<div class="d-flex align-items-center gap-5">
+				<div class="form-group w-75">
+					<custom-select-dropdown [id]="'customer'" [lstItem]="lstCustomer" [key]="'CustomerName'"
+						(onSelectEvent)="selectCustomer($event)" [placeholderText]="'Walk-in customer'"
+						[selectedItem]="selectedCustomer"></custom-select-dropdown>
+					<button type="button" class="number-field-btn plus" (click)="createCustomer()">
+						<i class='bx bx-user-plus'></i>
+					</button>
+
 				</div>
-				<div class="col-md-7">
-					<div class="form-group">
-						<i class='bx bx-search-alt p-search font-15 txt-light'></i>
-						<input type="text" class="form-control" name="searchProduct" id="searchProduct"
-							placeholder="Search product by name or SKU" #searchProductText
-							(keyup)="onKeyProductSearch($event)">
-						<span *ngIf="noMatchFound !=''" class="noMatch-txt">{{noMatchFound}}</span>
-						<div class="dropdown-menu " [class.show]="lstProductForCart && lstProductForCart.length > 0">
-							<div class="dropdown-table">
-								<table>
-									<thead>
-										<tr>
-											<th>Product</th>
-											<th>SKU</th>
-											<th>Price</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr *ngFor="let product of lstProductForCart"
-											(click)="productAddToCart(product)">
-											<td>{{product.ProductName}}</td>
-											<td>{{product.SKU}}</td>
-											<td>{{product.PurchasePrice | currency: 'BDT':
-												'symbol':'1.2-2':'bn-BD'}}</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
+				<div class="form-group w-100">
+					<i class='bx bx-search-alt p-search font-15 txt-light'></i>
+					<input type="text" class="form-control" name="searchProduct" id="searchProduct"
+						placeholder="Search product by name or SKU" #searchProductText
+						(keyup)="onKeyProductSearch($event)">
+					<span *ngIf="noMatchFound !=''" class="noMatch-txt">{{noMatchFound}}</span>
+					<div class="dropdown-menu " [class.show]="lstProductForCart && lstProductForCart.length > 0">
+						<div class="dropdown-table">
+							<table>
+								<thead>
+									<tr>
+										<th>Product</th>
+										<th>SKU</th>
+										<th>Price</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr *ngFor="let product of lstProductForCart" (click)="productAddToCart(product)">
+										<td>{{product.ProductName}}</td>
+										<td>{{product.SKU}}</td>
+										<td>{{product.PurchasePrice | currency: 'BDT':
+											'symbol':'1.2-2':'bn-BD'}}</td>
+									</tr>
+								</tbody>
+							</table>
 						</div>
 					</div>
 				</div>
@@ -174,21 +150,7 @@
 				<input type="text" class="form-control" name="searchPOS" #searchText placeholder="Search product ..."
 					(keyup)="searchProduct(searchText.value)">
 			</div>
-			<!-- <div class="d-flex align-items-center gap-2">
-				<div class="filter-search role-filter">
-					<select name="roleFilter" id="roleFilter">
-						<option [value]="0">All</option>
-						<option [value]="role.RoleID" *ngFor="let role of lstRole">{{role.RoleName}}</option>
-					</select>
-				</div>
-				<div class="filter-search status-filter">
-					<select name="statusFilter" id="statusFilter">
-						<option [value]="0">All</option>
-						<option [value]="1">Active</option>
-						<option [value]="2">Inactive</option>
-					</select>
-				</div>
-			</div> -->
+
 			<div class="view-tab">
 				<span class="view-tab-item" [class.active]="activateTab == 1" (click)="clickViewTab(1)">
 					<i class='bx bxs-grid-alt'></i>
@@ -238,11 +200,7 @@
 				<custom-select-dropdown [id]="'discount'" [lstItem]="lstDiscountType" [key]="'Discount'"
 					(onSelectEvent)="selectDiscount($event)"
 					[selectedItem]="selectedDiscountType"></custom-select-dropdown>
-				<!-- <select name="discountType" id="discountType" class="form-select"
-					[(ngModel)]="objDiscount.discountType">
-					<option [value]="1">Percentage (%)</option>
-					<option [value]="2">Fixed (&#2547;)</option>
-				</select> -->
+
 			</div>
 			<div class="form-group mt-2">
 				<label for="discount" class="form-label">Discount</label>
@@ -278,12 +236,7 @@
 						<custom-select-dropdown [id]="'payment-type'" [lstItem]="lstAccount" [key]="'AccountTitle'"
 							(onSelectEvent)="selectPayentType($event)"
 							[selectedItem]="selectedPaymentType"></custom-select-dropdown>
-						<!-- <select name="paymentType" id="paymentType" class="form-select"
-							[(ngModel)]="objSales.AccountID">
-							<option [value]="0" selected disabled>Select</option>
-							<option [value]="account.AccountID" *ngFor="let account of lstAccount">
-								{{account.AccountTitle}}</option>
-						</select> -->
+
 					</div>
 					<div class="form-group mt-2">
 						<label for="payAmount" class="form-label">Amount</label>

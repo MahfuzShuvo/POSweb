@@ -184,8 +184,18 @@ button:disabled {
 }
 
 .number-field-btn.plus {
-    right: 0;
+    right: -28px;
     border-bottom-left-radius: 0 !important;
     border-top-left-radius: 0 !important;
     /* border-left: 1px solid #e0e0e0; */
+}
+
+.number-field-btn.plus i {
+    padding: 6px;
+    color: var(--light-text-color);
+    transition: all 0.3s ease;
+}
+
+.number-field-btn.plus:hover i {
+    color: var(--theme-color);
 }

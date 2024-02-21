@@ -35,6 +35,7 @@ export class CustomSelectDropdownComponent implements OnInit {
 
 	ngOnInit() {
 		// this.lstTempItem = JSON.parse(JSON.stringify(this.lstItem));
+		console.log('Items: ', this.lstItem);
 
 	}
 

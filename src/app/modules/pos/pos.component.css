@@ -288,16 +288,6 @@ input#searchProduct {
     right: 40px;
 }
 
-.number-field-btn.plus i {
-    padding: 6px;
-    color: var(--light-text-color);
-    transition: all 0.3s ease;
-}
-
-.number-field-btn.plus:hover i {
-    color: var(--theme-color);
-}
-
 .pos-button-wrapper {
     display: grid;
     grid-template-columns: repeat(2, 1fr);

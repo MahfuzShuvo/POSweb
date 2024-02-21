@@ -1,7 +1,7 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Subject, takeUntil } from 'rxjs';
-import { ResponseStatus } from 'src/app/common/enums/appEnums';
+import { RecordStatus, ResponseStatus } from 'src/app/common/enums/appEnums';
 import { MessageHelper } from 'src/app/common/helper/messageHelper';
 import { DataService } from 'src/app/common/service/data.service';
 import { HeaderService } from 'src/app/common/service/header.service';
@@ -28,7 +28,7 @@ export class BranchComponent implements OnInit {
 	modalRef?: BsModalRef;
 	buttonText: string;
 	modalTitle: string;
-	lstSystemUser: SystemUser[] = [];
+	lstManager: SystemUser[] = [];
 	selectedBranchManager: SystemUser = new SystemUser();
 
 	constructor(
@@ -42,8 +42,8 @@ export class BranchComponent implements OnInit {
 
 	ngOnInit() {
 		Promise.resolve().then(() => this.headerService.setSubTitle('Branch'));
-		this.getAllBranch();
 		this.getAllSystemUser();
+		this.getAllBranch();
 	}
 
 	toggleStatus(event: any) {
@@ -55,7 +55,8 @@ export class BranchComponent implements OnInit {
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {
 				if (response.ResponseCode == ResponseStatus.success) {
-					this.lstSystemUser = response.ResponseObj;
+					this.lstManager = response.ResponseObj;
+
 				} else {
 					this.messageHelper.showMessage(response.ResponseCode, response.Message);
 				}
@@ -64,7 +65,7 @@ export class BranchComponent implements OnInit {
 
 	selectBranchManager(manager: SystemUser) {
 		if (manager) {
-			this.selectedBranchManager = this.lstSystemUser.filter(x => x.SystemUserID == manager.SystemUserID)[0];
+			this.selectedBranchManager = this.lstManager.filter(x => x.SystemUserID == manager.SystemUserID)[0];
 			this.objBranch.BranchManagerID = manager.SystemUserID;
 		} else {
 			this.objBranch.BranchManagerID = 0;
@@ -112,7 +113,7 @@ export class BranchComponent implements OnInit {
 		this.objBranch = new Branch();
 		this.objBranch = JSON.parse(JSON.stringify(branch));
 		if (this.objBranch.BranchManagerID > 0) {
-			this.selectedBranchManager = this.lstSystemUser.filter(x => x.SystemUserID == this.objBranch.BranchManagerID)[0];
+			this.selectedBranchManager = this.lstManager.filter(x => x.SystemUserID == this.objBranch.BranchManagerID)[0];
 		}
 		this.modalRef = this.modalService.show(this.branchFormModal);
 	}
@@ -169,7 +170,7 @@ export class BranchComponent implements OnInit {
 	getManagerName(managerId: number) {
 		var result = '-'
 		if (managerId > 0) {
-			var exist = this.lstSystemUser.filter(x => x.SystemUserID = managerId)[0];
+			var exist = this.lstManager.filter(x => x.SystemUserID == managerId)[0];
 			if (exist) {
 				result = exist.FullName;
 			}

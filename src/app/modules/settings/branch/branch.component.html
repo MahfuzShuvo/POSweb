@@ -104,10 +104,12 @@
 				</div>
 			</div>
 			<div class="form-group mt-2">
-				<label for="branchManager" class="form-label">Branch Manager <span class="txt-danger">*</span></label>
-				<custom-select-dropdown [lstItem]="lstSystemUser" [key]="'FullName'"
-					[selectedItem]="selectedBranchManager"
-					(onSelectEvent)="selectBranchManager($event)"></custom-select-dropdown>
+				<label for="selectBranchManager" class="form-label">Branch Manager <span
+						class="txt-danger">*</span></label>
+
+				<custom-select-dropdown [Id]="'branch-manager'" [lstItem]="lstManager" [key]="'FullName'"
+					(onSelectEvent)="selectBranchManager($event)"
+					[selectedItem]="selectedBranchManager"></custom-select-dropdown>
 			</div>
 			<div class="row mt-3">
 				<div class="col-md-6">

@@ -74,7 +74,8 @@ export class ExpenseComponent implements OnInit {
 				if (response.ResponseCode == ResponseStatus.success) {
 					this.lstExpense = response.ResponseObj;
 					this.lstAllExpense = JSON.parse(JSON.stringify(this.lstExpense));
-					this.totalCount = response.TotalCount
+					this.totalCount = response.TotalCount;
+
 				} else {
 					this.messageHelper.showMessage(response.ResponseCode, response.Message);
 				}
@@ -107,6 +108,10 @@ export class ExpenseComponent implements OnInit {
 
 		this.objExpense = new Expense();
 		this.objExpense = JSON.parse(JSON.stringify(brand));
+		if (this.objExpense.AccountID > 0) {
+			this.selectedAccount = this.lstAccount.filter(x => x.AccountID == this.objExpense.AccountID)[0];
+
+		}
 		this.modalRef = this.modalService.show(this.expenseFormModal);
 	}
 
