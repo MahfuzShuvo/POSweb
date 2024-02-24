@@ -27,17 +27,24 @@
 		</div>
 		<div class="product-table mt-1">
 			<div class="d-flex gap-2">
-				<div class="product tab-menu d-flex flex-column">
-					<div class="tab-menu-item d-flex align-items-center gap-1" [class.active]="selectedCategoryID == 0"
-						(click)="getAllProduct(); selectedCategoryID = 0">
-						All
-						<span class="product-count all">{{totalCount}}</span>
+				<div class="product tab-menu d-flex flex-column justify-content-between">
+					<div class="product-tab d-flex flex-column">
+						<div class="tab-menu-item d-flex align-items-center gap-1"
+							[class.active]="selectedCategoryID == 0" (click)="getAllProduct(); selectedCategoryID = 0">
+							All
+							<span class="product-count all">{{allProductCount}}</span>
+						</div>
+						<div class="tab-menu-item d-flex align-items-center gap-1"
+							[class.active]="selectedCategoryID == category.CategoryID"
+							*ngFor="let category of lstCategory"
+							(click)="getAllProductByCategoryID(category.CategoryID)">
+							{{category.CategoryName}}
+							<span class="product-count">{{category.ProductCount}}</span>
+						</div>
 					</div>
-					<div class="tab-menu-item d-flex align-items-center gap-1"
-						[class.active]="selectedCategoryID == category.CategoryID" *ngFor="let category of lstCategory"
-						(click)="getAllProductByCategoryID(category.CategoryID)">
-						{{category.CategoryName}}
-						<span class="product-count">{{category.ProductCount}}</span>
+					<div class="table-row-count">
+						<span class="txt-light font-11">Total Product:</span>
+						{{totalCount}}
 					</div>
 				</div>
 				<section class="table__body">

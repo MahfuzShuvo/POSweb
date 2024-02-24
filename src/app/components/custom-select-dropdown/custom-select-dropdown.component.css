@@ -1,3 +1,4 @@
 .dropdown-item.clear {
     color: var(--light-text-color) !important;
+    background: none;
 }

@@ -31,6 +31,7 @@
 						<th>Branch Name</th>
 						<th>Address</th>
 						<th>Manager</th>
+						<th class="assign-user-column">Assigned Users</th>
 						<th>Status</th>
 						<th></th>
 					</tr>
@@ -41,6 +42,48 @@
 						<td>{{branch.BranchName}}</td>
 						<td>{{branch.Address}}</td>
 						<td>{{getManagerName(branch.BranchManagerID)}}</td>
+						<td class="assign-user-column">
+							<div class="d-flex align-items-center gap-2">
+								<div class="assigned-users-badge"
+									*ngFor="let assignUser of dataService.getSpecific(0, 2, branch.lstAssignedUser)">
+									<div class="txt">{{assignUser.FullName}}</div>
+									<span class="remove-assign"
+										(click)="removeUser(assignUser.SystemUserID, branch.BranchID)"><i
+											class='bx bxs-x-circle font-15'></i></span>
+								</div>
+								<div *ngIf="branch.lstAssignedUser!.length > 2" class="txt-secondary-theme weight-500">
+									{{branch.lstAssignedUser!.length - 2}}+
+								</div>
+								<div class="btn-group" dropdown #dropdown="bs-dropdown" [insideClick]="true">
+									<button type="button" class="assign-btn" dropdownToggle id="assign-user"
+										aria-controls="dropdown-basic">
+										<!-- <i class='bx bx-plus font-18'></i> -->
+										<i class='bx bx-plus-circle font-22'></i>
+									</button>
+									<div id="dropdown-basic" *dropdownMenu class="dropdown-menu right"
+										aria-labelledby="assign-user">
+										<input type="text" name="search-assign-user" id="search-assign-user"
+											class="dropdown-search" placeholder="Search" #searchInput
+											(keyup)="searchUser($event)">
+										<ul class="dropdown-ul mt-2">
+
+											<li class="txt-warning font-12 px-3 py-2"
+												*ngIf="lstSystemUser!.length == 0">No
+												data found</li>
+											<div class="form-check" *ngFor="let user of lstSystemUser">
+												<input type="checkbox" name="check_{{user.SystemUserID}}"
+													id="check_{{user.SystemUserID}}"
+													[checked]="isCheckedUser(user.SystemUserID, branch)"
+													(change)="checkUserToAssignOrNot($event, user.SystemUserID, branch.BranchID)">
+												<label for="check_{{user.SystemUserID}}"
+													class="form-label">{{user.FullName}}</label>
+											</div>
+
+										</ul>
+									</div>
+								</div>
+							</div>
+						</td>
 						<td>
 							<div class="badge" [class.inactive-badge]="branch.Status == 2"
 								[class.active-badge]="branch.Status == 1">
@@ -48,7 +91,7 @@
 							</div>
 						</td>
 						<td>
-							<div class="d-flex align-items-center gap-3 justify-content-end">
+							<div class="d-flex align-items-center gap-2 justify-content-end">
 								<button type="button" class="action-button edit" tooltip="Edit"
 									containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
 									(click)="editBranch(branch)">
@@ -107,9 +150,10 @@
 				<label for="selectBranchManager" class="form-label">Branch Manager <span
 						class="txt-danger">*</span></label>
 
-				<custom-select-dropdown [Id]="'branch-manager'" [lstItem]="lstManager" [key]="'FullName'"
+				<custom-select-dropdown [Id]="'branch-manager'" [lstItem]="lstSystemUser" [key]="'FullName'"
 					(onSelectEvent)="selectBranchManager($event)"
 					[selectedItem]="selectedBranchManager"></custom-select-dropdown>
+
 			</div>
 			<div class="row mt-3">
 				<div class="col-md-6">

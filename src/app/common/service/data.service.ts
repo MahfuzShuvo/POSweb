@@ -37,4 +37,7 @@ export class DataService {
 		return myEnum;
 	}
 
+	getSpecific(start: number, end: number, item: any[]) {
+		return item?.slice(start, end);
+	}
 }

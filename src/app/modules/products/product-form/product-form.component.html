@@ -74,9 +74,8 @@
 
 							</div>
 						</div>
-						<div class="col-md-4">
-							<div class="d-flex align-items-center gap-4">
-								<div class="form-group">
+						<div class="col-md-3">
+							<!-- <div class="form-group">
 									<label for="quantity" class="form-label">
 										Stock Quantity <span class="txt-danger">*</span>
 									</label>
@@ -94,21 +93,18 @@
 										class="invalid-feedback">
 										<div *ngIf="quantity.errors['required']">Stock quantity is required</div>
 									</div>
+								</div> -->
+							<div class="form-group">
+								<label for="minQuantity" class="form-label">Alert Quantity</label>
+								<div class="number-input">
+									<button type="button" class="number-field-btn minus"
+										(click)="decrementValue($event)">-</button>
+									<input type="number" id="minQuantity" class="form-control" name="minQuantity"
+										[(ngModel)]="objProduct.MinQty" value="0" min="0">
+									<button type="button" class="number-field-btn plus"
+										(click)="incrementValue($event)">+</button>
 								</div>
-								<!-- </div>
-							<div class="col-md-3"> -->
-								<div class="form-group">
-									<label for="minQuantity" class="form-label">Alert Quantity</label>
-									<div class="number-input">
-										<button type="button" class="number-field-btn minus"
-											(click)="decrementValue($event)">-</button>
-										<input type="number" id="minQuantity" class="form-control" name="minQuantity"
-											[(ngModel)]="objProduct.MinQty" value="0" min="0">
-										<button type="button" class="number-field-btn plus"
-											(click)="incrementValue($event)">+</button>
-									</div>
 
-								</div>
 							</div>
 						</div>
 						<div class="col-md-3">

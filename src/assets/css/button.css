@@ -183,19 +183,51 @@ button:disabled {
     /* border-right: 1px solid #e0e0e0; */
 }
 
-.number-field-btn.plus {
+.number-field-btn.user-plus {
     right: -28px;
+    border-bottom-left-radius: 0 !important;
+    border-top-left-radius: 0 !important;
+}
+
+.number-field-btn.plus {
+    right: 0;
     border-bottom-left-radius: 0 !important;
     border-top-left-radius: 0 !important;
     /* border-left: 1px solid #e0e0e0; */
 }
 
+.number-field-btn.user-plus i,
 .number-field-btn.plus i {
     padding: 6px;
     color: var(--light-text-color);
     transition: all 0.3s ease;
 }
 
+.number-field-btn.user-plus:hover i,
 .number-field-btn.plus:hover i {
     color: var(--theme-color);
+}
+
+.assign-btn {
+    /* border-radius: 10px !important; */
+    /* padding: 12px !important; */
+    /* line-height: 18px !important; */
+    color: var(--bs-gray-500);
+    /* border: 1px solid var(--bs-gray-500); */
+    background: #fff;
+    width: 22px;
+    height: 22px;
+    position: relative;
+}
+
+.assign-btn i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.assign-btn:hover {
+    color: var(--theme-color);
+    /* border: 1px solid var(--secondary-theme-color); */
 }

@@ -30,3 +30,38 @@
     background: var(--border-color);
     padding: 2px 10px;
 }
+
+.assign-user-column {
+    width: 300px;
+}
+
+.assigned-users-badge {
+    border-radius: 10px;
+    border: 1px solid var(--thead-color);
+    background: var(--bs-gray-200);
+    padding: 3px 10px;
+    min-width: 120px;
+    position: relative;
+}
+
+.assigned-users-badge .txt {
+    font-weight: var(--weight-500);
+    font-size: var(--font-11);
+    width: 90px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    line-height: normal;
+}
+
+.remove-assign {
+    cursor: pointer;
+    color: var(--light-text-color);
+    position: absolute;
+    right: 2px;
+    top: 2px;
+}
+
+.remove-assign:hover {
+    color: var(--danger-color);
+}

@@ -7,6 +7,7 @@ export class Sales extends BaseModel {
     SalesCode: string;
     SalesDate: string;
     SalesStatus!: number;
+    BranchID: number;
     CustomerID: number = 0;
     SubTotal: number = 0;
     TotalSalesPrice: number = 0;

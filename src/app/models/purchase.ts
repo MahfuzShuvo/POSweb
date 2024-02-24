@@ -6,6 +6,7 @@ export class Purchase extends BaseModel {
     PurchaseCode: string;
     PurchaseDate: string;
     PurchaseStatus: number = 1;
+    BranchID: number;
     SupplierID!: number;
     SubTotal: number = 0;
     TotalPurchasePrice: number = 0;

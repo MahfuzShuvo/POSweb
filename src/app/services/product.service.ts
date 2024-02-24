@@ -11,9 +11,9 @@ export class ProductService {
 		private httpHelper: HttpHelper
 	) { }
 
-	getAllProduct(): Observable<any> {
+	getAllProduct(obj: any): Observable<any> {
 		const url = 'api/Product/GetAllProduct';
-		return this.httpHelper.postHelper(url);
+		return this.httpHelper.postHelper(url, obj);
 	}
 
 	getProductCountByCategory(): Observable<any> {

@@ -42,7 +42,8 @@ export class LoginComponent implements OnInit {
 					this.localstoreService.setData('User', response.ResponseObj);
 					this.localstoreService.setData('Permission', response.ResponseObj.lstPermission);
 
-					this.router.navigate(['/dashboard']);
+					// this.router.navigate(['/dashboard']);
+					this.router.navigate(['/login/branch']);
 				} else {
 					this.messageHelper.showMessage(response.ResponseCode, response.Message);
 				}

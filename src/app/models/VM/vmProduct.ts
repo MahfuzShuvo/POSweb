@@ -6,10 +6,12 @@ export class VMProduct {
     Image: string;
     PurchasePrice!: number;
     FinalPrice!: number;
-    Qty: number=1;
+    Qty: number = 1;
     MinQty!: number;
     Status!: number;
     CategoryName: string;
     BrandName: string;
     UnitName: string;
+    BranchID: number;
+    CategoryID: number;
 }

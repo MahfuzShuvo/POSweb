@@ -47,7 +47,7 @@ img.productImage {
     height: 100%;
 }
 
-.tab-menu.product {
+.tab-menu.product .product-tab {
     /* display: flex;
     align-items: center;
     gap: 5px;
@@ -61,7 +61,7 @@ img.productImage {
     display: flex;
     gap: 5px;
     font-size: var(--font-11);
-    height: calc(100vh - 125px);
+    height: calc(100vh - 150px);
     border-right: 1px solid var(--body-color);
     overflow: auto;
     padding-right: 5px;

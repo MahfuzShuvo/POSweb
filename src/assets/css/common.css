@@ -234,6 +234,10 @@ h6.active {
     color: var(--text-color) !important;
     cursor: pointer;
     transition: all 0.3s ease;
+    background: var(--bs-gray-200);
+    border-radius: 5px;
+    line-height: normal;
+    padding: 7px 15px;
 }
 
 .dropdown-menu li.dropdown-item:hover {
@@ -247,6 +251,10 @@ h6.active {
 .dropdown-ul {
     max-height: 220px;
     overflow: auto;
+    padding: 0 10px !important;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
 .dropdown-search {

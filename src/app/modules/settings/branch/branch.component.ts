@@ -7,6 +7,7 @@ import { DataService } from 'src/app/common/service/data.service';
 import { HeaderService } from 'src/app/common/service/header.service';
 import { ResponseMessage } from 'src/app/models/DTO/responseMessage';
 import { Branch } from 'src/app/models/branch';
+import { BranchUserMapping } from 'src/app/models/branchUserMapping';
 import { SystemUser } from 'src/app/models/systemUser';
 import { BranchService } from 'src/app/services/branch.service';
 import { SystemUserService } from 'src/app/services/systemUser.service';
@@ -28,8 +29,11 @@ export class BranchComponent implements OnInit {
 	modalRef?: BsModalRef;
 	buttonText: string;
 	modalTitle: string;
-	lstManager: SystemUser[] = [];
+	lstSystemUser: SystemUser[] = [];
+	lstAllSystemUser: SystemUser[] = [];
 	selectedBranchManager: SystemUser = new SystemUser();
+	timer: any;
+	lstSelectedUserBranchMapping: BranchUserMapping[] = [];
 
 	constructor(
 		private headerService: HeaderService,
@@ -55,7 +59,8 @@ export class BranchComponent implements OnInit {
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {
 				if (response.ResponseCode == ResponseStatus.success) {
-					this.lstManager = response.ResponseObj;
+					this.lstSystemUser = response.ResponseObj!.filter((x: SystemUser) => x.Status == RecordStatus.Active);
+					this.lstAllSystemUser = response.ResponseObj!.filter((x: SystemUser) => x.Status == RecordStatus.Active);
 
 				} else {
 					this.messageHelper.showMessage(response.ResponseCode, response.Message);
@@ -65,7 +70,7 @@ export class BranchComponent implements OnInit {
 
 	selectBranchManager(manager: SystemUser) {
 		if (manager) {
-			this.selectedBranchManager = this.lstManager.filter(x => x.SystemUserID == manager.SystemUserID)[0];
+			this.selectedBranchManager = this.lstAllSystemUser.filter(x => x.SystemUserID == manager.SystemUserID)[0];
 			this.objBranch.BranchManagerID = manager.SystemUserID;
 		} else {
 			this.objBranch.BranchManagerID = 0;
@@ -113,7 +118,7 @@ export class BranchComponent implements OnInit {
 		this.objBranch = new Branch();
 		this.objBranch = JSON.parse(JSON.stringify(branch));
 		if (this.objBranch.BranchManagerID > 0) {
-			this.selectedBranchManager = this.lstManager.filter(x => x.SystemUserID == this.objBranch.BranchManagerID)[0];
+			this.selectedBranchManager = this.lstAllSystemUser.filter(x => x.SystemUserID == this.objBranch.BranchManagerID)[0];
 		}
 		this.modalRef = this.modalService.show(this.branchFormModal);
 	}
@@ -170,12 +175,88 @@ export class BranchComponent implements OnInit {
 	getManagerName(managerId: number) {
 		var result = '-'
 		if (managerId > 0) {
-			var exist = this.lstManager.filter(x => x.SystemUserID == managerId)[0];
+			var exist = this.lstAllSystemUser.filter(x => x.SystemUserID == managerId)[0];
 			if (exist) {
 				result = exist.FullName;
 			}
 		}
 
+		return result;
+	}
+
+	searchUser(event: any) {
+		clearTimeout(this.timer);
+		this.timer = setTimeout(() => {
+			var str = event.target.value;
+			if (str != '') {
+				this.lstSystemUser = this.lstAllSystemUser.filter(x => x.FullName!.toLowerCase().includes(str.toLowerCase()));
+			} else {
+				this.lstSystemUser = JSON.parse(JSON.stringify(this.lstAllSystemUser));
+			}
+		}, 200);
+	}
+
+	checkUserToAssignOrNot(event: any, userId: number, branchId: number) {
+		var objBranchUserMapping = new BranchUserMapping();
+		objBranchUserMapping.BranchID = branchId;
+		objBranchUserMapping.SystemUserID = userId;
+
+		if (event.target.checked) {
+			this.assignUserToBranch(objBranchUserMapping);
+		} else {
+			this.removeUserFromBranch(objBranchUserMapping);
+		}
+	}
+
+	removeUser(userId: number, branchId: number) {
+		var objBranchUserMapping = new BranchUserMapping();
+		objBranchUserMapping.BranchID = branchId;
+		objBranchUserMapping.SystemUserID = userId;
+
+		this.removeUserFromBranch(objBranchUserMapping);
+	}
+
+	assignUserToBranch(obj: BranchUserMapping) {
+		this.branchService.assignToBranch(obj)
+			.pipe(takeUntil(this.destroy))
+			.subscribe((response: ResponseMessage) => {
+				if (response.ResponseCode == ResponseStatus.success) {
+					var branch = this.lstBranch.filter(b => b.BranchID == obj.BranchID)[0];
+					var exist = branch.lstAssignedUser.filter(u => u.SystemUserID == obj.SystemUserID)[0];
+					if (!exist) {
+						var user = this.lstAllSystemUser.filter(s => s.SystemUserID == obj.SystemUserID)[0];
+						branch.lstAssignedUser.push(user);
+					}
+
+					this.lstAllBranch = JSON.parse(JSON.stringify(this.lstBranch));
+				}
+				this.messageHelper.showMessage(response.ResponseCode, response.Message);
+			})
+	}
+
+	removeUserFromBranch(obj: BranchUserMapping) {
+		this.branchService.removeFromBranch(obj)
+			.pipe(takeUntil(this.destroy))
+			.subscribe((response: ResponseMessage) => {
+				if (response.ResponseCode == ResponseStatus.success) {
+					var branch = this.lstBranch.filter(b => b.BranchID == obj.BranchID)[0];
+					var index = branch.lstAssignedUser.findIndex(u => u.SystemUserID == obj.SystemUserID);
+					if (index > -1) {
+						branch.lstAssignedUser.splice(index, 1);
+					}
+
+					this.lstAllBranch = JSON.parse(JSON.stringify(this.lstBranch));
+				}
+				this.messageHelper.showMessage(response.ResponseCode, response.Message);
+			})
+	}
+
+	isCheckedUser(userId: number, branch: Branch) {
+		var result = false;
+		var index = branch.lstAssignedUser!.findIndex(x => x.SystemUserID == userId);
+		if (index > -1) {
+			result = true;
+		}
 		return result;
 	}
 

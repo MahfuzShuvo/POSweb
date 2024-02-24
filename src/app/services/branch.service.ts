@@ -26,4 +26,13 @@ export class BranchService {
 		return this.httpHelper.postHelper(url, obj);
 	}
 
+	assignToBranch(obj: any): Observable<any> {
+		const url = 'api/Branch/AssignUserToBranch';
+		return this.httpHelper.postHelper(url, obj);
+	}
+	removeFromBranch(obj: any): Observable<any> {
+		const url = 'api/Branch/RemoveUserFromBranch';
+		return this.httpHelper.postHelper(url, obj);
+	}
+
 }

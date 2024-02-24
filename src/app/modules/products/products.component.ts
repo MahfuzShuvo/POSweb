@@ -43,6 +43,7 @@ export class ProductsComponent implements OnInit {
 	isUploading: boolean = false;
 	processedDataLength: number = 0;
 	lstProductImportReport: VMProductImportReport[] = [];
+	allProductCount: number = 0;
 
 	constructor(
 		private headerService: HeaderService,
@@ -68,6 +69,8 @@ export class ProductsComponent implements OnInit {
 			.subscribe((response: ResponseMessage) => {
 				if (response.ResponseCode == ResponseStatus.success) {
 					this.lstCategory = response.ResponseObj;
+
+					this.allProductCount = this.lstCategory.map(x => x.ProductCount)!.reduce((a, b) => a + b);
 				} else {
 					this.messageHelper.showMessage(response.ResponseCode, response.Message);
 				}
@@ -99,7 +102,7 @@ export class ProductsComponent implements OnInit {
 	}
 
 	getAllProduct() {
-		this.productService.getAllProduct()
+		this.productService.getAllProduct(1)
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {
 				if (response.ResponseCode == ResponseStatus.success) {
@@ -115,7 +118,10 @@ export class ProductsComponent implements OnInit {
 
 	getAllProductByCategoryID(id: number) {
 		this.selectedCategoryID = id;
-		this.productService.getAllProductByCategoryID(id)
+		var obj = new VMProduct();
+		obj.BranchID = 1;
+		obj.CategoryID = id
+		this.productService.getAllProductByCategoryID(obj)
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {
 				if (response.ResponseCode == ResponseStatus.success) {

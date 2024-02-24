@@ -88,7 +88,8 @@ export class PosComponent implements OnInit {
 				this.isEditMode = false;
 			}
 		});
-		Promise.resolve().then(() => this.headerService.setTitle(childRoute?.toString() + ' ' + headerTitle!.toString()));
+		// Promise.resolve().then(() => this.headerService.setTitle(childRoute?.toString() + ' ' + headerTitle!.toString()));
+		Promise.resolve().then(() => this.headerService.setTitle(headerTitle!.toString()));
 		dataService.isSidebarToggle.next(true);
 	}
 
@@ -124,7 +125,7 @@ export class PosComponent implements OnInit {
 	}
 
 	getAllProduct() {
-		this.productService.getAllProduct()
+		this.productService.getAllProduct(1)
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {
 				if (response.ResponseCode == ResponseStatus.success) {

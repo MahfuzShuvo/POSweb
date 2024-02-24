@@ -1,0 +1,21 @@
+<div class="branch-main">
+	<div class="branch-head">
+		<img src="assets/img/logo.png" alt="">
+	</div>
+	<div class="branch-container">
+		<div class="font-14 weight-500 mb-4">Hello, {{user.FullName}}</div>
+		<ng-container *ngIf="lstBranch.length > 0">
+
+			<span class="info-txt txt-light font-14">Please select branch to access</span>
+			<div class="branch-container-item mt-3">
+				<div class="card branch-card" *ngFor="let branch of lstBranch">
+					<span class="font-13 weight-600">{{branch.BranchName}}</span>
+					<div class="d-flex align-items-center gap-2">
+						<i class='bx bx-current-location txt-light font-16'></i>
+						<span class="font-12 txt-light">{{branch.Address}}</span>
+					</div>
+				</div>
+			</div>
+		</ng-container>
+	</div>
+</div>
