@@ -8,9 +8,9 @@
 
 			<span class="info-txt txt-light font-14">Please select branch to access</span>
 			<div class="branch-container-item mt-3">
-				<div class="card branch-card" *ngFor="let branch of lstBranch">
+				<div class="card branch-card" *ngFor="let branch of lstBranch" (click)="selectBranch(branch)">
 					<span class="font-13 weight-600">{{branch.BranchName}}</span>
-					<div class="d-flex align-items-center gap-2">
+					<div class="d-flex align-items-start gap-2">
 						<i class='bx bx-current-location txt-light font-16'></i>
 						<span class="font-12 txt-light">{{branch.Address}}</span>
 					</div>

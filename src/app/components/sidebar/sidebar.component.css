@@ -11,6 +11,7 @@
 
 .logo-section {
     height: 60px;
+    cursor: pointer;
 }
 
 .logo-section img {

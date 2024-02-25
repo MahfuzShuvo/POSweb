@@ -19,7 +19,8 @@ header {
 .left-section {
     padding: 10px 20px;
     font-size: var(--font-13);
-    color: var(--secondary-theme-color);
+    font-weight: var(--weight-600);
+    color: var(--theme-color);
     text-transform: capitalize;
 }
 
@@ -56,3 +57,61 @@ header {
 }
 
 /* after toggle sidebar css (end) */
+.branch-section {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-10);
+    font-weight: var(--weight-500);
+    color: var(--bs-gray-600);
+    border: 2px solid var(--light-secondary-theme-color);
+    border-radius: 20px;
+    height: 26px;
+    position: relative;
+    background: var(--light-secondary-theme-color);
+    padding-left: 35px;
+    padding-right: 25px;
+    box-shadow: 0 0px 4px #00000015;
+}
+
+.branch-section .icon {
+    width: 24px;
+    height: 24px;
+    background: var(--secondary-theme-color);
+    border-radius: 50%;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.branch-section .icon i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--white-color);
+    line-height: normal;
+}
+
+.branch-more-ico {
+    width: 15px;
+    height: 15px;
+    margin: 0;
+    padding: 0;
+    line-height: normal;
+    /* position: absolute;
+    right: 2px;
+    top: 3px; */
+    color: var(--light-text-color);
+    cursor: pointer;
+}
+
+.branch-more-ico:hover {
+    color: var(--theme-color);
+}
+
+.btn-group.branch {
+    position: absolute;
+    right: 2px;
+    top: 3px;
+    width: auto !important;
+}

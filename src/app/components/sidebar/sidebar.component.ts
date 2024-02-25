@@ -59,6 +59,10 @@ export class SidebarComponent implements OnInit {
 		this.dataService.isSidebarToggle.next(this.isSidebarToggle)
 	}
 
+	clickToGoDashboard() {
+		this.router.navigateByUrl('/dashboard');
+	}
+
 	ngOnDestroy(): void {
 		this.destroy.next();
 		this.destroy.unsubscribe();

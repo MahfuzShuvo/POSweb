@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
+import { Branch } from 'src/app/models/branch';
 
 @Injectable({
 	providedIn: 'root'
@@ -10,6 +11,7 @@ export class DataService {
 	isSidebarToggle: BehaviorSubject<any> = new BehaviorSubject(null);
 	data: any = {};
 	subscription!: Subscription;
+	selectedBranch: BehaviorSubject<Branch> = new BehaviorSubject(new Branch());
 
 	constructor() { }
 

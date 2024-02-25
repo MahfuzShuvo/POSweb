@@ -30,9 +30,15 @@ export class BranchService {
 		const url = 'api/Branch/AssignUserToBranch';
 		return this.httpHelper.postHelper(url, obj);
 	}
+
 	removeFromBranch(obj: any): Observable<any> {
 		const url = 'api/Branch/RemoveUserFromBranch';
 		return this.httpHelper.postHelper(url, obj);
+	}
+
+	getAllBranchByUserID(): Observable<any> {
+		const url = 'api/Branch/GetAllBranchByUserID';
+		return this.httpHelper.postHelper(url);
 	}
 
 }

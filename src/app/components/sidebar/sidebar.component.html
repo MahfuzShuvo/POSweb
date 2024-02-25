@@ -1,53 +1,53 @@
 <div class="sidebar-container">
 	<span class="sidebar__togle-btn" (click)="clickToToggleSidebar()">
-		<i class='bx bxs-chevron-left font-20' ></i>
+		<i class='bx bxs-chevron-left font-20'></i>
 	</span>
-	<div class="logo-section">
+	<div class="logo-section" (click)="clickToGoDashboard()">
 		<img *ngIf="!(dataService.isSidebarToggle | async)" src="assets/img/logo.png" alt="">
 		<img *ngIf="dataService.isSidebarToggle | async" src="assets/img/pos-fav.png" alt="">
 	</div>
 	<div class="menu-section mt-3">
 		<!-- <ul> -->
-			<a [routerLink]="['/dashboard']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
-				<i class='bx bx-tachometer'></i>
-				<span>Dashboard</span>
-			</a>
-			<a [routerLink]="['/product']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
-				<i class='bx bx-gift'></i>
-				<span>Products</span>
-			</a>
-			<a [routerLink]="['/sales']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
-				<i class='bx bx-cart'></i>
-				<span>Sales</span>
-			</a>
-			<a [routerLink]="['/purchase']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
-				<i class='bx bx-basket'></i>
-				<span>Purchase</span>
-			</a>
-			<a [routerLink]="['/category']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
-				<i class='bx bx-category'></i>
-				<span>Category</span>
-			</a>
-			<a [routerLink]="['/brand']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
-				<i class='bx bx-bookmarks'></i>
-				<span>Brand</span>
-			</a>
-			<a [routerLink]="['/customers']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
-				<i class='bx bx-user'></i>
-				<span>Customers</span>
-			</a>
-			<a [routerLink]="['/suppliers']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
-				<i class='bx bx-user'></i>
-				<span>Suppliers</span>
-			</a>
-			<a [routerLink]="['/expense']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
-				<i class='bx bx-dollar' ></i>
-				<span>Expense</span>
-			</a>
-			<a [routerLink]="['/settings']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
-				<i class='bx bx-cog' ></i>
-				<span>Settings</span>
-			</a>
+		<a [routerLink]="['/dashboard']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
+			<i class='bx bx-tachometer'></i>
+			<span>Dashboard</span>
+		</a>
+		<a [routerLink]="['/product']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
+			<i class='bx bx-gift'></i>
+			<span>Products</span>
+		</a>
+		<a [routerLink]="['/sales']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
+			<i class='bx bx-cart'></i>
+			<span>Sales</span>
+		</a>
+		<a [routerLink]="['/purchase']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
+			<i class='bx bx-basket'></i>
+			<span>Purchase</span>
+		</a>
+		<a [routerLink]="['/category']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
+			<i class='bx bx-category'></i>
+			<span>Category</span>
+		</a>
+		<a [routerLink]="['/brand']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
+			<i class='bx bx-bookmarks'></i>
+			<span>Brand</span>
+		</a>
+		<a [routerLink]="['/customers']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
+			<i class='bx bx-user'></i>
+			<span>Customers</span>
+		</a>
+		<a [routerLink]="['/suppliers']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
+			<i class='bx bx-user'></i>
+			<span>Suppliers</span>
+		</a>
+		<a [routerLink]="['/expense']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
+			<i class='bx bx-dollar'></i>
+			<span>Expense</span>
+		</a>
+		<a [routerLink]="['/settings']" [routerLinkActive]="'active'" class="d-flex align-items-center gap-3">
+			<i class='bx bx-cog'></i>
+			<span>Settings</span>
+		</a>
 		<!-- </ul> -->
 		<div class="menu-section-footer">
 			<div class="auth-section d-flex align-items-center gap-2">
@@ -59,7 +59,8 @@
 					<p class="font-11 weight-400 txt-light">Manager</p>
 				</div>
 			</div>
-			<button (click)="logout()" type="button" class="logout-button" tooltip="Logout" containerClass="tooltipClass">
+			<button (click)="logout()" type="button" class="logout-button" tooltip="Logout"
+				containerClass="tooltipClass">
 				<i class='bx bx-log-out bx-flip-horizontal text-white font-20'></i>
 			</button>
 		</div>

@@ -85,7 +85,8 @@
 								</td>
 								<td>{{product.CategoryName}}</td>
 								<td>{{product.BrandName}}</td>
-								<td>{{product.Qty}} {{product.UnitName}}</td>
+								<td [class.txt-danger]="product.Qty<=product.MinQty">{{product.Qty}}
+									{{product.UnitName}}</td>
 								<td>{{product.PurchasePrice | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</td>
 								<td>{{product.FinalPrice | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</td>
 								<td>

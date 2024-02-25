@@ -20,11 +20,12 @@ export class AuthGuardService {
 	}
 
 	logout() {
+		localStorage.clear();
 		this.loggedIn.next(false);
 		this.router.navigate(['login']);
 	}
 
 	private hasToken(): boolean {
-		return !!localStorage.getItem("Token");
+		return !!(localStorage.getItem("Token") && localStorage.getItem('Branch'));
 	}
 }

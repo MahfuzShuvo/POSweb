@@ -29,6 +29,7 @@
 					<tr>
 						<th>SL.</th>
 						<th>Unit Name</th>
+						<th>Display Name</th>
 						<th>Status</th>
 						<th></th>
 					</tr>
@@ -37,6 +38,7 @@
 					<tr *ngFor="let unit of lstUnit; let i = index">
 						<td>{{i+1}}</td>
 						<td>{{unit.UnitName}}</td>
+						<td>{{unit.DisplayName ? unit.DisplayName : '-'}}</td>
 						<td>
 							<div class="badge" [class.inactive-badge]="unit.Status == 2"
 								[class.active-badge]="unit.Status == 1">
@@ -88,6 +90,12 @@
 					class="invalid-feedback">
 					<div *ngIf="unitName.errors['required']">Name is required</div>
 				</div>
+			</div>
+			<div class="form-group mt-2">
+				<label for="displayName" class="form-label">Display Name</label>
+				<input type="text" name="displayName" id="displayName" class="form-control"
+					[(ngModel)]="objUnit.DisplayName" placeholder="Enter display name (Kg, Pc, M etc)"
+					#displayName="ngModel" [ngClass]="{ 'is-invalid': unitForm.submitted && displayName.errors }">
 			</div>
 			<div class="row mt-3">
 				<div class="col-md-6">

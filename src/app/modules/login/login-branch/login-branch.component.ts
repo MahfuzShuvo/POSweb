@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { ResponseStatus } from 'src/app/common/enums/appEnums';
 import { MessageHelper } from 'src/app/common/helper/messageHelper';
@@ -22,16 +23,17 @@ export class LoginBranchComponent implements OnInit {
 	constructor(
 		private branchService: BranchService,
 		private messageHelper: MessageHelper,
-		private localStoreService: LocalstoreService
+		private localStoreService: LocalstoreService,
+		private router: Router
 	) { }
 
 	ngOnInit() {
 		this.user = this.localStoreService.getData('User');
-		this.getAllBranch();
+		this.getAllBranchByUser();
 	}
 
-	getAllBranch() {
-		this.branchService.getAllBranch()
+	getAllBranchByUser() {
+		this.branchService.getAllBranchByUserID()
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {
 				if (response.ResponseCode == ResponseStatus.success) {
@@ -41,7 +43,11 @@ export class LoginBranchComponent implements OnInit {
 					this.messageHelper.showMessage(response.ResponseCode, response.Message);
 				}
 			})
+	}
 
+	selectBranch(branch: Branch) {
+		this.localStoreService.setData('Branch', branch);
+		this.router.navigate(['/dashboard']);
 	}
 
 	ngOnDestroy(): void {

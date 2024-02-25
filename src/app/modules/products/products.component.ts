@@ -15,6 +15,8 @@ import * as XLSX from 'xlsx';
 import { VMProductImport } from 'src/app/models/VM/vmProductImport';
 import { DataService } from 'src/app/common/service/data.service';
 import { VMProductImportReport } from 'src/app/models/VM/vmProductImportReport';
+import { Branch } from 'src/app/models/branch';
+import { LocalstoreService } from 'src/app/common/service/localstore.service';
 
 @Component({
 	selector: 'app-products',
@@ -44,6 +46,7 @@ export class ProductsComponent implements OnInit {
 	processedDataLength: number = 0;
 	lstProductImportReport: VMProductImportReport[] = [];
 	allProductCount: number = 0;
+	selectedBranch: Branch = new Branch();
 
 	constructor(
 		private headerService: HeaderService,
@@ -52,13 +55,22 @@ export class ProductsComponent implements OnInit {
 		private productService: ProductService,
 		private messageHelper: MessageHelper,
 		private modalService: BsModalService,
-		public dataService: DataService
+		public dataService: DataService,
+		private localStoreService: LocalstoreService
 	) {
 		const headerTitle = this.activatedRoute.parent?.snapshot.url[0].path;
 		Promise.resolve().then(() => this.headerService.setTitle(headerTitle!.toString()));
 	}
 
 	ngOnInit() {
+		this.selectedBranch = this.localStoreService.getData('Branch');
+		this.dataService.selectedBranch.subscribe((data: Branch) => {
+			if (data && data.BranchID > 0) {
+				debugger
+				this.selectedBranch = data;
+				this.getAllProduct();
+			}
+		})
 		this.getAllCategoryWithProductCount();
 		this.getAllProduct();
 	}
@@ -102,7 +114,7 @@ export class ProductsComponent implements OnInit {
 	}
 
 	getAllProduct() {
-		this.productService.getAllProduct(1)
+		this.productService.getAllProduct(this.selectedBranch.BranchID)
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {
 				if (response.ResponseCode == ResponseStatus.success) {

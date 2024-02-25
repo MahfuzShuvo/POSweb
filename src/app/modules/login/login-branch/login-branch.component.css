@@ -15,6 +15,8 @@
     display: flex;
     flex-direction: column;
     gap: var(--gap-10);
+    width: 200px;
+    height: 100px;
     cursor: pointer;
 }
 

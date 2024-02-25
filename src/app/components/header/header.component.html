@@ -1,7 +1,36 @@
 <header>
 	<div class="header-section">
-		<div class="left-section">
-			{{title}}
+		<div class="d-flex align-items-center">
+			<div class="left-section">
+				{{title}}
+			</div>
+			<div class="branch-section">
+				<div class="icon">
+					<i class='bx bxs-store-alt font-14'></i>
+				</div>
+				<span class="font-11">{{selectedBranch.BranchName}}</span>
+
+
+				<div *ngIf="loggedInUser && (loggedInUser.RoleID == 1 || loggedInUser.RoleID == 2)"
+					class="btn-group branch" dropdown #dropdown="bs-dropdown" [insideClick]="true"
+					(onShown)="getAllBranchByUser()">
+					<span class="branch-more-ico" dropdownToggle id="branch" aria-controls="dropdown-basic">
+						<i class='bx bxs-chevron-down-circle font-15'></i>
+					</span>
+					<div id="dropdown-basic" *dropdownMenu class="dropdown-menu" aria-labelledby="branch">
+						<input type="text" name="search-branch" id="search-branch" class="dropdown-search"
+							placeholder="Search" #searchInput (keyup)="searchDropdwon($event)">
+						<ul class="dropdown-ul mt-2">
+
+							<li class="dropdown-item"
+								[class.selected]="selectedBranch && selectedBranch.BranchID == branch.BranchID"
+								*ngFor="let branch of lstBranch" (click)="selectItem(branch); dropdown.isOpen = false">
+								{{branch.BranchName}}
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
 		</div>
 		<div class="pos-section">
 			<a [routerLink]="['/pos']" class="pos-button" tooltip="POS" containerClass="tooltipClass"
