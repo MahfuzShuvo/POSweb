@@ -11,9 +11,9 @@ export class AccountService {
 		private httpHelper: HttpHelper
 	) { }
 
-	getAllAccount(): Observable<any> {
+	getAllAccount(obj: any): Observable<any> {
 		const url = 'api/Account/GetAllAccount';
-		return this.httpHelper.postHelper(url);
+		return this.httpHelper.postHelper(url, obj);
 	}
 
 	saveAccount(obj: any): Observable<any> {

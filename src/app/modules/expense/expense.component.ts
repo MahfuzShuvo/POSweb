@@ -11,6 +11,8 @@ import { HeaderService } from 'src/app/common/service/header.service';
 import { ResponseMessage } from 'src/app/models/DTO/responseMessage';
 import { Expense } from 'src/app/models/expense';
 import { ExpenseService } from 'src/app/services/expense.service';
+import { Branch } from 'src/app/models/branch';
+import { LocalstoreService } from 'src/app/common/service/localstore.service';
 
 @Component({
 	selector: 'app-expense',
@@ -31,6 +33,7 @@ export class ExpenseComponent implements OnInit {
 	modalTitle: string;
 	lstAccount: Account[] = [];
 	selectedAccount: Account = new Account();
+	selectedBranch: Branch = new Branch();
 
 	constructor(
 		private headerService: HeaderService,
@@ -39,13 +42,22 @@ export class ExpenseComponent implements OnInit {
 		private accountService: AccountService,
 		private messageHelper: MessageHelper,
 		public dataService: DataService,
-		private modalService: BsModalService
+		private modalService: BsModalService,
+		private localStoreService: LocalstoreService
 	) {
 		const headerTitle = this.activatedRoute.parent?.snapshot.url[0].path;
 		Promise.resolve().then(() => this.headerService.setTitle(headerTitle!.toString()));
 	}
 
 	ngOnInit() {
+		this.selectedBranch = this.localStoreService.getData('Branch');
+		this.dataService.selectedBranch.subscribe((data: Branch) => {
+			if (data && data.BranchID > 0) {
+				this.selectedBranch = data;
+				this.getAllExpense();
+				this.getAllAccount();
+			}
+		})
 		this.getAllExpense();
 		this.getAllAccount();
 	}
@@ -55,7 +67,7 @@ export class ExpenseComponent implements OnInit {
 	}
 
 	getAllAccount() {
-		this.accountService.getAllAccount()
+		this.accountService.getAllAccount(this.selectedBranch.BranchID)
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {
 				if (response.ResponseCode == ResponseStatus.success) {
@@ -68,7 +80,7 @@ export class ExpenseComponent implements OnInit {
 	}
 
 	getAllExpense() {
-		this.expenseService.getAllExpense()
+		this.expenseService.getAllExpense(this.selectedBranch.BranchID)
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {
 				if (response.ResponseCode == ResponseStatus.success) {
@@ -121,6 +133,7 @@ export class ExpenseComponent implements OnInit {
 			this.messageHelper.showMessage(ResponseStatus.warning, 'Account must be required');
 			return;
 		}
+		this.objExpense.BranchID = this.selectedBranch.BranchID;
 		this.dataService.isFormSubmitting.next(true);
 
 		this.expenseService.saveExpense(this.objExpense)

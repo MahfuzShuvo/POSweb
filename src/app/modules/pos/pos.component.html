@@ -288,8 +288,7 @@
 		</div>
 		<div class="modal-footer">
 			<button type="button" class="cancel-button" (click)="modalRef?.hide()">Cancel</button>
-			<button type="submit"
-				[disabled]="(dataService.isFormSubmitting | async) || (payAmount.valueAsNumber == 0 || payAmount.value == '')"
+			<button type="submit" [disabled]="(dataService.isFormSubmitting | async) || (objPaymentDTO.Amount == 0)"
 				class="success-button">Save</button>
 		</div>
 	</form>

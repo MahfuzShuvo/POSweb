@@ -15,3 +15,8 @@ export class VMProduct {
     BranchID: number;
     CategoryID: number;
 }
+
+export class VMProductSearch {
+    SearchText: string = '';
+    BranchID: number;
+}

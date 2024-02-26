@@ -66,7 +66,6 @@ export class ProductsComponent implements OnInit {
 		this.selectedBranch = this.localStoreService.getData('Branch');
 		this.dataService.selectedBranch.subscribe((data: Branch) => {
 			if (data && data.BranchID > 0) {
-				debugger
 				this.selectedBranch = data;
 				this.getAllProduct();
 			}
@@ -131,7 +130,7 @@ export class ProductsComponent implements OnInit {
 	getAllProductByCategoryID(id: number) {
 		this.selectedCategoryID = id;
 		var obj = new VMProduct();
-		obj.BranchID = 1;
+		obj.BranchID = this.selectedBranch.BranchID;
 		obj.CategoryID = id
 		this.productService.getAllProductByCategoryID(obj)
 			.pipe(takeUntil(this.destroy))
@@ -199,6 +198,7 @@ export class ProductsComponent implements OnInit {
 	openImportModal() {
 		this.modalRef = this.modalService.show(this.importModal);
 	}
+
 	closeImportModal() {
 		this.csvfile = '';
 		this.fileName = '';

@@ -13,7 +13,7 @@
 
 				<div *ngIf="loggedInUser && (loggedInUser.RoleID == 1 || loggedInUser.RoleID == 2)"
 					class="btn-group branch" dropdown #dropdown="bs-dropdown" [insideClick]="true"
-					(onShown)="getAllBranchByUser()">
+					(onShown)="getAllBranchByUser()" container="body">
 					<span class="branch-more-ico" dropdownToggle id="branch" aria-controls="dropdown-basic">
 						<i class='bx bxs-chevron-down-circle font-15'></i>
 					</span>

@@ -7,11 +7,13 @@ import { AppConstant } from 'src/app/common/constants/appConstant';
 import { ResponseStatus } from 'src/app/common/enums/appEnums';
 import { MessageHelper } from 'src/app/common/helper/messageHelper';
 import { HeaderService } from 'src/app/common/service/header.service';
+import { LocalstoreService } from 'src/app/common/service/localstore.service';
 import { CustomerFormComponent } from 'src/app/components/forms/customer-form/customer-form.component';
 import { PaymentDTO } from 'src/app/models/DTO/paymentDTO';
 import { ResponseMessage } from 'src/app/models/DTO/responseMessage';
-import { VMProduct } from 'src/app/models/VM/vmProduct';
+import { VMProduct, VMProductSearch } from 'src/app/models/VM/vmProduct';
 import { Account } from 'src/app/models/account';
+import { Branch } from 'src/app/models/branch';
 import { Customer } from 'src/app/models/customer';
 import { Sales } from 'src/app/models/sales';
 import { AccountService } from 'src/app/services/account.service';
@@ -57,6 +59,7 @@ export class PosComponent implements OnInit {
 	lstDiscountType: any[] = AppConstant.DISCOUNT_TYPE;
 	selectedDiscountType: any;
 	isDisablePaymentAmount: boolean = false;
+	selectedBranch: Branch = new Branch();
 
 	constructor(
 		private headerService: HeaderService,
@@ -68,7 +71,8 @@ export class PosComponent implements OnInit {
 		private customerService: CustomerService,
 		private accountService: AccountService,
 		private router: Router,
-		private modalService: BsModalService
+		private modalService: BsModalService,
+		private localStoreService: LocalstoreService
 	) {
 		const headerTitle = this.activatedRoute.parent?.snapshot.url[0].path;
 		var childRoute = "";
@@ -94,6 +98,13 @@ export class PosComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		this.selectedBranch = this.localStoreService.getData('Branch');
+		this.dataService.selectedBranch.subscribe((data: Branch) => {
+			if (data && data.BranchID > 0) {
+				this.selectedBranch = data;
+				this.getAllProduct();
+			}
+		})
 		this.getAllProduct();
 		this.getAllCustomer();
 	}
@@ -125,7 +136,7 @@ export class PosComponent implements OnInit {
 	}
 
 	getAllProduct() {
-		this.productService.getAllProduct(1)
+		this.productService.getAllProduct(this.selectedBranch.BranchID)
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {
 				if (response.ResponseCode == ResponseStatus.success) {
@@ -247,7 +258,11 @@ export class PosComponent implements OnInit {
 	}
 
 	searchProductForCart(value: string) {
-		this.productService.searchProduct(value)
+		var searchObj = new VMProductSearch();
+		searchObj.BranchID = this.selectedBranch.BranchID;
+		searchObj.SearchText = value!.toLowerCase();
+
+		this.productService.searchProduct(searchObj)
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {
 				if (response.ResponseCode == ResponseStatus.success) {
@@ -456,7 +471,7 @@ export class PosComponent implements OnInit {
 			this.messageHelper.showMessage(ResponseStatus.warning, "Walk-in customer should pay complete amount");
 			return
 		}
-
+		this.objSales.BranchID = this.selectedBranch.BranchID;
 		this.objSales.SalesDate = new Date().toLocaleString();
 		this.salesService.saveSales(this.objSales)
 			.pipe(takeUntil(this.destroy))
@@ -474,7 +489,7 @@ export class PosComponent implements OnInit {
 	}
 
 	getAllAccount() {
-		this.accountService.getAllAccount()
+		this.accountService.getAllAccount(this.selectedBranch.BranchID)
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {
 				if (response.ResponseCode == ResponseStatus.success) {

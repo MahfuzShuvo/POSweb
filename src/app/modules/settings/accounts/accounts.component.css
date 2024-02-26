@@ -1,5 +1,6 @@
 .table__body {
     height: calc(100vh - 180px);
+    max-width: calc(100vw - 530px);
 }
 
 .table-row-count {

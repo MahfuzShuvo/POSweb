@@ -11,9 +11,9 @@ export class ExpenseService {
 		private httpHelper: HttpHelper
 	) { }
 
-	getAllExpense(): Observable<any> {
+	getAllExpense(obj: any): Observable<any> {
 		const url = 'api/Expense/GetAllExpense';
-		return this.httpHelper.postHelper(url);
+		return this.httpHelper.postHelper(url, obj);
 	}
 
 	saveExpense(obj: any): Observable<any> {

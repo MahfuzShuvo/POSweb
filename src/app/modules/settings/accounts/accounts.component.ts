@@ -12,6 +12,8 @@ import { Account } from 'src/app/models/account';
 import { ResponseMessage } from 'src/app/models/DTO/responseMessage';
 import { VMGetAccountBalanceExpense } from 'src/app/models/VM/vmGetAccountBalanceExpense';
 import { AccountService } from 'src/app/services/account.service';
+import { Branch } from 'src/app/models/branch';
+import { LocalstoreService } from 'src/app/common/service/localstore.service';
 
 @Component({
 	selector: 'app-accounts',
@@ -32,16 +34,27 @@ export class AccountsComponent implements OnInit {
 	modalRef?: BsModalRef;
 	buttonText: string;
 	modalTitle: string;
+	selectedBranch: Branch = new Branch();
 
 	constructor(
 		private headerService: HeaderService,
 		private accountService: AccountService,
 		private messageHelper: MessageHelper,
 		public dataService: DataService,
-		private modalService: BsModalService
+		private modalService: BsModalService,
+		private localStoreService: LocalstoreService
 	) { }
 
 	ngOnInit() {
+		this.selectedBranch = this.localStoreService.getData('Branch');
+		this.dataService.selectedBranch.subscribe((data: Branch) => {
+			if (data && data.BranchID > 0) {
+				this.selectedBranch = data;
+				this.getAllAccount();
+				this.statementSidebar.clear();
+			}
+		})
+
 		Promise.resolve().then(() => this.headerService.setSubTitle('Accounts'));
 		this.getAllAccount();
 	}
@@ -51,7 +64,7 @@ export class AccountsComponent implements OnInit {
 	}
 
 	getAllAccount() {
-		this.accountService.getAllAccount()
+		this.accountService.getAllAccount(this.selectedBranch.BranchID)
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {
 				if (response.ResponseCode == ResponseStatus.success) {
@@ -85,7 +98,7 @@ export class AccountsComponent implements OnInit {
 		this.modalRef = this.modalService.show(this.accountFormModal);
 	}
 
-	editAccount(account: Account) {
+	editAccount(account: any) {
 		this.modalTitle = 'Edit';
 		this.buttonText = 'Update';
 
@@ -129,7 +142,7 @@ export class AccountsComponent implements OnInit {
 			})
 	}
 
-	deleteAccount(account: Account) {
+	deleteAccount(account: any) {
 		this.objAccount = new Account();
 		this.objAccount = JSON.parse(JSON.stringify(account));
 
@@ -155,7 +168,7 @@ export class AccountsComponent implements OnInit {
 		}
 	}
 
-	balanceModalOpen(account: Account) {
+	balanceModalOpen(account: any) {
 		this.objAccount = new Account();
 		this.objAccount = JSON.parse(JSON.stringify(account));
 
@@ -171,6 +184,7 @@ export class AccountsComponent implements OnInit {
 
 	addBalance() {
 		if (this.objAccount.Balance > 0) {
+			this.objAccount.BranchID = this.selectedBranch.BranchID;
 			this.dataService.isFormSubmitting.next(true);
 			this.accountService.addBalance(this.objAccount)
 				.pipe(takeUntil(this.destroy))
@@ -186,7 +200,8 @@ export class AccountsComponent implements OnInit {
 		}
 	}
 
-	showAccountStatement(account: Account) {
+	showAccountStatement(account: any) {
+		account.BranchID = this.selectedBranch.BranchID;
 		this.accountService.showAccountStatement(account)
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {

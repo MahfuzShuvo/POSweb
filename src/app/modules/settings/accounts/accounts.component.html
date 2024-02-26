@@ -30,9 +30,11 @@
 						<th>SL.</th>
 						<th>Account Title</th>
 						<th>Account Number</th>
-						<th>Balance</th>
+						<th>Total Sales</th>
+						<th>Total Deposit</th>
+						<th>Current Balance</th>
 						<th>Expense</th>
-						<th>Remaining</th>
+						<!-- <th>Remaining</th> -->
 						<th>Description</th>
 						<th>Status</th>
 						<th></th>
@@ -44,15 +46,26 @@
 						<td>{{account.AccountTitle}}</td>
 						<td>{{(account.AccountNumber && account.AccountNumber != '') ? account.AccountNumber : '-'}}
 						</td>
-						<td>{{account.Balance | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</td>
+						<td>
+							<span>{{account.TotalSales |
+								currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</span>
+						</td>
+						<td>
+							<span class="txt-success">{{account.TotalDeposit |
+								currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</span>
+						</td>
+						<td>
+							<span class="weight-600">{{account.CurrentBalance |
+								currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</span>
+						</td>
 						<td>
 							<span [class.txt-danger]="account.Expense > 0">{{(account.Expense > 0) ? (account.Expense |
 								currency:'BDT':'symbol':'1.2-2':'bn-BD') : '-'}}</span>
 						</td>
-						<td>
+						<!-- <td>
 							<span class="txt-success">{{account.CurrentBalance |
 								currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</span>
-						</td>
+						</td> -->
 						<td>{{(account.Description && account.Description != '') ? account.Description : '-'}}</td>
 						<td>
 							<div class="badge" [class.inactive-badge]="account.Status == 2"

@@ -2,8 +2,10 @@ export class VMGetAccountBalanceExpense {
     AccountID: number;
     AccountTitle: string;
     Balance!: number;
-    Expense!: number;
+    TotalSales!: number;
+    TotalDeposit!: number;
     CurrentBalance!: number;
+    Expense!: number;
     AccountNumber: string;
     Description: string;
     Status!: number;

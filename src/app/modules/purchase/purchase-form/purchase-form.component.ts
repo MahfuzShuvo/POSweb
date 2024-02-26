@@ -6,9 +6,11 @@ import { ResponseStatus } from 'src/app/common/enums/appEnums';
 import { MessageHelper } from 'src/app/common/helper/messageHelper';
 import { DataService } from 'src/app/common/service/data.service';
 import { HeaderService } from 'src/app/common/service/header.service';
+import { LocalstoreService } from 'src/app/common/service/localstore.service';
 import { ResponseMessage } from 'src/app/models/DTO/responseMessage';
-import { VMProduct } from 'src/app/models/VM/vmProduct';
+import { VMProduct, VMProductSearch } from 'src/app/models/VM/vmProduct';
 import { Account } from 'src/app/models/account';
+import { Branch } from 'src/app/models/branch';
 import { Purchase } from 'src/app/models/purchase';
 import { Supplier } from 'src/app/models/supplier';
 import { AccountService } from 'src/app/services/account.service';
@@ -44,6 +46,7 @@ export class PurchaseFormComponent implements OnInit {
 	selectedDiscountType: any;
 	selectedPaymentType: Account = new Account();
 	noMatchFound: string = '';
+	selectedBranch: Branch = new Branch();
 
 	constructor(
 		private headerService: HeaderService,
@@ -54,7 +57,8 @@ export class PurchaseFormComponent implements OnInit {
 		private accountService: AccountService,
 		private purchaseService: PurchaseService,
 		public dataService: DataService,
-		private router: Router
+		private router: Router,
+		private localStoreService: LocalstoreService
 	) {
 		const headerTitle = this.activatedRoute.parent?.snapshot.url[0].path;
 		var childRoute = "";
@@ -78,10 +82,19 @@ export class PurchaseFormComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		this.selectedBranch = this.localStoreService.getData('Branch');
+		this.dataService.selectedBranch.subscribe((data: Branch) => {
+			if (data && data.BranchID > 0) {
+				this.selectedBranch = data;
+
+				this.getAllAccount();
+			}
+		})
 		this.getAllSupplier();
 		this.getAllAccount();
 		this.maxDate = new Date();
 		this.objPurchase.PurchaseDate = new Date(this.maxDate).toLocaleString();
+		this.objPurchase.BranchID = this.selectedBranch.BranchID;
 		this.selectedStatus = this.lstPurchaseStatus.filter(x => x.Id == this.objPurchase.PurchaseStatus)[0];
 	}
 
@@ -126,7 +139,11 @@ export class PurchaseFormComponent implements OnInit {
 	}
 
 	searchProduct(value: string) {
-		this.productService.searchProduct(value)
+		var searchObj = new VMProductSearch();
+		searchObj.BranchID = this.selectedBranch.BranchID;
+		searchObj.SearchText = value!.toLowerCase();
+
+		this.productService.searchProduct(searchObj)
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {
 				if (response.ResponseCode == ResponseStatus.success) {
@@ -139,7 +156,7 @@ export class PurchaseFormComponent implements OnInit {
 	}
 
 	getAllAccount() {
-		this.accountService.getAllAccount()
+		this.accountService.getAllAccount(this.selectedBranch.BranchID)
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {
 				if (response.ResponseCode == ResponseStatus.success) {
@@ -330,6 +347,7 @@ export class PurchaseFormComponent implements OnInit {
 		this.selectedStatus = this.lstPurchaseStatus.filter(x => x.Id == event.Id)[0];
 		this.objPurchase.PurchaseStatus = event.Id;
 	}
+
 	selectDiscount(event: any) {
 		if (event) {
 			this.selectedDiscountType = this.lstDiscountType.filter(x => x.Id == event.Id)[0];
@@ -338,10 +356,11 @@ export class PurchaseFormComponent implements OnInit {
 			this.objPurchase.DiscountType = 0;
 		}
 	}
+
 	selectPayentType(event: any) {
 		if (event) {
 			this.selectedPaymentType = this.lstAccount.filter(x => x.AccountID == event.AccountID)[0];
-			this.objPurchase.PaymentType = event.Id;
+			this.objPurchase.PaymentType = event.AccountID;
 		} else {
 			this.objPurchase.PaymentType = 0;
 		}
