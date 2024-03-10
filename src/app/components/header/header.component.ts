@@ -7,6 +7,9 @@ import { ResponseStatus } from 'src/app/common/enums/appEnums';
 import { Branch } from 'src/app/models/branch';
 import { LocalstoreService } from 'src/app/common/service/localstore.service';
 import { DataService } from 'src/app/common/service/data.service';
+import { SalesService } from 'src/app/services/sales.service';
+import { VMSales } from 'src/app/models/VM/vmSales';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-header',
@@ -21,12 +24,15 @@ export class HeaderComponent implements OnInit {
 	selectedBranch: Branch = new Branch();
 	timer: any;
 	loggedInUser: any;
+	lstHoldSales: VMSales[] = [];
 
 	constructor(
 		private headerService: HeaderService,
 		private branchService: BranchService,
 		private localStoreService: LocalstoreService,
-		public dataService: DataService
+		public dataService: DataService,
+		private salesService: SalesService,
+		private router: Router
 	) { }
 
 	ngOnInit() {
@@ -69,6 +75,22 @@ export class HeaderComponent implements OnInit {
 			this.selectedBranch = JSON.parse(JSON.stringify(branch));
 			this.localStoreService.setData('Branch', branch);
 			this.dataService.selectedBranch.next(branch);
+		}
+	}
+
+	clickToGetHoldSales() {
+		this.salesService.getAllHoldSales(this.selectedBranch.BranchID)
+			.subscribe((response: ResponseMessage) => {
+				if (response.ResponseCode == ResponseStatus.success) {
+					this.lstHoldSales = response.ResponseObj;
+
+				}
+			})
+	}
+
+	selectHoldSales(holdSales: VMSales) {
+		if (holdSales && holdSales.SalesCode != '') {
+			this.router.navigate(['pos/hold', holdSales.SalesCode])
 		}
 	}
 }

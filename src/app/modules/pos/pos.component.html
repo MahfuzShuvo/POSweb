@@ -127,7 +127,7 @@
 			</div>
 			<div class="pos-button-wrapper mt-3">
 				<button type="button" class="pos-hold-btn" (click)="clickToHoldSales()"
-					[disabled]="objSales!.lstProduct!.length == 0">
+					[disabled]="objSales!.lstProduct!.length == 0 || (childRoute && childRoute == 'edit')">
 					<i class='bx bxs-hand'></i>
 					Hold
 				</button>

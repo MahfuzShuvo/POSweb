@@ -31,12 +31,61 @@
 					</div>
 				</div>
 			</div>
+
 		</div>
-		<div class="pos-section">
-			<a [routerLink]="['/pos']" class="pos-button" tooltip="POS" containerClass="tooltipClass"
-				[adaptivePosition]="false" placement="left">
-				<i class='bx bx-calculator text-white font-22'></i>
-			</a>
+		<div class="d-flex align-items-center gap-3">
+
+
+			<div class="btn-group holdSales" dropdown #dropdown="bs-dropdown" [insideClick]="true"
+				(onShown)="clickToGetHoldSales()" container="body">
+				<span class="hold-sales-ico" [class.active]="dropdown.isOpen" tooltip="Hold sales list"
+					containerClass="tooltipClass" [adaptivePosition]="false" placement="left" container="body"
+					dropdownToggle id="holdSales" aria-controls="dropdown-basic">
+					<i class='bx bx-pause-circle font-25'></i>
+				</span>
+				<div id="dropdown-basic" *dropdownMenu class="dropdown-menu hold right" aria-labelledby="holdSales">
+					<!-- <input type="text" name="search-holdSales" id="search-holdSales" class="dropdown-search"
+						placeholder="Search" #searchInput (keyup)="searchDropdwon($event)"> -->
+					<!-- <ul class="dropdown-ul mt-2">
+
+						<li class="dropdown-item"
+							[class.selected]="selectedBranch && selectedBranch.BranchID == holdSales.BranchID"
+							*ngFor="let holdSales of lstHoldSales"
+							(click)="selectHoldSales(holdSales); dropdown.isOpen = false">
+							{{holdSales.SalesCode}}
+						</li>
+					</ul> -->
+					<div class="dropdown-table">
+						<table>
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Sales Code</th>
+									<th>Date</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngIf="lstHoldSales!.length == 0">
+									<td colspan="3"><span class="txt-danger"></span></td>
+								</tr>
+								<tr *ngFor="let holdSales of lstHoldSales; let i=index"
+									(click)="selectHoldSales(holdSales); dropdown.isOpen = false">
+									<td>{{i+1}}</td>
+									<td>{{holdSales.SalesCode}}</td>
+									<td>{{holdSales.SalesDate | date: 'dd/MM/yyyy, hh:mm a'}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+
+			<div class="pos-section">
+				<a [routerLink]="['/pos']" class="pos-button" tooltip="POS" containerClass="tooltipClass"
+					[adaptivePosition]="false" placement="left">
+					<i class='bx bx-calculator text-white font-22'></i>
+				</a>
+			</div>
 		</div>
 	</div>
 </header>

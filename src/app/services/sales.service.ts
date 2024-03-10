@@ -15,6 +15,10 @@ export class SalesService {
 		const url = 'api/Sales/GetAllSales';
 		return this.httpHelper.postHelper(url, obj);
 	}
+	getAllHoldSales(obj: any): Observable<any> {
+		const url = 'api/Sales/GetAllHoldSales';
+		return this.httpHelper.postHelper(url, obj);
+	}
 
 	getSalesBySalesCode(obj: any): Observable<any> {
 		const url = 'api/Sales/GetSalesBySalesCode';

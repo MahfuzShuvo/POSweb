@@ -1,10 +1,10 @@
 import { DataService } from './../../common/service/data.service';
 import { Component, ElementRef, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Subject, takeUntil } from 'rxjs';
 import { AppConstant } from 'src/app/common/constants/appConstant';
-import { ResponseStatus } from 'src/app/common/enums/appEnums';
+import { RecordStatus, ResponseStatus } from 'src/app/common/enums/appEnums';
 import { MessageHelper } from 'src/app/common/helper/messageHelper';
 import { HeaderService } from 'src/app/common/service/header.service';
 import { LocalstoreService } from 'src/app/common/service/localstore.service';
@@ -60,6 +60,7 @@ export class PosComponent implements OnInit {
 	selectedDiscountType: any;
 	isDisablePaymentAmount: boolean = false;
 	selectedBranch: Branch = new Branch();
+	childRoute: string = ''
 
 	constructor(
 		private headerService: HeaderService,
@@ -70,14 +71,12 @@ export class PosComponent implements OnInit {
 		private salesService: SalesService,
 		private customerService: CustomerService,
 		private accountService: AccountService,
-		private router: Router,
 		private modalService: BsModalService,
 		private localStoreService: LocalstoreService
 	) {
 		const headerTitle = this.activatedRoute.parent?.snapshot.url[0].path;
-		var childRoute = "";
 		this.activatedRoute.url.subscribe((params: Params) => {
-			childRoute = params[0]?.path;
+			this.childRoute = params[0]?.path;
 		})
 
 		this.activatedRoute.params.subscribe((params: Params) => {
@@ -91,8 +90,11 @@ export class PosComponent implements OnInit {
 				this.isEditMode = false;
 			}
 		});
-		// Promise.resolve().then(() => this.headerService.setTitle(childRoute?.toString() + ' ' + headerTitle!.toString()));
-		Promise.resolve().then(() => this.headerService.setTitle(headerTitle!.toString()));
+		if (this.childRoute) {
+			Promise.resolve().then(() => this.headerService.setTitle(this.childRoute?.toString() + ' ' + headerTitle!.toString()));
+		} else {
+			Promise.resolve().then(() => this.headerService.setTitle(headerTitle!.toString()));
+		}
 		dataService.isSidebarToggle.next(true);
 	}
 
@@ -457,7 +459,20 @@ export class PosComponent implements OnInit {
 	}
 
 	clickToHoldSales() {
+		this.objSales.BranchID = this.selectedBranch.BranchID;
+		this.objSales.Status = RecordStatus.Hold;
+		this.salesService.saveSales(this.objSales)
+			.pipe(takeUntil(this.destroy))
+			.subscribe((response: ResponseMessage) => {
+				if (response.ResponseCode == ResponseStatus.success) {
+					this.objSales = new Sales();
+					this.selectedCustomer = new Customer();
 
+					// this.getSalesByCode(this.salesCode);
+					// this.modalRef?.hide();
+				}
+				this.messageHelper.showMessage(response.ResponseCode, response.Message);
+			})
 	}
 
 	openPaymentModal() {
@@ -483,6 +498,7 @@ export class PosComponent implements OnInit {
 		}
 		this.objSales.BranchID = this.selectedBranch.BranchID;
 		this.objSales.SalesDate = new Date().toLocaleString();
+		this.objSales.Status = RecordStatus.Active;
 		this.salesService.saveSales(this.objSales)
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {

@@ -448,3 +448,30 @@ tbody td.active {
 .file-uploader label .button-group {
     width: fit-content;
 }
+
+.dropdown-table {
+    /* padding: 5px 15px; */
+    border: 1px solid var(--border-color);
+    margin: 5px 15px;
+    overflow: auto;
+    max-height: 250px;
+}
+
+.dropdown-table table tbody tr td {
+    font-size: var(--font-12);
+}
+
+.dropdown-table table tr {
+    /* border: 1px solid var(--border-color); */
+    height: 27px;
+}
+
+.dropdown-table table tbody tr {
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+}
+
+.dropdown-table table tbody tr:hover {
+    background: var(--light-secondary-theme-color);
+}

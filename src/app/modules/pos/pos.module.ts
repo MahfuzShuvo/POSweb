@@ -6,7 +6,8 @@ import { SharedModule } from 'src/app/shared.module';
 
 const routes: Routes = [
 	{ path: '', component: PosComponent },
-	{ path: 'edit/:salesCode', component: PosComponent }
+	{ path: 'edit/:salesCode', component: PosComponent },
+	{ path: 'hold/:salesCode', component: PosComponent }
 ]
 
 @NgModule({

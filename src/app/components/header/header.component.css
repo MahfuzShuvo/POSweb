@@ -115,3 +115,19 @@ header {
     top: 3px;
     width: auto !important;
 }
+
+.hold-sales-ico {
+    color: var(--theme-color);
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+}
+
+.hold-sales-ico.active,
+.hold-sales-ico:hover {
+    color: var(--secondary-theme-color);
+}
+
+.dropdown-menu.hold {
+    width: max-content;
+}
