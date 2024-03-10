@@ -5,6 +5,7 @@ export class VMPurchase {
     PurchaseCode: string;
     // ProductSKUs: string;
     PurchaseDate: string;
+    BranchID: number;
     SubTotal: number;
     TotalPurchasePrice: number;
     OtherCharge: number;

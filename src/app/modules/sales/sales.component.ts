@@ -4,15 +4,18 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Subject, takeUntil } from 'rxjs';
 import { ResponseStatus } from 'src/app/common/enums/appEnums';
 import { MessageHelper } from 'src/app/common/helper/messageHelper';
+import { DataService } from 'src/app/common/service/data.service';
 import { HeaderService } from 'src/app/common/service/header.service';
+import { LocalstoreService } from 'src/app/common/service/localstore.service';
 import { ResponseMessage } from 'src/app/models/DTO/responseMessage';
 import { VMSales } from 'src/app/models/VM/vmSales';
+import { Branch } from 'src/app/models/branch';
 import { SalesService } from 'src/app/services/sales.service';
 
 @Component({
-  selector: 'app-sales',
-  templateUrl: './sales.component.html',
-  styleUrls: ['./sales.component.css']
+	selector: 'app-sales',
+	templateUrl: './sales.component.html',
+	styleUrls: ['./sales.component.css']
 })
 export class SalesComponent implements OnInit {
 
@@ -23,6 +26,7 @@ export class SalesComponent implements OnInit {
 	objSales: VMSales = new VMSales();
 	totalCount: number = 0;
 	modalRef?: BsModalRef;
+	selectedBranch: Branch = new Branch();
 
 	constructor(
 		private headerService: HeaderService,
@@ -30,18 +34,27 @@ export class SalesComponent implements OnInit {
 		private router: Router,
 		private messageHelper: MessageHelper,
 		private modalService: BsModalService,
-		private salesService: SalesService
+		private salesService: SalesService,
+		private localStoreService: LocalstoreService,
+		public dataService: DataService
 	) {
 		const headerTitle = this.activatedRoute.parent?.snapshot.url[0].path;
 		Promise.resolve().then(() => this.headerService.setTitle(headerTitle!.toString()));
 	}
 
 	ngOnInit() {
+		this.selectedBranch = this.localStoreService.getData('Branch');
+		this.dataService.selectedBranch.pipe(takeUntil(this.destroy)).subscribe((data: Branch) => {
+			if (data && data.BranchID > 0) {
+				this.selectedBranch = data;
+				this.getAllSales();
+			}
+		})
 		this.getAllSales();
 	}
 
 	getAllSales() {
-		this.salesService.getAllSales()
+		this.salesService.getAllSales(this.selectedBranch.BranchID)
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {
 				if (response.ResponseCode == ResponseStatus.success) {

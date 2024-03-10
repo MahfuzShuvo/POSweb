@@ -85,7 +85,6 @@ export class PosComponent implements OnInit {
 			if (this.salesCode != '') {
 				this.isEditMode = true;
 				setTimeout(() => {
-
 					this.getSalesByCode(this.salesCode);
 				}, 500);
 			} else {
@@ -99,10 +98,16 @@ export class PosComponent implements OnInit {
 
 	ngOnInit() {
 		this.selectedBranch = this.localStoreService.getData('Branch');
-		this.dataService.selectedBranch.subscribe((data: Branch) => {
+		this.dataService.selectedBranch.pipe(takeUntil(this.destroy)).subscribe((data: Branch) => {
 			if (data && data.BranchID > 0) {
 				this.selectedBranch = data;
 				this.getAllProduct();
+				if (this.salesCode != '') {
+					this.objSales = new Sales()
+					this.selectedDiscountType = null;
+					this.discountInput = 0;
+					this.getSalesByCode(this.salesCode);
+				}
 			}
 		})
 		this.getAllProduct();
@@ -114,11 +119,16 @@ export class PosComponent implements OnInit {
 	}
 
 	getSalesByCode(salesCode: string) {
-		this.salesService.getSalesBySalesCode(salesCode).subscribe(response => {
+		var payload = {
+			salesCode,
+			branchID: this.selectedBranch.BranchID
+		}
+		this.salesService.getSalesBySalesCode(payload).subscribe(response => {
 			if (response.ResponseCode == ResponseStatus.success) {
 				this.objSales = JSON.parse(JSON.stringify(response.ResponseObj));
 
 				if (this.objSales.Discount > 0) {
+					this.selectedDiscountType = this.lstDiscountType.filter(x => x.Id == this.objSales.DiscountType)[0];
 					if (this.objSales.DiscountType == 1) {
 						this.discountInput = (parseFloat(this.objSales.Discount.toString()) * 100) / parseFloat(this.objSales.SubTotal.toString());
 					} else {
@@ -509,6 +519,9 @@ export class PosComponent implements OnInit {
 			if (this.selectedPaymentType!.AccountID > 0 && this.selectedPaymentType!.AccountTitle!.toLowerCase() != 'cash') {
 				this.payAmountEntry(this.objSales.TotalSalesPrice);
 				this.isDisablePaymentAmount = true;
+			} else {
+				this.payAmountEntry(0);
+				this.isDisablePaymentAmount = false;
 			}
 
 		} else {

@@ -1,6 +1,7 @@
 export enum RecordStatus {
 	Active = 1,
 	Inactive = 2,
+	Hold = 3,
 	Deleted = 9
 }
 

@@ -4,9 +4,12 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Subject, takeUntil } from 'rxjs';
 import { ResponseStatus } from 'src/app/common/enums/appEnums';
 import { MessageHelper } from 'src/app/common/helper/messageHelper';
+import { DataService } from 'src/app/common/service/data.service';
 import { HeaderService } from 'src/app/common/service/header.service';
+import { LocalstoreService } from 'src/app/common/service/localstore.service';
 import { ResponseMessage } from 'src/app/models/DTO/responseMessage';
 import { VMPurchase } from 'src/app/models/VM/vmPurchase';
+import { Branch } from 'src/app/models/branch';
 import { Purchase } from 'src/app/models/purchase';
 import { PurchaseService } from 'src/app/services/purchase.service';
 
@@ -24,6 +27,7 @@ export class PurchaseComponent implements OnInit {
 	objPurchase: VMPurchase = new VMPurchase();
 	totalCount: number = 0;
 	modalRef?: BsModalRef;
+	selectedBranch: Branch = new Branch();
 
 	constructor(
 		private headerService: HeaderService,
@@ -31,18 +35,27 @@ export class PurchaseComponent implements OnInit {
 		private router: Router,
 		private messageHelper: MessageHelper,
 		private modalService: BsModalService,
-		private purchaseService: PurchaseService
+		private purchaseService: PurchaseService,
+		private localStoreService: LocalstoreService,
+		public dataService: DataService
 	) {
 		const headerTitle = this.activatedRoute.parent?.snapshot.url[0].path;
 		Promise.resolve().then(() => this.headerService.setTitle(headerTitle!.toString()));
 	}
 
 	ngOnInit() {
+		this.selectedBranch = this.localStoreService.getData('Branch');
+		this.dataService.selectedBranch.pipe(takeUntil(this.destroy)).subscribe((data: Branch) => {
+			if (data && data.BranchID > 0) {
+				this.selectedBranch = data;
+				this.getAllPurchase();
+			}
+		})
 		this.getAllPurchase();
 	}
 
 	getAllPurchase() {
-		this.purchaseService.getAllPurchase()
+		this.purchaseService.getAllPurchase(this.selectedBranch.BranchID)
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {
 				if (response.ResponseCode == ResponseStatus.success) {

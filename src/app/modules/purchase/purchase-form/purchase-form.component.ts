@@ -83,11 +83,18 @@ export class PurchaseFormComponent implements OnInit {
 
 	ngOnInit() {
 		this.selectedBranch = this.localStoreService.getData('Branch');
-		this.dataService.selectedBranch.subscribe((data: Branch) => {
+		this.dataService.selectedBranch.pipe(takeUntil(this.destroy)).subscribe((data: Branch) => {
 			if (data && data.BranchID > 0) {
 				this.selectedBranch = data;
 
 				this.getAllAccount();
+
+				if (this.purchaseCode != '') {
+					this.objPurchase = new Purchase();
+					this.selectedDiscountType = null;
+					this.discountInput = 0;
+					this.getPurchaseByCode(this.purchaseCode);
+				}
 			}
 		})
 		this.getAllSupplier();
@@ -99,14 +106,18 @@ export class PurchaseFormComponent implements OnInit {
 	}
 
 	getPurchaseByCode(purchaseCode: string) {
-		this.purchaseService.getPurchaseByPurchaseCode(purchaseCode).subscribe(response => {
+		var payload = {
+			purchaseCode,
+			branchID: this.selectedBranch.BranchID
+		}
+		this.purchaseService.getPurchaseByPurchaseCode(payload).subscribe(response => {
 			if (response.ResponseCode == ResponseStatus.success) {
 				this.objPurchase = JSON.parse(JSON.stringify(response.ResponseObj));
 
 				if (this.objPurchase.Discount > 0) {
+					this.selectedDiscountType = this.lstDiscountType.filter(x => x.Id == this.objPurchase.DiscountType)[0];
 					if (this.objPurchase.DiscountType == 1) {
 						this.discountInput = (parseFloat(this.objPurchase.Discount.toString()) * 100) / parseFloat(this.objPurchase.SubTotal.toString());
-						this.selectedDiscountType = this.lstDiscountType.filter(x => x.Id == this.objPurchase.DiscountType)[0];
 					} else {
 						this.discountInput = this.objPurchase.Discount;
 					}

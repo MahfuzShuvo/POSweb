@@ -20,7 +20,7 @@ export class HttpHelper {
 	// 	this.loadingSpinner.hide();
 	// }
 
-	postHelper(url: string, obj: any = {}, currentPage: number = 0, pageSize: number = 20,): Observable<any> {
+	postHelper(url: string, obj: any = {}, currentPage: number = 0, pageSize: number = 20): Observable<any> {
 		HttpHelper.numberOfRequest++;
 		let payload = {
 			RequestObj: obj,

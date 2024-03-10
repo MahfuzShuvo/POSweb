@@ -11,9 +11,9 @@ export class SalesService {
 		private httpHelper: HttpHelper
 	) { }
 
-	getAllSales(): Observable<any> {
+	getAllSales(obj: any): Observable<any> {
 		const url = 'api/Sales/GetAllSales';
-		return this.httpHelper.postHelper(url);
+		return this.httpHelper.postHelper(url, obj);
 	}
 
 	getSalesBySalesCode(obj: any): Observable<any> {

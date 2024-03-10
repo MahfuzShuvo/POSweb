@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 import { ResponseStatus } from 'src/app/common/enums/appEnums';
 import { MessageHelper } from 'src/app/common/helper/messageHelper';
+import { DataService } from 'src/app/common/service/data.service';
 import { HeaderService } from 'src/app/common/service/header.service';
+import { LocalstoreService } from 'src/app/common/service/localstore.service';
 import { VMPurchase } from 'src/app/models/VM/vmPurchase';
+import { Branch } from 'src/app/models/branch';
 import { PurchaseService } from 'src/app/services/purchase.service';
 
 @Component({
@@ -13,15 +17,19 @@ import { PurchaseService } from 'src/app/services/purchase.service';
 })
 export class PurchaseViewComponent implements OnInit {
 
+	private destroy: Subject<void> = new Subject<void>();
 	objPurchase: VMPurchase = new VMPurchase();
 	purchaseCode: string = '';
 	discountInput: number = 0;
-	
+	selectedBranch: Branch = new Branch();
+
 	constructor(
 		private headerService: HeaderService,
 		private activatedRoute: ActivatedRoute,
 		private messageHelper: MessageHelper,
 		private purchaseService: PurchaseService,
+		private localStoreService: LocalstoreService,
+		public dataService: DataService
 	) {
 		const headerTitle = this.activatedRoute.parent?.snapshot.url[0].path;
 		var childRoute = "";
@@ -39,31 +47,48 @@ export class PurchaseViewComponent implements OnInit {
 			}
 		});
 		Promise.resolve().then(() => this.headerService.setTitle(childRoute!.toString() + ' ' + headerTitle!.toString()));
-	 }
+	}
 
 	ngOnInit() {
+		this.selectedBranch = this.localStoreService.getData('Branch');
+		this.dataService.selectedBranch.pipe(takeUntil(this.destroy)).subscribe((data: Branch) => {
+			if (data && data.BranchID > 0) {
+				this.selectedBranch = data;
+
+				if (this.purchaseCode != '') {
+					this.objPurchase = new VMPurchase();
+					this.getPurchaseByCodeForView(this.purchaseCode);
+				}
+			}
+		})
 	}
 
 	getPurchaseByCodeForView(purchaseCode: string) {
-		this.purchaseService.getPurchaseByPurchaseCodeForView(purchaseCode).subscribe(response => {
-			if (response.ResponseCode == ResponseStatus.success) {
-				this.objPurchase = JSON.parse(JSON.stringify(response.ResponseObj));
+		var payload = {
+			purchaseCode,
+			branchID: this.selectedBranch.BranchID
+		}
+		this.purchaseService.getPurchaseByPurchaseCodeForView(payload)
+			.pipe(takeUntil(this.destroy))
+			.subscribe(response => {
+				if (response.ResponseCode == ResponseStatus.success) {
+					this.objPurchase = JSON.parse(JSON.stringify(response.ResponseObj));
 
-				// if (this.objPurchase.Discount > 0) {
-				// 	if (this.objPurchase.DiscountType == 1) {
-				// 		this.discountInput = (parseFloat(this.objPurchase.Discount.toString()) * 100) / parseFloat(this.objPurchase.SubTotal.toString());
-				// 	} else {
-				// 		this.discountInput =this.objPurchase.Discount;
-				// 	}
-				// }
+					// if (this.objPurchase.Discount > 0) {
+					// 	if (this.objPurchase.DiscountType == 1) {
+					// 		this.discountInput = (parseFloat(this.objPurchase.Discount.toString()) * 100) / parseFloat(this.objPurchase.SubTotal.toString());
+					// 	} else {
+					// 		this.discountInput =this.objPurchase.Discount;
+					// 	}
+					// }
 
-				this.objPurchase.PurchaseDate = new Date(this.objPurchase.PurchaseDate).toLocaleString();
+					this.objPurchase.PurchaseDate = new Date(this.objPurchase.PurchaseDate).toLocaleString();
 
-				// this.changeQty();
-			} else {
-				this.messageHelper.showMessage(response.ResponseCode, response.Message);
-			}
-		})
+					// this.changeQty();
+				} else {
+					this.messageHelper.showMessage(response.ResponseCode, response.Message);
+				}
+			})
 	}
 
 	calculateTotalQty() {
@@ -74,4 +99,8 @@ export class PurchaseViewComponent implements OnInit {
 		return this.objPurchase.lstProduct.map(p => (p.Qty * p.PurchasePrice)).reduce((a, b) => a + b);
 	}
 
+	ngOnDestroy(): void {
+		this.destroy.next();
+		this.destroy.unsubscribe();
+	}
 }

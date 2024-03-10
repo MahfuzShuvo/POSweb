@@ -11,9 +11,9 @@ export class PurchaseService {
 		private httpHelper: HttpHelper
 	) { }
 
-	getAllPurchase(): Observable<any> {
+	getAllPurchase(obj: any): Observable<any> {
 		const url = 'api/Purchase/GetAllPurchase';
-		return this.httpHelper.postHelper(url);
+		return this.httpHelper.postHelper(url, obj);
 	}
 
 	getPurchaseByPurchaseCode(obj: any): Observable<any> {

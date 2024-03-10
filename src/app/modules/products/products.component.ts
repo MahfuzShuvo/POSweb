@@ -64,7 +64,7 @@ export class ProductsComponent implements OnInit {
 
 	ngOnInit() {
 		this.selectedBranch = this.localStoreService.getData('Branch');
-		this.dataService.selectedBranch.subscribe((data: Branch) => {
+		this.dataService.selectedBranch.pipe(takeUntil(this.destroy)).subscribe((data: Branch) => {
 			if (data && data.BranchID > 0) {
 				this.selectedBranch = data;
 				this.getAllProduct();
