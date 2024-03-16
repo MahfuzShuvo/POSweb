@@ -139,6 +139,7 @@ export class ProductBarcodeComponent implements OnInit {
 			qty = parseInt(qty);
 			if (qty > product.Qty) {
 				product.BarcodeQty = product.Qty;
+				event.target.value = product.Qty;
 			} else if (qty < 1) {
 				product.BarcodeQty = 1;
 			}
