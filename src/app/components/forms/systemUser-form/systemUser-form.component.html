@@ -150,7 +150,7 @@
 				<div class="col-md-6">
 					<div class="form-group">
 						<label class="toggle">
-							<input class="toggle__checkbox" type="checkbox" (change)="toggleStatus($event)"
+							<input class="toggle__checkbox" hidden type="checkbox" (change)="toggleStatus($event)"
 								[checked]="objSystemUser.Status == 1">
 							<span class="toggle__switch"></span>
 							<span class="toggle__label">{{(objSystemUser.Status == 1) ? 'Active' : 'Inactive'}}</span>

@@ -41,13 +41,14 @@
 							<td>{{i+1}}</td>
 							<td>{{brand.BrandName}}</td>
 							<td>
-								<div class="description-cell" [tooltip]="brand.Description" container="body" 
+								<div class="description-cell" [tooltip]="brand.Description" container="body"
 									[adaptivePosition]="false" placement="top" containerClass="tooltipClass">
 									{{brand.Description}}
 								</div>
 							</td>
 							<td>
-								<img class="brandLogo" *ngIf="brand.Logo != ''" [src]="brand.Logo | SafeResourceUrl" alt="">
+								<img class="brandLogo" *ngIf="brand.Logo != ''" [src]="brand.Logo | SafeResourceUrl"
+									alt="">
 								<span *ngIf="brand.Logo == ''">-</span>
 							</td>
 							<td>
@@ -119,7 +120,8 @@
 					<img [src]="uploadedImageUrl | SafeResourceUrl" alt="">
 					<!-- <span class="font-11 weight-500">{{objBrand.LogoAttachment.Name}}</span> -->
 				</div>
-				<button *ngIf="uploadedImageUrl != ''" class="action-button upload-clear" type="button" (click)="clearUpload()">
+				<button *ngIf="uploadedImageUrl != ''" class="action-button upload-clear" type="button"
+					(click)="clearUpload()">
 					<i class='bx bx-x font-15'></i>
 				</button>
 			</label>
@@ -127,7 +129,7 @@
 				<div class="col-md-6">
 					<div class="form-group">
 						<label class="toggle">
-							<input class="toggle__checkbox" type="checkbox" (change)="toggleStatus($event)"
+							<input class="toggle__checkbox" hidden type="checkbox" (change)="toggleStatus($event)"
 								[checked]="objBrand.Status == 1">
 							<span class="toggle__switch"></span>
 							<span class="toggle__label">{{(objBrand.Status == 1) ? 'Active' : 'Inactive'}}</span>

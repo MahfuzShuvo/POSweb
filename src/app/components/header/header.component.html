@@ -55,6 +55,7 @@
 							{{holdSales.SalesCode}}
 						</li>
 					</ul> -->
+					<span class="weight-600 font-13 px-3">List of Hold Sales</span>
 					<div class="dropdown-table">
 						<table>
 							<thead>
@@ -65,8 +66,8 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr *ngIf="lstHoldSales!.length == 0">
-									<td colspan="3"><span class="txt-danger"></span></td>
+								<tr *ngIf="lstHoldSales!.length == 0" class="bg-white">
+									<td colspan="3"><span class="txt-danger">No data found</span></td>
 								</tr>
 								<tr *ngFor="let holdSales of lstHoldSales; let i=index"
 									(click)="selectHoldSales(holdSales); dropdown.isOpen = false">

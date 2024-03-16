@@ -96,7 +96,7 @@
 									</div> -->
 									<div class="form-group">
 										<label class="toggle">
-											<input class="toggle__checkbox" type="checkbox"
+											<input class="toggle__checkbox" type="checkbox" hidden
 												(change)="changeProductStatus($event, product)"
 												[checked]="product.Status == 1">
 											<span class="toggle__switch"></span>
@@ -106,6 +106,12 @@
 								</td>
 								<td>
 									<div class="d-flex align-items-center gap-3 justify-content-end">
+										<button type="button" class="action-button barcode" tooltip="Generate Barcode"
+											containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+											(click)="generateBarcode(product.SKU)">
+											<!-- <i class='bx bx-barcode font-18'></i> -->
+											<i class="fa fa-barcode font-15" aria-hidden="true"></i>
+										</button>
 										<button type="button" class="action-button edit" tooltip="Edit"
 											containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
 											(click)="editProduct(product.Slug)">

@@ -3,8 +3,8 @@
 		<div class="table-headings d-flex align-items-center justify-content-between">
 			<div class="table-search d-flex align-items-center gap-1">
 				<i class='bx bx-search-alt mt-1'></i>
-				<input type="text" class="form-control" name="searchCategory" #searchText placeholder="Search by name ..."
-					(keyup)="searchCategory(searchText.value)">
+				<input type="text" class="form-control" name="searchCategory" #searchText
+					placeholder="Search by name ..." (keyup)="searchCategory(searchText.value)">
 			</div>
 			<!-- <div class="d-flex align-items-center gap-2">
 				<div class="filter-search role-filter">
@@ -82,9 +82,9 @@
 		<div class="modal-body">
 			<div class="form-group">
 				<label for="categoryName" class="form-label">Name <span class="txt-danger">*</span></label>
-				<input type="text" name="categoryName" id="categoryName" class="form-control" [(ngModel)]="objCategory.CategoryName"
-					placeholder="Enter category name" required #categoryName="ngModel"
-					[ngClass]="{ 'is-invalid': categoryForm.submitted && categoryName.errors }">
+				<input type="text" name="categoryName" id="categoryName" class="form-control"
+					[(ngModel)]="objCategory.CategoryName" placeholder="Enter category name" required
+					#categoryName="ngModel" [ngClass]="{ 'is-invalid': categoryForm.submitted && categoryName.errors }">
 				<div *ngIf="categoryName.errors && (categoryName.dirty || categoryForm.submitted) && categoryName.invalid"
 					class="invalid-feedback">
 					<div *ngIf="categoryName.errors['required']">Name is required</div>
@@ -94,7 +94,7 @@
 				<div class="col-md-6">
 					<div class="form-group">
 						<label class="toggle">
-							<input class="toggle__checkbox" type="checkbox" (change)="toggleStatus($event)"
+							<input class="toggle__checkbox" hidden type="checkbox" (change)="toggleStatus($event)"
 								[checked]="objCategory.Status == 1">
 							<span class="toggle__switch"></span>
 							<span class="toggle__label">{{(objCategory.Status == 1) ? 'Active' : 'Inactive'}}</span>

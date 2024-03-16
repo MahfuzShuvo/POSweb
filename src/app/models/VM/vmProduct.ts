@@ -14,6 +14,7 @@ export class VMProduct {
     UnitName: string;
     BranchID: number;
     CategoryID: number;
+    BarcodeQty: number = 1;
 }
 
 export class VMProductSearch {

@@ -505,7 +505,7 @@ export class PosComponent implements OnInit {
 				if (response.ResponseCode == ResponseStatus.success) {
 					this.objSales = new Sales();
 					this.selectedCustomer = new Customer();
-					if (this.isEditMode) {
+					if (this.isEditMode && (this.childRoute && this.childRoute == 'edit')) {
 						this.getSalesByCode(this.salesCode)
 					}
 					this.modalRef?.hide();

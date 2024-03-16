@@ -20,6 +20,7 @@ const routes: Routes = [
 					{ path: 'pos', loadChildren: () => import('./modules/pos/pos.module').then(m => m.PosModule) },
 					{ path: 'dashboard', loadChildren: () => import('./modules/dashboard/dashboard.module').then(m => m.DashboardModule) },
 					{ path: 'product', loadChildren: () => import('./modules/products/products.module').then(m => m.ProductsModule) },
+					{ path: 'product/barcode', loadChildren: () => import('./modules/product-barcode/product-barcode.module').then(m => m.ProductBarcodeModule) },
 					{ path: 'sales', loadChildren: () => import('./modules/sales/sales.module').then(m => m.SalesModule) },
 					{ path: 'purchase', loadChildren: () => import('./modules/purchase/purchase.module').then(m => m.PurchaseModule) },
 					{ path: 'category', loadChildren: () => import('./modules/category/category.module').then(m => m.CategoryModule) },
