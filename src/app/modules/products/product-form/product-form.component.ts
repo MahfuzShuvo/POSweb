@@ -43,6 +43,7 @@ export class ProductFormComponent implements OnInit {
 	selectedUnit: Unit = new Unit();
 	productSlug: string = '';
 	isSellingPriceInputManually: boolean = false;
+	today: Date;
 
 	constructor(
 		private headerService: HeaderService,
@@ -74,6 +75,7 @@ export class ProductFormComponent implements OnInit {
 		this.getInitialDataForSaveProduct();
 		console.log('pro: ', this.objProduct);
 
+		this.today = new Date();
 	}
 
 	getProductBySlug(slug: string) {
@@ -123,6 +125,9 @@ export class ProductFormComponent implements OnInit {
 			return;
 		}
 		this.dataService.isFormSubmitting.next(true);
+		if (this.objProduct.ExpireDate) {
+			this.objProduct.ExpireDateString = new Date(this.objProduct.ExpireDate).toLocaleString();
+		}
 		if (this.objProduct.Image?.includes(AppConstant.FILE_PATH)) {
 			this.objProduct.Image = this.objProduct.Image.replace(AppConstant.FILE_PATH, '');
 		}

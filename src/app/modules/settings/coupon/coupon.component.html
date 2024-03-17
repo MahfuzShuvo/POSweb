@@ -1,0 +1,167 @@
+<div class="coupon-body">
+	<div class="table-headings d-flex align-items-center justify-content-between">
+		<div class="table-search d-flex align-items-center gap-1">
+			<i class='bx bx-search-alt mt-1'></i>
+			<input type="text" class="form-control" name="searchCoupon" #searchText placeholder="Search by name ..."
+				(keyup)="searchCoupon(searchText.value)">
+		</div>
+		<!-- <div class="d-flex align-items-center gap-2">
+				<div class="filter-search role-filter">
+					<select name="roleFilter" id="roleFilter">
+						<option [value]="0">All</option>
+						<option [value]="role.RoleID" *ngFor="let role of lstRole">{{role.RoleName}}</option>
+					</select>
+				</div>
+				<div class="filter-search status-filter">
+					<select name="statusFilter" id="statusFilter">
+						<option [value]="0">All</option>
+						<option [value]="1">Active</option>
+						<option [value]="2">Inactive</option>
+					</select>
+				</div>
+			</div> -->
+		<button type="button" class="theme-button" (click)="createCoupon()">+ Add New</button>
+	</div>
+	<div class="coupon-table mt-1">
+		<section class="table__body">
+			<table>
+				<thead>
+					<tr>
+						<th>SL.</th>
+						<th>Coupon Code</th>
+						<th>Type</th>
+						<th>Value</th>
+						<th>Remaining</th>
+						<th>Start Date</th>
+						<th>End Date</th>
+						<th>Status</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let coupon of lstCoupon; let i = index">
+						<td>{{i+1}}</td>
+						<td>{{coupon.CouponCode}}</td>
+						<td>
+							{{(coupon.Type == 1) ? 'Percentage (%)'
+							: (coupon.Type == 2) ? 'Fixed (৳)' : '-'}}
+						</td>
+						<td>
+							{{(coupon.Type == 1) ? coupon.Value
+							: (coupon.Type == 2) ? (coupon.Value | currency:'BDT':'symbol':'1.2-2':'bn-BD') : 0}}
+						</td>
+						<td>
+							{{remainingCoupon(coupon)}}
+						</td>
+						<td>{{coupon.StartDate ? (coupon.StartDate | date: 'dd/MM/yyyy') : '-'}}</td>
+						<td>{{coupon.EndDate ? (coupon.EndDate | date: 'dd/MM/yyyy') : '-'}}</td>
+						<td>
+							<div class="badge" [class.inactive-badge]="coupon.Status == 2"
+								[class.active-badge]="coupon.Status == 1">
+								{{coupon.Status == 1 ? 'Active' : 'Inactive'}}
+							</div>
+						</td>
+						<td>
+							<div class="d-flex align-items-center gap-3 justify-content-end">
+								<button type="button" class="action-button edit" tooltip="Edit"
+									containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+									(click)="editCoupon(coupon)">
+									<i class='bx bxs-edit font-15'></i>
+								</button>
+								<button type="button" class="action-button delete" tooltip="Delete"
+									containerClass="tooltipClass" placement="top" [adaptivePosition]="false"
+									(click)="deleteCoupon(coupon)">
+									<i class='bx bx-trash font-15'></i>
+								</button>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+		<div class="table-row-count">
+			<span class="txt-light font-11">Total Row:</span>
+			{{totalCount}}
+		</div>
+	</div>
+</div>
+
+
+<!-- add & edit coupon -->
+<ng-template #couponFormModal>
+	<div class="modal-header">
+		<div class="modal-title text-center font-15 weight-500">{{modalTitle}} Coupon</div>
+		<!-- <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+		<span aria-hidden="true" class="visually-hidden">&times;</span>
+	  </button> -->
+	</div>
+	<form autocomplete="off" #couponForm="ngForm" (ngSubmit)="couponForm.form.valid && saveCoupon()" novalidate>
+		<div class="modal-body">
+			<div class="form-group">
+				<label for="couponCode" class="form-label">Name <span class="txt-danger">*</span></label>
+				<input type="text" name="couponCode" id="couponCode" class="form-control"
+					[(ngModel)]="objCoupon.CouponCode" placeholder="Enter coupon name" required #couponCode="ngModel"
+					[ngClass]="{ 'is-invalid': couponForm.submitted && couponCode.errors }">
+				<div *ngIf="couponCode.errors && (couponCode.dirty || couponForm.submitted) && couponCode.invalid"
+					class="invalid-feedback">
+					<div *ngIf="couponCode.errors['required']">Coupon code is required</div>
+				</div>
+			</div>
+			<div class="form-group mt-2">
+				<label for="discountType" class="form-label">Type <span class="txt-danger">*</span></label>
+				<custom-select-dropdown [id]="'discount'" [lstItem]="lstDiscountType" [key]="'Discount'"
+					(onSelectEvent)="selectDiscount($event)" [isClearSelection]="false"
+					[selectedItem]="selectedDiscountType"></custom-select-dropdown>
+
+			</div>
+			<div class="form-group mt-2">
+				<label for="couponValue" class="form-label">Value <span class="txt-danger">*</span></label>
+				<input type="text" name="couponValue" id="couponValue" class="form-control" placeholder="00.00"
+					[(ngModel)]="objCoupon.Value" (input)="couponValueEntry(couponValue.value)" mask="separator.2"
+					thousandSeparator="," decimalMarker="." required #couponValue>
+			</div>
+			<div class="form-group mt-2">
+				<label for="purchaseDate" class="form-label">Coupon Duration</label>
+				<input class="form-control" name="purchaseDate" id="purchaseDate" placeholder="00/00/0000 - 00/00/0000"
+					#drp="bsDaterangepicker" bsDaterangepicker [(ngModel)]="bsRangeValue" [minDate]="today"
+					[bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', rangeInputFormat: 'DD/MM/YYYY', adaptivePosition: true }">
+			</div>
+			<div class="row mt-3">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label class="toggle">
+							<input class="toggle__checkbox" hidden type="checkbox" (change)="toggleStatus($event)"
+								[checked]="objCoupon.Status == 1">
+							<span class="toggle__switch"></span>
+							<span class="toggle__label">{{(objCoupon.Status == 1) ? 'Active' : 'Inactive'}}</span>
+						</label>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group"></div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="cancel-button" (click)="modalRef?.hide()">Cancel</button>
+			<button type="submit" class="theme-button">{{buttonText}}</button>
+		</div>
+	</form>
+</ng-template>
+
+<!-- delete coupon -->
+<ng-template #deleteModal>
+	<div class="modal-header">
+		<div class="modal-title text-center font-15 weight-500">Delete Coupon</div>
+		<!-- <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+		<span aria-hidden="true" class="visually-hidden">&times;</span>
+	  </button> -->
+	</div>
+	<div class="modal-body">
+		<div class="text-center txt-danger">Are you sure to delete this coupon?</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="cancel-button" (click)="modalRef?.hide()">No</button>
+		<button type="button" class="danger-button" (click)="confirmDelete()">Yes</button>
+	</div>
+</ng-template>

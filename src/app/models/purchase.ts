@@ -4,7 +4,8 @@ import { BaseModel } from './baseModel';
 export class Purchase extends BaseModel {
     PurchaseID: number;
     PurchaseCode: string;
-    PurchaseDate: string;
+    PurchaseDate: Date;
+    PurchaseDateString: string;
     PurchaseStatus: number = 1;
     BranchID: number;
     SupplierID!: number;

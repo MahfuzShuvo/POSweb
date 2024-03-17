@@ -39,7 +39,8 @@
 						<div class="form-group">
 							<label for="purchaseDate" class="form-label">Purchase Date</label>
 							<input class="form-control" name="purchaseDate" id="purchaseDate" placeholder="00/00/0000"
-								bsDatepicker [maxDate]="maxDate" [(ngModel)]="objPurchase.PurchaseDate">
+								bsDatepicker [maxDate]="maxDate" [(ngModel)]="objPurchase.PurchaseDate"
+								[bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }">
 						</div>
 					</div>
 					<div class="col-md-3">

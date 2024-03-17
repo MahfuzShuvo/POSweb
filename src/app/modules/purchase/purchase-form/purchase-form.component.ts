@@ -100,7 +100,7 @@ export class PurchaseFormComponent implements OnInit {
 		this.getAllSupplier();
 		this.getAllAccount();
 		this.maxDate = new Date();
-		this.objPurchase.PurchaseDate = new Date(this.maxDate).toLocaleString();
+		this.objPurchase.PurchaseDate = new Date(this.maxDate);
 		this.objPurchase.BranchID = this.selectedBranch.BranchID;
 		this.selectedStatus = this.lstPurchaseStatus.filter(x => x.Id == this.objPurchase.PurchaseStatus)[0];
 	}
@@ -123,7 +123,7 @@ export class PurchaseFormComponent implements OnInit {
 					}
 				}
 
-				this.objPurchase.PurchaseDate = new Date(this.objPurchase.PurchaseDate).toLocaleString();
+				// this.objPurchase.PurchaseDate = new Date(this.objPurchase.PurchaseDate).toLocaleString();
 				this.selectedStatus = this.lstPurchaseStatus.filter(x => x.Id == this.objPurchase.PurchaseStatus)[0];
 				this.selectedPaymentType = this.lstAccount.filter(x => x.AccountID == this.objPurchase.PaymentType)[0];
 				this.changeQty();
@@ -297,7 +297,8 @@ export class PurchaseFormComponent implements OnInit {
 			this.messageHelper.showMessage(ResponseStatus.warning, "Didn't select any product to purchase");
 			return;
 		}
-		this.objPurchase.PurchaseDate = new Date(this.objPurchase.PurchaseDate).toLocaleString();
+
+		this.objPurchase.PurchaseDateString = new Date(this.objPurchase.PurchaseDate).toLocaleString();
 		if (this.objPurchase.PaymentAmount > 0) {
 			if (this.objPurchase.PaymentType == 0) {
 				this.messageHelper.showMessage(ResponseStatus.warning, "For payment, you have to select payment type");

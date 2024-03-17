@@ -12,6 +12,7 @@ export class Product extends BaseModel {
     CategoryID: number;
     BrandID: number;
     ExpireDate!: Date;
+    ExpireDateString!: string;
     Qty: number = 0;
     MinQty: number = 0;
     Cost: number;

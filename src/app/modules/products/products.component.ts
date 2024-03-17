@@ -196,7 +196,7 @@ export class ProductsComponent implements OnInit {
 	}
 
 	generateBarcode(sku: string) {
-		this.router.navigate(['product/barcode', sku])
+		this.router.navigate(['product-barcode', sku])
 	}
 
 	openImportModal() {

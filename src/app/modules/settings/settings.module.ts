@@ -8,9 +8,9 @@ import { SettingsComponent } from './settings.component';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from 'src/app/shared.module';
 import { RolePermissionComponent } from './role-permission/role-permission.component';
-import { PaymentStatusComponent } from './payment-status/payment-status.component';
 import { UnitComponent } from './unit/unit.component';
 import { BranchComponent } from './branch/branch.component';
+import { CouponComponent } from './coupon/coupon.component';
 
 const routes: Routes = [
 	{ path: '', redirectTo: 'system-user', pathMatch: 'full' },
@@ -23,7 +23,7 @@ const routes: Routes = [
 			{ path: 'role-permission', component: RolePermissionComponent },
 			{ path: 'branch', component: BranchComponent },
 			{ path: 'unit', component: UnitComponent },
-			{ path: 'payment-status', component: PaymentStatusComponent },
+			{ path: 'coupon', component: CouponComponent },
 		]
 	},
 ]
@@ -42,7 +42,8 @@ const routes: Routes = [
 		AccountsComponent,
 		AccountStatementSidebarComponent,
 		UnitComponent,
-		BranchComponent
+		BranchComponent,
+		CouponComponent
 	]
 })
 export class SettingsModule { }

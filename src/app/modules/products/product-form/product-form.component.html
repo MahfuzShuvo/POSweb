@@ -110,8 +110,11 @@
 						<div class="col-md-3">
 							<div class="form-group">
 								<label for="expireDate" class="form-label">Expire Date</label>
-								<input type="date" id="expireDate" class="form-control" name="expireDate"
-									[(ngModel)]="objProduct.ExpireDate">
+								<!-- <input type="date" id="expireDate" class="form-control" name="expireDate"
+									[(ngModel)]="objProduct.ExpireDate"> -->
+								<input class="form-control" name="expireDate" id="expireDate" placeholder="00/00/0000"
+									bsDatepicker [minDate]="today" [(ngModel)]="objProduct.ExpireDate"
+									[bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }">
 							</div>
 						</div>
 					</div>

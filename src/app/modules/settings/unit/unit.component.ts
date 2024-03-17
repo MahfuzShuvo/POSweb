@@ -78,12 +78,12 @@ export class UnitComponent implements OnInit {
 		this.modalRef = this.modalService.show(this.unitFormModal);
 	}
 
-	editUnit(brand: Unit) {
+	editUnit(unit: Unit) {
 		this.modalTitle = 'Edit';
 		this.buttonText = 'Update';
 
 		this.objUnit = new Unit();
-		this.objUnit = JSON.parse(JSON.stringify(brand));
+		this.objUnit = JSON.parse(JSON.stringify(unit));
 		this.modalRef = this.modalService.show(this.unitFormModal);
 	}
 
@@ -109,9 +109,9 @@ export class UnitComponent implements OnInit {
 			})
 	}
 
-	deleteUnit(brand: Unit) {
+	deleteUnit(unit: Unit) {
 		this.objUnit = new Unit();
-		this.objUnit = JSON.parse(JSON.stringify(brand));
+		this.objUnit = JSON.parse(JSON.stringify(unit));
 
 		this.modalRef = this.modalService.show(this.deleteModal);
 	}
