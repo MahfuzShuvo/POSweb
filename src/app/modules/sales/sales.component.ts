@@ -137,7 +137,7 @@ export class SalesComponent implements OnInit {
 						var sales = new VMSales();
 						sales = JSON.parse(JSON.stringify(response.ResponseObj));
 
-						this.exportToExcel(sales);
+						this.exportCSV(sales);
 					} else {
 						this.messageHelper.showMessage(ResponseStatus.warning, "No data found to export");
 					}
@@ -148,7 +148,7 @@ export class SalesComponent implements OnInit {
 			})
 
 	}
-	exportToExcel(data: any) {
+	exportCSV(data: any) {
 
 		const replacer = (key: any, value: any) => (value === null
 			? ''
