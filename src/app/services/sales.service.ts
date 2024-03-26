@@ -39,4 +39,9 @@ export class SalesService {
 		const url = 'api/Sales/DeleteSales';
 		return this.httpHelper.postHelper(url, obj);
 	}
+
+	getSaleForExport(obj: any): Observable<any> {
+		const url = 'api/Sales/GetSaleForExport';
+		return this.httpHelper.postHelper(url, obj);
+	}
 }

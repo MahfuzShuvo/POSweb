@@ -5,6 +5,7 @@ export class VMSales {
     SalesCode: string;
     SalesDate: string;
     BranchID: number;
+    BranchName: number;
     SubTotal: number;
     TotalSalesPrice: number;
     DiscountType: string;

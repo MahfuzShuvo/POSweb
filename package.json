@@ -21,6 +21,8 @@
     "chart.js": "^4.4.0",
     "ngx-barcode": "^0.3.0",
     "ngx-bootstrap": "^9.0.0",
+    "jquery": "^3.6.1",
+    "moment": "^2.29.4",
     "ngx-mask": "^14.3.3",
     "ngx-progressbar": "^6.1.1",
     "ngx-toastr": "^14.3.0",

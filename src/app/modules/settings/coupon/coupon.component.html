@@ -100,7 +100,8 @@
 			<div class="form-group">
 				<label for="couponCode" class="form-label">Name <span class="txt-danger">*</span></label>
 				<input type="text" name="couponCode" id="couponCode" class="form-control"
-					[(ngModel)]="objCoupon.CouponCode" placeholder="Enter coupon name" required #couponCode="ngModel"
+					[(ngModel)]="objCoupon.CouponCode" (ngModelChange)="objCoupon.CouponCode = $event.toUpperCase()"
+					placeholder="Enter coupon name" required #couponCode="ngModel"
 					[ngClass]="{ 'is-invalid': couponForm.submitted && couponCode.errors }">
 				<div *ngIf="couponCode.errors && (couponCode.dirty || couponForm.submitted) && couponCode.invalid"
 					class="invalid-feedback">

@@ -1,5 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import * as moment from 'moment';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Subject, takeUntil } from 'rxjs';
 import { ResponseStatus } from 'src/app/common/enums/appEnums';
@@ -11,6 +12,7 @@ import { ResponseMessage } from 'src/app/models/DTO/responseMessage';
 import { VMSales } from 'src/app/models/VM/vmSales';
 import { Branch } from 'src/app/models/branch';
 import { SalesService } from 'src/app/services/sales.service';
+
 
 @Component({
 	selector: 'app-sales',
@@ -27,6 +29,7 @@ export class SalesComponent implements OnInit {
 	totalCount: number = 0;
 	modalRef?: BsModalRef;
 	selectedBranch: Branch = new Branch();
+	isExporting: boolean = false;
 
 	constructor(
 		private headerService: HeaderService,
@@ -116,6 +119,102 @@ export class SalesComponent implements OnInit {
 
 	viewSales(salesCode: string) {
 		this.router.navigate(['sales/view', salesCode])
+	}
+	exportSales() {
+		this.isExporting = true;
+
+		var payload = {
+			branchID: this.selectedBranch.BranchID,
+			startDate: null,
+			endDate: null
+		}
+
+		this.salesService.getSaleForExport(payload)
+			.pipe(takeUntil(this.destroy))
+			.subscribe((response: ResponseMessage) => {
+				if (response.ResponseCode == ResponseStatus.success) {
+					if (response.ResponseObj) {
+						var sales = new VMSales();
+						sales = JSON.parse(JSON.stringify(response.ResponseObj));
+
+						this.exportToExcel(sales);
+					} else {
+						this.messageHelper.showMessage(ResponseStatus.warning, "No data found to export");
+					}
+				} else {
+					this.messageHelper.showMessage(response.ResponseCode, response.Message);
+					this.isExporting = false;
+				}
+			})
+
+	}
+	exportToExcel(data: any) {
+
+		const replacer = (key: any, value: any) => (value === null
+			? ''
+			: this.isDate(value)
+				? moment(value).format("DD/MM/YYYY, hh:mm a")
+				: value); 		// specify how you want to handle null values here
+		const header = Object.keys(data[0]);
+
+		if (header.length > 0) {
+			this.removeItem(header, 'lstProduct');
+			this.removeItem(header, 'objCustomer');
+			this.removeItem(header, 'BranchID');
+			this.removeItem(header, 'Status');
+		}
+
+		const csv = data.map((row: any) => header.map((fieldName) => JSON.stringify(row[fieldName], replacer)).join(','));
+
+		csv.unshift(header.join(','));
+		const csvArray = csv.join('\r\n');
+
+		const a = document.createElement('a');
+		const blob = new Blob([csvArray], { type: 'text/csv' });
+		const url = window.URL.createObjectURL(blob);
+
+		a.href = url;
+		a.download = `sales_report_${moment().format('DD_MM_YYYY_hh_mm_a')}.csv`;
+		a.click();
+		window.URL.revokeObjectURL(url);
+		a.remove();
+		this.isExporting = false;
+	}
+
+	removeItem(arr: any[], value: any) {
+		const index = arr.indexOf(value);
+
+		if (index > -1) {
+			arr.splice(index, 1);
+		}
+
+		return arr;
+	}
+
+	isDate(value: any): boolean {
+		// Check if the value is null, undefined, or not a string
+		if (!value || typeof value !== 'string') {
+			return false;
+		}
+
+		// Attempt to create a Date object from the value
+		const parsedDate = new Date(value);
+
+		// Check if the parsed date is a valid date and not NaN
+		if (isNaN(parsedDate.getTime())) {
+			// If the parsed date is invalid, attempt to parse using Date.parse
+			const parsedTimestamp = Date.parse(value);
+
+			// If Date.parse returns a valid timestamp, it's a valid date
+			if (!isNaN(parsedTimestamp)) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		// If the parsed date is valid, return true
+		return true;
 	}
 
 	ngOnDestroy(): void {

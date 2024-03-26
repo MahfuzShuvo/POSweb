@@ -158,9 +158,12 @@ export class ExpenseComponent implements OnInit {
 	}
 
 	numbersOnlyValidator(event: any) {
-		const pattern = /^[0-9\-]*$/;
-		if (!pattern.test(event.target.value)) {
-			event.target.value = event.target.value.replace(/[^0-9\-]/g, "");
+		// const pattern = /^[0-9\-]*$/;
+		// if (!pattern.test(event.target.value)) {
+		// 	event.target.value = event.target.value.replace(/[^0-9\-]/g, "");
+		// }
+		if (event > 0) {
+			this.objExpense.Amount = parseFloat(event);
 		}
 	}
 

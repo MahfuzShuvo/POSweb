@@ -201,8 +201,9 @@
 		<div class="modal-body">
 			<div class="form-group mt-2">
 				<label for="accounBalance" class="form-label">Balance</label>
-				<input type="number" name="accounBalance" id="accounBalance" class="form-control" placeholder="00.00"
-					(input)="balanceEntry(accountBalance.value)" required #accountBalance>
+				<input type="text" name="accounBalance" id="accounBalance" class="form-control text-center"
+					placeholder="00.00" [(ngModel)]="objAccount.Balance" (input)="balanceEntry(accountBalance.value)"
+					mask="separator.2" thousandSeparator="," decimalMarker="." required #accountBalance>
 			</div>
 		</div>
 		<div class="modal-footer">

@@ -81,7 +81,9 @@ export class CouponComponent implements OnInit {
 		this.buttonText = 'Save';
 
 		this.objCoupon = new Coupon();
+		this.bsRangeValue = [];
 		this.selectedDiscountType = this.lstDiscountType.filter(x => x.Id == this.objCoupon.Type)[0];
+
 		this.modalRef = this.modalService.show(this.couponFormModal);
 	}
 
@@ -177,13 +179,11 @@ export class CouponComponent implements OnInit {
 	remainingCoupon(coupon: Coupon) {
 		var result = '';
 		if (coupon.StartDate && coupon.EndDate) {
-			var dif = this.dayDifference(coupon.StartDate, coupon.EndDate);
-
 			if (new Date(coupon.StartDate).valueOf() > new Date().valueOf()) {
 				this.couponStat = 1;
-				result = `Start after ${this.dayDifference(coupon.StartDate, coupon.EndDate)} days`;
-			} else if (new Date(coupon.StartDate).valueOf() <= new Date().valueOf() && new Date(coupon.StartDate).valueOf() < new Date(coupon.EndDate).valueOf()) {
-				result = `${dif} days remaining`;
+				result = `Start after ${this.dayDifference(new Date(), coupon.EndDate)} days`;
+			} else if (new Date(coupon.StartDate).valueOf() <= new Date().valueOf() && new Date(coupon.EndDate).valueOf() >= new Date().valueOf()) {
+				result = `${this.dayDifference(coupon.StartDate, coupon.EndDate)} days remaining`;
 				this.couponStat = 2;
 			} else {
 				result = 'Expired';

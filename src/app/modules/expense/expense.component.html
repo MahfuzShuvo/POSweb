@@ -94,7 +94,7 @@
 				<input type="text" name="expenseAmount" id="expenseAmount" class="form-control"
 					[(ngModel)]="objExpense.Amount" placeholder="Enter expense amount" required #expenseAmount="ngModel"
 					[ngClass]="{ 'is-invalid': expenseForm.submitted && expenseAmount.errors }"
-					(input)="numbersOnlyValidator($event)">
+					(input)="numbersOnlyValidator($event)" mask="separator.2" thousandSeparator="," decimalMarker=".">
 				<div *ngIf="expenseAmount.errors && (expenseAmount.dirty || expenseForm.submitted) && expenseAmount.invalid"
 					class="invalid-feedback">
 					<div *ngIf="expenseAmount.errors['required']">Amount is required</div>
@@ -110,16 +110,6 @@
 				<label for="selectAccount" class="form-label">Account <span class="txt-danger">*</span></label>
 				<custom-select-dropdown [id]="'account'" [lstItem]="lstAccount" [key]="'AccountTitle'"
 					(onSelectEvent)="selectAccount($event)" [selectedItem]="selectedAccount"></custom-select-dropdown>
-				<!-- <select name="selectAccount" id="selectAccount" class="form-select" #accounId="ngModel"
-					[(ngModel)]="objExpense.AccountID" required
-					[ngClass]="{ 'is-invalid': expenseForm.submitted && accounId.errors }">
-					<option [value]="0">Select account</option>
-					<option [value]="account.AccountID" *ngFor="let account of lstAccount">{{account.AccountTitle}}
-					</option>
-				</select> -->
-				<!-- <div *ngIf="expenseForm.submitted && accounId.errors" class="invalid-feedback">
-					<div *ngIf="accounId.errors['required']">Account is required</div>
-				</div> -->
 			</div>
 		</div>
 		<div class="modal-footer">

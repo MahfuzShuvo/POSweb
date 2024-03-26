@@ -1,6 +1,6 @@
 <div class="body-wrapper-card card">
 	<div class="sales-body">
-		<div class="table-headings d-flex align-items-center justify-content-between">
+		<div class="table-headings d-flex align-items-center gap-2 justify-content-between">
 			<div class="table-search d-flex align-items-center gap-1">
 				<i class='bx bx-search-alt mt-1'></i>
 				<input type="text" class="form-control" name="searchSales" #searchText
@@ -21,6 +21,11 @@
 					</select>
 				</div>
 			</div> -->
+			<button type="button" class="secondary-theme-button exp-btn" [disabled]="isExporting"
+				(click)="exportSales()">
+				<i class='bx bx-export font-15' [class.bx-burst]="isExporting"></i>
+				Export
+			</button>
 			<button type="button" class="theme-button" (click)="addSales()">+ Add New</button>
 		</div>
 		<div class="sales-table mt-1">

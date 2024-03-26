@@ -178,7 +178,7 @@ export class AccountsComponent implements OnInit {
 
 	balanceEntry(balance: any) {
 		if (balance > 0) {
-			this.objAccount.Balance = balance;
+			this.objAccount.Balance = parseFloat(balance);
 		}
 	}
 
