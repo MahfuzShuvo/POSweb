@@ -11,6 +11,7 @@ import { RolePermissionComponent } from './role-permission/role-permission.compo
 import { UnitComponent } from './unit/unit.component';
 import { BranchComponent } from './branch/branch.component';
 import { CouponComponent } from './coupon/coupon.component';
+import { NgDragDropModule } from 'ng-drag-drop';
 
 const routes: Routes = [
 	{ path: '', redirectTo: 'system-user', pathMatch: 'full' },
@@ -32,7 +33,8 @@ const routes: Routes = [
 	imports: [
 		CommonModule,
 		SharedModule.forRoot(),
-		RouterModule.forChild(routes)
+		RouterModule.forChild(routes),
+		NgDragDropModule.forRoot()
 	],
 	declarations: [
 		SettingsComponent,

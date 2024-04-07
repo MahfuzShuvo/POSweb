@@ -1,13 +1,32 @@
 <div class="button-wrapper">
-	<button type="button" class="theme-button font-11" (click)="openRoleModal()">Add Role</button>
-	<button type="button" class="secondary-theme-button font-11" (click)="openPermissionModal()">Add Permission</button>
+	<div class="d-flex align-items-center gap-2">
+		<button type="button" class="theme-button font-11" (click)="openRoleModal()">Add Role</button>
+		<button type="button" class="secondary-theme-button font-11" (click)="openPermissionModal()">Add
+			Permission</button>
+		<div class="switch-dragDrop">
+			<div *ngIf="!isEnabledDragDrop" class="txt-light font-11 weight-400">
+				To sequence the permission, <a class="theme-link weight-500 txt-success"
+					(click)="enableDragDrop()">Enable</a> Drag
+				and Drop option
+			</div>
+			<div *ngIf="isEnabledDragDrop" class="txt-light font-11 weight-400">
+				<a class="theme-link weight-500 txt-danger" (click)="enableDragDrop()">Disable</a> Drag and Drop
+				option
+			</div>
+		</div>
+	</div>
+	<div *ngIf="isSequencePermission" class="seq-button-group d-flex align-items-center justify-content-end gap-2">
+		<button type="button" class="cancel-button font-11" (click)="cancelSequence()">Cancel</button>
+		<button type="button" class="success-button font-11" (click)="saveSequence()"
+			[disabled]="dataService.isFormSubmitting | async">Save Sequence</button>
+	</div>
 </div>
 <div class="role-permission-table mt-2">
 	<section class="table__body">
 		<table>
 			<thead>
 				<tr>
-					<th>Permission</th>
+					<th>Menu / Permission</th>
 					<th *ngFor="let role of lstRole">
 						<div class="d-flex align-items-center gap-2">
 							<span>{{role.RoleName}}</span>
@@ -19,8 +38,39 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr *ngFor="let permission of lstPermission">
-					<td>{{permission.DisplayName}}</td>
+				<tr *ngFor="let permission of lstPermission" [class.draggable-cls]="isEnabledDragDrop"
+					[dropEnabled]="isEnabledDragDrop" [dragEnabled]="isEnabledDragDrop" draggable droppable
+					[dragData]="permission" (onDrop)="onItemDrop($event)">
+					<td>
+						<div class="d-flex align-items-center gap-2 justify-content-between">
+							<div class="d-flex align-items-center gap-2">
+								<svg *ngIf="isEnabledDragDrop" xmlns="http://www.w3.org/2000/svg" width="4.633"
+									height="7.721" viewBox="0 0 4.633 7.721">
+									<g id="draggable" transform="translate(-11.25 -6.75)">
+										<path id="Path_6388" data-name="Path 6388" d="M11.25,6.75h1.544V8.294H11.25Z"
+											transform="translate(0)" fill="#b1b1b1" />
+										<path id="Path_6389" data-name="Path 6389" d="M20.25,6.75h1.544V8.294H20.25Z"
+											transform="translate(-5.912)" fill="#b1b1b1" />
+										<path id="Path_6390" data-name="Path 6390" d="M11.25,15.75h1.544v1.544H11.25Z"
+											transform="translate(0 -5.912)" fill="#b1b1b1" />
+										<path id="Path_6391" data-name="Path 6391" d="M20.25,15.75h1.544v1.544H20.25Z"
+											transform="translate(-5.912 -5.912)" fill="#b1b1b1" />
+										<path id="Path_6392" data-name="Path 6392" d="M11.25,24.75h1.544v1.544H11.25Z"
+											transform="translate(0 -11.823)" fill="#b1b1b1" />
+										<path id="Path_6393" data-name="Path 6393" d="M20.25,24.75h1.544v1.544H20.25Z"
+											transform="translate(-5.912 -11.823)" fill="#b1b1b1" />
+									</g>
+								</svg>
+								<div class="icon-box">
+									<i class="material-icons font-15">{{permission.Icon}}</i>
+								</div>
+								<span>{{permission.DisplayName}}</span>
+							</div>
+							<button type="button" class="action-button role-edit" (click)="editPermission(permission)">
+								<i class='bx bx-edit-alt font-15'></i>
+							</button>
+						</div>
+					</td>
 					<td *ngFor="let role of lstRole">
 						<div class="form-check d-flex p-0">
 							<input type="checkbox" name="checkRole" id="{{permission.PermissionName}}_{{role.RoleID}}"
@@ -86,6 +136,21 @@
 				<div *ngIf="permissionName.errors && (permissionName.dirty || permissionForm.submitted) && permissionName.invalid"
 					class="invalid-feedback">
 					<div *ngIf="permissionName.errors['required']">Permission name is required</div>
+				</div>
+			</div>
+			<div class="form-group mt-2">
+				<label for="permissionIcon" class="form-label">Set icon <span class="txt-danger">*</span></label>
+				<div class="table-search d-flex align-items-center gap-1">
+					<i class='bx bx-search-alt mt-1'></i>
+					<input type="text" class="form-control" #searchIconText name="searchProduct"
+						placeholder="Search ..." (keyup)="searchIcon($event)">
+				</div>
+				<div class="icon-group mt-2">
+					<div class="icon-item" [class.selected]="objPermission.Icon == icon" *ngFor="let icon of lstIcon"
+						(click)="objPermission.Icon=icon">
+						<!-- <i [class]="icon"></i> -->
+						<i class="material-icons">{{icon}}</i>
+					</div>
 				</div>
 			</div>
 		</div>

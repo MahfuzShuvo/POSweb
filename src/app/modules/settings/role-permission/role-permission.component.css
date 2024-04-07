@@ -1,6 +1,7 @@
 .button-wrapper {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: var(--gap-10);
 }
 
@@ -12,4 +13,68 @@
 
 .role-edit:hover i {
     color: var(--secondary-theme-color);
+}
+
+.icon-group {
+    display: flex;
+    align-content: flex-start;
+    flex-wrap: wrap;
+    /* grid-template-columns: repeat(8, 1fr); */
+    gap: 12px;
+    height: calc(100vh - 400px);
+    overflow: auto;
+}
+
+.icon-item {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    background: var(--light-border-color);
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    opacity: .7;
+}
+
+.icon-item:hover {
+    border-color: var(--secondary-theme-color);
+    background: var(--light-secondary-theme-color);
+}
+
+.icon-item.selected {
+    border-color: var(--secondary-theme-color);
+    background: var(--secondary-theme-color);
+    opacity: 1;
+}
+
+.icon-box i,
+.icon-item i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.table-search {
+    flex: 1;
+}
+
+.table-search input {
+    border: none;
+    background: transparent;
+    height: 30px;
+    padding: 5px;
+}
+
+.table-search i {
+    font-size: var(--font-15);
+    color: var(--border-color);
+}
+
+.icon-box {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: var(--thead-color);
+    position: relative;
 }

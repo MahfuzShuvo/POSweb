@@ -10,4 +10,5 @@ export class AppConstant {
         { Id: 1, Discount: 'Percentage (%)' },
         { Id: 2, Discount: 'Fixed (৳)' },
     ];
+    public static readonly ICON_URL = 'https://raw.githubusercontent.com/google/material-design-icons/master/font/MaterialIcons-Regular.codepoints'
 }

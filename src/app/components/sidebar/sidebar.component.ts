@@ -8,6 +8,8 @@ import { Component, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { ResponseStatus } from 'src/app/common/enums/appEnums';
 import { DataService } from 'src/app/common/service/data.service';
+import { Permission } from 'src/app/models/permission';
+import { IconService } from 'src/app/services/icon.service';
 
 @Component({
 	selector: 'app-sidebar',
@@ -20,13 +22,15 @@ export class SidebarComponent implements OnInit {
 	objSystemUser: SystemUser = new SystemUser();
 	profileImhText: string = '';
 	isSidebarToggle: boolean = false;
+	lstPermission: Permission[] = [];
 
 	constructor(
 		private localStoreService: LocalstoreService,
 		private securityService: SecurityService,
 		private messageHelper: MessageHelper,
 		private router: Router,
-		public dataService: DataService
+		public dataService: DataService,
+		private iconService: IconService
 	) { }
 
 	ngOnInit() {
@@ -36,6 +40,8 @@ export class SidebarComponent implements OnInit {
 				var matches = this.objSystemUser ? this.objSystemUser!.FullName!.match(/\b(\w)/g) : '';
 
 				this.profileImhText = matches![0] + matches![1];
+
+				this.lstPermission = this.localStoreService.getData('Permission');
 			}
 		}
 	}

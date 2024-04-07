@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { LocalstoreService } from '../service/localstore.service';
 import { MessageHelper } from '../helper/messageHelper';
+import { AppConstant } from '../constants/appConstant';
 
 @Injectable({ providedIn: 'root' })
 export class HttpClientInterceptor implements HttpInterceptor {
@@ -26,6 +27,7 @@ export class HttpClientInterceptor implements HttpInterceptor {
 	) { }
 
 	showHttpErrorOnTrayMessage(message: string) {
+		debugger
 		this.notifier.showMessage(404, '');
 	}
 
@@ -44,6 +46,10 @@ export class HttpClientInterceptor implements HttpInterceptor {
 		const reqClone = request.clone({
 			url, headers: request.headers.set('Authorization', `${authToken}`)
 		});
+		if (this.shouldPreventInterceptor(request)) {
+			// Return the request directly without intercepting it
+			return next.handle(request);
+		}
 
 		return next.handle(reqClone).pipe(map((event) => {
 			if (event instanceof HttpResponse) {
@@ -70,5 +76,16 @@ export class HttpClientInterceptor implements HttpInterceptor {
 			finalize(() => {
 				this.dataService.isFormSubmitting.next(null);
 			}));
+	}
+
+	shouldPreventInterceptor(request: HttpRequest<any>): boolean {
+		const urls = [AppConstant.ICON_URL];
+
+		var exist = urls.filter(x => x == request.url)[0];
+		if (exist) {
+			return true;
+		}
+
+		return false;
 	}
 }

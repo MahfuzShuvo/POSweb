@@ -26,4 +26,8 @@ export class PermissionService {
 		return this.httpHelper.postHelper(url, obj);
 	}
 
+	sequencePermissions(obj: any) {
+		const url = 'api/Permission/SequencePermissions';
+		return this.httpHelper.postHelper(url, obj);
+	}
 }
