@@ -71,3 +71,10 @@ img.productImage {
 .show-all-product:hover i {
     color: var(--theme-color);
 }
+
+.exp-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 15px !important;
+}

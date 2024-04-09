@@ -14,6 +14,7 @@ import { environment } from 'src/environments/environment';
 import { LocalstoreService } from '../service/localstore.service';
 import { MessageHelper } from '../helper/messageHelper';
 import { AppConstant } from '../constants/appConstant';
+import { ResponseStatus } from '../enums/appEnums';
 
 @Injectable({ providedIn: 'root' })
 export class HttpClientInterceptor implements HttpInterceptor {
@@ -27,8 +28,7 @@ export class HttpClientInterceptor implements HttpInterceptor {
 	) { }
 
 	showHttpErrorOnTrayMessage(message: string) {
-		debugger
-		this.notifier.showMessage(404, '');
+		this.notifier.showMessage(ResponseStatus.unAuthorize, message);
 	}
 
 	private tokenExpired(token: string) {
@@ -65,7 +65,7 @@ export class HttpClientInterceptor implements HttpInterceptor {
 		}),
 			catchError((err: HttpErrorResponse) => {
 				if (err.status === 401) {
-					this.showHttpErrorOnTrayMessage(err.error.message);
+					this.showHttpErrorOnTrayMessage(err.error);
 					this.router.navigate(["/login"]);
 				} else {
 					this.showHttpErrorOnTrayMessage(err.error);

@@ -35,4 +35,9 @@ export class PurchaseService {
 		const url = 'api/Purchase/DeletePurchase';
 		return this.httpHelper.postHelper(url, obj);
 	}
+
+	getPurchaseForExport(obj: any): Observable<any> {
+		const url = 'api/Purchase/GetPurchaseForExport';
+		return this.httpHelper.postHelper(url, obj);
+	}
 }

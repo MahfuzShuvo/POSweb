@@ -158,10 +158,10 @@ export class SalesComponent implements OnInit {
 		const header = Object.keys(data[0]);
 
 		if (header.length > 0) {
-			this.removeItem(header, 'lstProduct');
-			this.removeItem(header, 'objCustomer');
-			this.removeItem(header, 'BranchID');
-			this.removeItem(header, 'Status');
+			this.removeCSVItem(header, 'lstProduct');
+			this.removeCSVItem(header, 'objCustomer');
+			this.removeCSVItem(header, 'BranchID');
+			this.removeCSVItem(header, 'Status');
 		}
 
 		const csv = data.map((row: any) => header.map((fieldName) => JSON.stringify(row[fieldName], replacer)).join(','));
@@ -181,7 +181,7 @@ export class SalesComponent implements OnInit {
 		this.isExporting = false;
 	}
 
-	removeItem(arr: any[], value: any) {
+	removeCSVItem(arr: any[], value: any) {
 		const index = arr.indexOf(value);
 
 		if (index > -1) {
