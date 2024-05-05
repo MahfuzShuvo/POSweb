@@ -178,11 +178,9 @@
 					<div class="col-md-3">
 						<div class="form-group">
 							<label for="taxType" class="form-label">Tax Type</label>
-							<select name="taxType" id="taxType" class="form-select" [(ngModel)]="objProduct.TaxType"
-								(change)="calculateAllPricing()">
-								<option [value]="1">Exclusive</option>
-								<option [value]="2">Inclusive</option>
-							</select>
+							<custom-select-dropdown [id]="'taxType'" [lstItem]="lstTaxType" [key]="'key'"
+								(onSelectEvent)="selectTaxType($event)" [isDropup]="true"
+								[selectedItem]="selectedTaxType"></custom-select-dropdown>
 						</div>
 					</div>
 					<div class="col-md-3">
@@ -233,12 +231,10 @@
 					<div class="col-md-3">
 						<div class="form-group">
 							<label for="discountType" class="form-label">Discount Type</label>
-							<select name="discountType" id="discountType" class="form-select"
-								[(ngModel)]="objProduct.DiscountType">
-								<option [value]="0" selected disabled>Select</option>
-								<option [value]="1">Percentage (%)</option>
-								<option [value]="2">Fixed (&#2547;)</option>
-							</select>
+							<custom-select-dropdown [id]="'discount'" [lstItem]="lstDiscountType" [key]="'Discount'"
+								(onSelectEvent)="selectDiscount($event)" [isDropup]="true"
+								[selectedItem]="selectedDiscountType"></custom-select-dropdown>
+
 						</div>
 					</div>
 					<div class="col-md-3">

@@ -38,7 +38,7 @@ export class SystemUserComponent implements OnInit {
 	) { }
 
 	ngOnInit() {
-		Promise.resolve().then(() => this.headerService.setSubTitle('System User'));
+		Promise.resolve().then(() => this.headerService.setSubTitle('System Users'));
 		this.getAllRole();
 		this.getAllSystemUser();
 	}

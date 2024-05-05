@@ -1,8 +1,8 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, Type, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { AppConstant } from 'src/app/common/constants/appConstant';
-import { ResponseStatus } from 'src/app/common/enums/appEnums';
+import { ResponseStatus, TaxType } from 'src/app/common/enums/appEnums';
 import { MessageHelper } from 'src/app/common/helper/messageHelper';
 import { DataService } from 'src/app/common/service/data.service';
 import { HeaderService } from 'src/app/common/service/header.service';
@@ -44,6 +44,12 @@ export class ProductFormComponent implements OnInit {
 	productSlug: string = '';
 	isSellingPriceInputManually: boolean = false;
 	today: Date;
+	lstDiscountType: any[] = AppConstant.DISCOUNT_TYPE;
+	lstTaxType: any[] = this.dataService.getENUM(TaxType);
+	selectedDiscountType: any;
+	selectedTaxType: any = {
+		value: 1, key: 'Exclusive'
+	};
 
 	constructor(
 		private headerService: HeaderService,
@@ -298,57 +304,6 @@ export class ProductFormComponent implements OnInit {
 		this.calculateAllPricing()
 	}
 
-	// calculatePurchasePrice() {
-	// 	if (this.objProduct.Price && this.objProduct.Price > 0) {
-	// 		// debugger
-	// 		var tax = ((this.objProduct.Tax && this.objProduct.Tax > 0) ? parseFloat(this.objProduct.Tax.toString()) : 0) / 100;
-	// 		var afterTax = parseFloat(this.objProduct.Price.toString()) * tax
-
-	// 		this.objProduct.PurchasePrice = (this.objProduct.TaxType == 1) ? parseFloat(this.objProduct.Price.toString()) + afterTax : parseFloat(this.objProduct.Price.toString());
-	// 	} else {
-	// 		this.objProduct.PurchasePrice = 0;
-	// 	}
-
-	// 	this.objProduct.SellingPrice = this.objProduct.Price;
-	// }
-
-	// calculate final price & selling price if input -> PROFIT MARGIN
-	// onChangeProfitMargin_calculateFinalPrice() {
-	// 	this.calculatePurchasePrice();
-	// 	if (this.objProduct.ProfitMargin && this.objProduct.ProfitMargin > 0) {
-	// 		// sales = {(profit / 100) * purchase } + purchase 
-	// 		this.objProduct.SellingPrice = (parseInt(this.objProduct.ProfitMargin.toString()) / 100) * parseInt(this.objProduct.SellingPrice.toString()) + parseInt(this.objProduct.SellingPrice.toString());
-	// 		if (this.objProduct.TaxType == 1) {
-	// 			// Tax type = EXCLUSIVE
-	// 			var tax = ((this.objProduct.Tax && this.objProduct.Tax > 0) ? parseInt(this.objProduct.Tax.toString()) : 0) / 100;
-	// 			var afterTax = parseInt(this.objProduct.SellingPrice.toString()) * tax;
-
-	// 			this.objProduct.FinalPrice = parseFloat(this.objProduct.SellingPrice.toString()) + afterTax;
-	// 		} else if (this.objProduct.TaxType == 2) {
-	// 			// Tax type = INCLUSIVE
-	// 			this.objProduct.FinalPrice = this.objProduct.SellingPrice;
-	// 		}
-	// 	}
-	// }
-
-	// calculate final price & profit margin if input -> SELLING PRICE
-	// onChangeSellingPrice_calculateFinalPrice() {
-	// 	if (this.objProduct.SellingPrice && this.objProduct.SellingPrice > 0) {
-	// 		// profit = {(sales / purchase) - 1} * 100
-	// 		this.objProduct.ProfitMargin = parseFloat((((parseInt(this.objProduct.SellingPrice.toString()) / parseInt(this.objProduct.PurchasePrice.toString())) - 1) * 100).toFixed(2));
-	// 		if (this.objProduct.TaxType == 1) {
-	// 			// Tax type = EXCLUSIVE
-	// 			var tax = ((this.objProduct.Tax && this.objProduct.Tax > 0) ? parseInt(this.objProduct.Tax.toString()) : 0) / 100;
-	// 			var afterTax = parseInt(this.objProduct.SellingPrice.toString()) * tax;
-
-	// 			this.objProduct.FinalPrice = parseFloat(this.objProduct.SellingPrice.toString()) + afterTax;
-	// 		} else if (this.objProduct.TaxType == 2) {
-	// 			// Tax type = INCLUSIVE
-	// 			this.objProduct.FinalPrice = this.objProduct.SellingPrice;
-	// 		}
-	// 	}
-	// }
-
 	clearUpload() {
 		this.uploadedImageUrl = '';
 		this.file = {};
@@ -367,11 +322,30 @@ export class ProductFormComponent implements OnInit {
 			inputElement.stepUp();
 		}
 	}
+
 	decrementValue(event: Event) {
 		const inputElement = (event.target as HTMLElement).parentNode?.querySelector('input[type="number"]') as HTMLInputElement;
 		if (inputElement) {
 			inputElement.focus();
 			inputElement.stepDown();
+		}
+	}
+
+	selectDiscount(event: any) {
+		if (event) {
+			this.selectedDiscountType = this.lstDiscountType.filter(x => x.Id == event.Id)[0];
+			this.objProduct.DiscountType = event.Id;
+		} else {
+			this.objProduct.DiscountType = 0;
+		}
+	}
+
+	selectTaxType(event: any) {
+		if (event) {
+			this.selectedTaxType = this.lstTaxType.filter(x => x.value == event.value)[0];
+			this.objProduct.TaxType = event.Id;
+		} else {
+			this.objProduct.TaxType = 1;
 		}
 	}
 

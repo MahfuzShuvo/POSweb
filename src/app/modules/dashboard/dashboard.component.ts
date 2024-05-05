@@ -9,6 +9,9 @@ import { VMDashboardInitialData } from 'src/app/models/VM/vmDashboardInitialData
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { Chart, ChartOptions, ChartType } from 'chart.js/auto';
 import { DataService } from 'src/app/common/service/data.service';
+import { Branch } from 'src/app/models/branch';
+import { LocalstoreService } from 'src/app/common/service/localstore.service';
+import { DashboardDTO } from 'src/app/models/DTO/dashboardDTO';
 
 @Component({
 	selector: 'app-dashboard',
@@ -27,12 +30,12 @@ export class DashboardComponent implements OnInit {
 	monthlyRevenue: number = 0;
 	monthlyExpense: number = 0;
 	lstMonth = this.dataService.getENUM(MonthList);
-	lstAllMonth = this.dataService.getENUM(MonthList);
 	currentDate: Date = new Date();
 	selectedMonth: any = {
 		value: (this.currentDate.getMonth() + 1),
 		key: this.currentDate.toLocaleString('default', { month: 'long' })
 	}
+	selectedBranch: Branch = new Branch();
 
 
 	constructor(
@@ -40,16 +43,25 @@ export class DashboardComponent implements OnInit {
 		private activatedRoute: ActivatedRoute,
 		private dashboardService: DashboardService,
 		private messageHelper: MessageHelper,
-		private dataService: DataService
+		private dataService: DataService,
+		private localStoreService: LocalstoreService
 	) {
 		const headerTitle = this.activatedRoute.parent?.snapshot.url[0].path;
 		Promise.resolve().then(() => this.headerService.setTitle(headerTitle!.toString()));
 	}
 
 	ngOnInit() {
+		this.selectedBranch = this.localStoreService.getData('Branch');
+		this.dataService.selectedBranch.pipe(takeUntil(this.destroy)).subscribe((data: Branch) => {
+			if (data && data.BranchID > 0) {
+				this.selectedBranch = data;
+				this.getDashboardInitialData();
+			}
+		})
+
 		this.getDashboardInitialData();
-		var d = new Date();
-		console.log(d.toLocaleString('default', { month: 'long' }));
+		// var d = new Date();
+		// console.log(d.toLocaleString('default', { month: 'long' }));
 
 	}
 
@@ -61,14 +73,6 @@ export class DashboardComponent implements OnInit {
 		}, 5);
 	}
 
-	searchMonthDropdown(str: string) {
-		if (str == '') {
-			this.lstMonth = JSON.parse(JSON.stringify(this.lstAllMonth));
-		} else {
-			this.lstMonth = this.lstAllMonth.filter(x => x.key.toLowerCase().includes(str.toLowerCase()))
-		}
-	}
-
 	selectMonth(month: any) {
 		this.selectedMonth = JSON.parse(JSON.stringify(this.lstMonth.filter(x => x.value == month.value)[0]));
 		if (this.selectedMonth) {
@@ -77,7 +81,11 @@ export class DashboardComponent implements OnInit {
 	}
 
 	getDashboardInitialData() {
-		this.dashboardService.getDashboardInitialData(this.selectedMonth.value)
+		var payload = new DashboardDTO();
+		payload.BranchID = this.selectedBranch.BranchID;
+		payload.MonThNumber = this.selectedMonth.value;
+
+		this.dashboardService.getDashboardInitialData(payload)
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {
 				if (response.ResponseCode == ResponseStatus.success) {

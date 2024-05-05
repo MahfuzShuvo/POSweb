@@ -67,5 +67,6 @@ export enum MonthList {
 	December
 }
 
+
 export const NO_OF_AUTO_COMPLETE_DATA = 100;
 export const NO_OF_ROW_DATA = 20;
