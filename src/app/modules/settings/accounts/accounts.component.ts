@@ -64,7 +64,8 @@ export class AccountsComponent implements OnInit {
 	}
 
 	getAllAccount() {
-		this.accountService.getAllAccount(this.selectedBranch.BranchID)
+		var branchId = this.selectedBranch?.BranchID ?? 0;
+		this.accountService.getAllAccount(branchId)
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {
 				if (response.ResponseCode == ResponseStatus.success) {
@@ -184,7 +185,7 @@ export class AccountsComponent implements OnInit {
 
 	addBalance() {
 		if (this.objAccount.Balance > 0) {
-			this.objAccount.BranchID = this.selectedBranch.BranchID;
+			this.objAccount.BranchID = this.selectedBranch?.BranchID ?? 0;
 			this.dataService.isFormSubmitting.next(true);
 			this.accountService.addBalance(this.objAccount)
 				.pipe(takeUntil(this.destroy))
@@ -201,7 +202,7 @@ export class AccountsComponent implements OnInit {
 	}
 
 	showAccountStatement(account: any) {
-		account.BranchID = this.selectedBranch.BranchID;
+		account.BranchID = this.selectedBranch?.BranchID ?? 0;
 		this.accountService.showAccountStatement(account)
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {

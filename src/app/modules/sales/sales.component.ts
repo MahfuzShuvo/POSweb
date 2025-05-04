@@ -57,7 +57,8 @@ export class SalesComponent implements OnInit {
 	}
 
 	getAllSales() {
-		this.salesService.getAllSales(this.selectedBranch.BranchID)
+		var branchId = this.selectedBranch?.BranchID ?? 0;
+		this.salesService.getAllSales(branchId)
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {
 				if (response.ResponseCode == ResponseStatus.success) {
@@ -124,7 +125,7 @@ export class SalesComponent implements OnInit {
 		this.isExporting = true;
 
 		var payload = {
-			branchID: this.selectedBranch.BranchID,
+			branchID: this.selectedBranch?.BranchID ?? 0,
 			startDate: null,
 			endDate: null
 		}

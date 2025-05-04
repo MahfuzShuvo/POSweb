@@ -8,7 +8,7 @@
 				<div class="icon">
 					<i class='bx bxs-store-alt font-14'></i>
 				</div>
-				<span class="font-11">{{selectedBranch.BranchName}}</span>
+				<span class="font-11">{{selectedBranch != null ? selectedBranch.BranchName : ''}}</span>
 
 
 				<div *ngIf="loggedInUser && (loggedInUser.RoleID == 1 || loggedInUser.RoleID == 2)"

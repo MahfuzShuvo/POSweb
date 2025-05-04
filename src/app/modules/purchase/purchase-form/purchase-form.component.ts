@@ -151,7 +151,7 @@ export class PurchaseFormComponent implements OnInit {
 
 	searchProduct(value: string) {
 		var searchObj = new VMProductSearch();
-		searchObj.BranchID = this.selectedBranch.BranchID;
+		searchObj.BranchID = this.selectedBranch?.BranchID ?? 0;
 		searchObj.SearchText = value!.toLowerCase();
 
 		this.productService.searchProduct(searchObj)

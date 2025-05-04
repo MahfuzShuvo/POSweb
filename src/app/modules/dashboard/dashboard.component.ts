@@ -82,8 +82,8 @@ export class DashboardComponent implements OnInit {
 
 	getDashboardInitialData() {
 		var payload = new DashboardDTO();
-		payload.BranchID = this.selectedBranch.BranchID;
-		payload.MonThNumber = this.selectedMonth.value;
+		payload.BranchID = this.selectedBranch?.BranchID;
+		payload.MonThNumber = this.selectedMonth?.value;
 
 		this.dashboardService.getDashboardInitialData(payload)
 			.pipe(takeUntil(this.destroy))

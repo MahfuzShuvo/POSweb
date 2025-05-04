@@ -110,7 +110,7 @@
 							<td>{{purchase.PaymentAmount | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</td>
 							<td>{{purchase.DueAmount | currency:'BDT':'symbol':'1.2-2':'bn-BD'}}</td>
 							<td>
-								<div class="badge" [class.danger-badge]="purchase.PaymentStatus == 'Unpaid'"
+								<div class="badge" [class.danger-badge]="purchase.PaymentStatus == 'Due'"
 									[class.success-badge]="purchase.PaymentStatus == 'Paid'"
 									[class.warning-badge]="purchase.PaymentStatus == 'Partial'">
 									{{purchase.PaymentStatus}}

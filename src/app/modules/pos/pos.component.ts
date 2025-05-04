@@ -148,7 +148,8 @@ export class PosComponent implements OnInit {
 	}
 
 	getAllProduct() {
-		this.productService.getAllProduct(this.selectedBranch.BranchID)
+		var branchId = this.selectedBranch?.BranchID ?? 0;
+		this.productService.getAllProduct(branchId)
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {
 				if (response.ResponseCode == ResponseStatus.success) {
@@ -459,7 +460,7 @@ export class PosComponent implements OnInit {
 	}
 
 	clickToHoldSales() {
-		this.objSales.BranchID = this.selectedBranch.BranchID;
+		this.objSales.BranchID = this.selectedBranch?.BranchID ?? 0;
 		this.objSales.Status = RecordStatus.Hold;
 		this.salesService.saveSales(this.objSales)
 			.pipe(takeUntil(this.destroy))
@@ -496,7 +497,7 @@ export class PosComponent implements OnInit {
 			this.messageHelper.showMessage(ResponseStatus.warning, "Walk-in customer should pay complete amount");
 			return
 		}
-		this.objSales.BranchID = this.selectedBranch.BranchID;
+		this.objSales.BranchID = this.selectedBranch?.BranchID ?? 0;
 		this.objSales.SalesDate = new Date().toLocaleString();
 		this.objSales.Status = RecordStatus.Active;
 		this.salesService.saveSales(this.objSales)
@@ -515,7 +516,8 @@ export class PosComponent implements OnInit {
 	}
 
 	getAllAccount() {
-		this.accountService.getAllAccount(this.selectedBranch.BranchID)
+		var branchId = this.selectedBranch?.BranchID ?? 0;
+		this.accountService.getAllAccount(branchId)
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {
 				if (response.ResponseCode == ResponseStatus.success) {

@@ -39,6 +39,9 @@ export class LoginBranchComponent implements OnInit {
 				if (response.ResponseCode == ResponseStatus.success) {
 					this.lstBranch = response.ResponseObj;
 					// this.totalCount = response.TotalCount
+					if (this.lstBranch.length == 0) {
+						this.router.navigate(['/dashboard']);
+					}
 				} else {
 					this.messageHelper.showMessage(response.ResponseCode, response.Message);
 				}

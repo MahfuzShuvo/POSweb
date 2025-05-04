@@ -113,7 +113,8 @@ export class ProductsComponent implements OnInit {
 	}
 
 	getAllProduct() {
-		this.productService.getAllProduct(this.selectedBranch.BranchID)
+		var barnchId = this.selectedBranch?.BranchID ?? 0;
+		this.productService.getAllProduct(barnchId)
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {
 				if (response.ResponseCode == ResponseStatus.success) {
@@ -130,7 +131,7 @@ export class ProductsComponent implements OnInit {
 	getAllProductByCategoryID(id: number) {
 		this.selectedCategoryID = id;
 		var obj = new VMProduct();
-		obj.BranchID = this.selectedBranch.BranchID;
+		obj.BranchID = this.selectedBranch?.BranchID ?? 0;
 		obj.CategoryID = id
 		this.productService.getAllProductByCategoryID(obj)
 			.pipe(takeUntil(this.destroy))

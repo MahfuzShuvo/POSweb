@@ -57,7 +57,8 @@ export class PurchaseComponent implements OnInit {
 	}
 
 	getAllPurchase() {
-		this.purchaseService.getAllPurchase(this.selectedBranch.BranchID)
+		var branchId = this.selectedBranch?.BranchID ?? 0;
+		this.purchaseService.getAllPurchase(branchId)
 			.pipe(takeUntil(this.destroy))
 			.subscribe((response: ResponseMessage) => {
 				if (response.ResponseCode == ResponseStatus.success) {
