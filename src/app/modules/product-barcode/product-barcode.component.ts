@@ -161,7 +161,7 @@ export class ProductBarcodeComponent implements OnInit {
 			var tempList = [];
 			for (let i = 0; i < product.BarcodeQty; i++) {
 				var element = {
-					sku: product.SKU,
+					sku: product.SKU + '-' + (i + 1).toString().padStart(4, '0'),
 					name: product.ProductName,
 					price: product.FinalPrice
 				}
